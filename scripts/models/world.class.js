@@ -1,6 +1,10 @@
 class World {
   character = new Character();
   enemies = [new Chicken(), new Chicken(), new Chicken()];
+  clouds = [new Clouds()];
+  background = [
+    new Background()
+  ]
   canvas;
   ctx;
 
@@ -13,11 +17,15 @@ class World {
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-    this.ctx.drawImage(this.character.img, this.character.x, this.character.y, this.character.width, this.character.height);
+    this.addToMap(this.character);
 
     this.enemies.forEach((enemy) => {
-      this.ctx.drawImage(enemy.img, enemy.x, enemy.y, enemy.width, enemy.height);
+        this.addToMap(enemy);
     });
+
+    this.clouds.forEach((cloud) => {
+        this.addToMap(cloud);
+      });
 
     let self = this;
     requestAnimationFrame(() => {
@@ -25,5 +33,9 @@ class World {
       self.draw(); // "this" is not recognized inside this structure
       // that s why we set a variable with value "this"
     });
+  }
+
+  addToMap(movableObject){
+    this.ctx.drawImage(movableObject.img, movableObject.x, movableObject.y, movableObject.width, movableObject.height);
   }
 }
