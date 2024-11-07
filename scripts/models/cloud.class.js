@@ -2,6 +2,7 @@ class Clouds extends MovableObject {
   y = 20;
   width = 500;
   height = 300;
+  speed = 0.2;
 
   constructor() {
     super().loadImage("Grafics/img/5_background/layers/4_clouds/1.png");
@@ -11,11 +12,6 @@ class Clouds extends MovableObject {
   }
 
   cloudsConstantMove() {
-    setInterval(() => {
-      this.x -= 0.5;
-      if (this.x + this.width < 0) {
-        this.x = 720;
-      }
-    }, 1000 / 60);
+    this.moveLeft();
   }
 }
