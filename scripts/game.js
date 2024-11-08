@@ -5,10 +5,9 @@ let keyboard = new Keyboard();
 function init() {
   canvas = document.getElementById("canvas");
   world = new World(canvas, keyboard);
-  
 }
 
-window.addEventListener("keydown", keyboardInputsTrue)
+window.addEventListener("keydown", keyboardInputsTrue);
 
 function keyboardInputsTrue(event) {
   if (event.key == "ArrowUp") {
@@ -24,7 +23,7 @@ function keyboardInputsTrue(event) {
   }
 }
 
-window.addEventListener("keyup", keyboardInputsFalse)
+window.addEventListener("keyup", keyboardInputsFalse);
 
 function keyboardInputsFalse(event) {
   if (event.key == "ArrowUp") {
@@ -39,8 +38,3 @@ function keyboardInputsFalse(event) {
     keyboard.SPACE = false;
   }
 }
-
-
-
-
-
