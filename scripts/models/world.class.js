@@ -3,31 +3,53 @@ class World {
   enemies = [new Chicken(), new Chicken(), new Chicken()];
   clouds = [new Clouds()];
   background = [
+    new Background("Grafics/img/5_background/layers/air.png", -719, 0),
+    new Background("Grafics/img/5_background/layers/3_third_layer/2.png", -719, 0),
+    new Background("Grafics/img/5_background/layers/2_second_layer/2.png", -719, 0),
+    new Background("Grafics/img/5_background/layers/1_first_layer/2.png", -719, 0),
+
     new Background("Grafics/img/5_background/layers/air.png", 0, 0),
     new Background("Grafics/img/5_background/layers/3_third_layer/1.png", 0, 0),
     new Background("Grafics/img/5_background/layers/2_second_layer/1.png", 0, 0),
     new Background("Grafics/img/5_background/layers/1_first_layer/1.png", 0, 0),
+
+    new Background("Grafics/img/5_background/layers/air.png", 719, 0),
+    new Background("Grafics/img/5_background/layers/3_third_layer/2.png", 719, 0),
+    new Background("Grafics/img/5_background/layers/2_second_layer/2.png", 719, 0),
+    new Background("Grafics/img/5_background/layers/1_first_layer/2.png", 719, 0),
+
+    new Background("Grafics/img/5_background/layers/air.png", 719*2, 0),
+    new Background("Grafics/img/5_background/layers/3_third_layer/1.png", 719*2, 0),
+    new Background("Grafics/img/5_background/layers/2_second_layer/1.png", 719*2, 0),
+    new Background("Grafics/img/5_background/layers/1_first_layer/1.png", 719*2, 0),
+
+    new Background("Grafics/img/5_background/layers/air.png", 719*3, 0),
+    new Background("Grafics/img/5_background/layers/3_third_layer/2.png", 719*3, 0),
+    new Background("Grafics/img/5_background/layers/2_second_layer/2.png", 719*3, 0),
+    new Background("Grafics/img/5_background/layers/1_first_layer/2.png", 719*3, 0),
   ];
   canvas;
   ctx;
   keyboard;
+  camera_x = 0;
 
-  constructor(canvas, keyboard) {
+  constructor(canvas) {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
     this.keyboard = keyboard;
 
-    // this.character.keyboard = this.keyboard;
-    this.setKeyboard();
-
+    this.character.keyboard = this.keyboard;
+    // this.setKeyboard(); my other alternative
     // this.setWorld(); Junus Code
+
+    // this.character.camera_x = this.camera_x;
 
     this.draw();
   }
 
-  setKeyboard() {
-    this.character.keyboard = this.keyboard;
-  }
+  // setKeyboard() {
+  //   this.character.keyboard = this.keyboard;
+  // }
 
   // setWorld() {
   //   this.character.world = this; Junus Code
@@ -36,10 +58,14 @@ class World {
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
+    this.ctx.translate(this.camera_x, 0);
+
     this.addObjectToMap(this.background);
     this.addObjectToMap(this.clouds);
     this.addObjectToMap(this.enemies);
     this.addToMap(this.character);
+
+    this.ctx.translate(-this.camera_x, 0);
 
     requestAnimationFrame(() => {
       this.draw();

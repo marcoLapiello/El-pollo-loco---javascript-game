@@ -12,6 +12,7 @@ class Character extends MovableObject {
   ];
   keyboard;
   // world;
+  // camera_x;
   speed = 3;
 
   constructor() {
@@ -30,6 +31,7 @@ class Character extends MovableObject {
         this.x -= this.speed;
         this.facingLeft = true;
       }
+      world.camera_x = -this.x;
     }, 1000 / 60);
 
     setInterval(() => {
