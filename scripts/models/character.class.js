@@ -25,8 +25,10 @@ class Character extends MovableObject {
     setInterval(() => {
       if (this.keyboard.RIGHT) {
         this.x += this.speed;
+        this.facingLeft = false;
       } else if (this.keyboard.LEFT) {
         this.x -= this.speed;
+        this.facingLeft = true;
       }
     }, 1000 / 60);
 
