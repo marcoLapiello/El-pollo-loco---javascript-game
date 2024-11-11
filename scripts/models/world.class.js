@@ -1,33 +1,6 @@
 class World {
   character = new Character();
-  enemies = [new Chicken(), new Chicken(), new Chicken()];
-  clouds = [new Clouds()];
-  background = [
-    new Background("Grafics/img/5_background/layers/air.png", -719, 0),
-    new Background("Grafics/img/5_background/layers/3_third_layer/2.png", -719, 0),
-    new Background("Grafics/img/5_background/layers/2_second_layer/2.png", -719, 0),
-    new Background("Grafics/img/5_background/layers/1_first_layer/2.png", -719, 0),
-
-    new Background("Grafics/img/5_background/layers/air.png", 0, 0),
-    new Background("Grafics/img/5_background/layers/3_third_layer/1.png", 0, 0),
-    new Background("Grafics/img/5_background/layers/2_second_layer/1.png", 0, 0),
-    new Background("Grafics/img/5_background/layers/1_first_layer/1.png", 0, 0),
-
-    new Background("Grafics/img/5_background/layers/air.png", 719, 0),
-    new Background("Grafics/img/5_background/layers/3_third_layer/2.png", 719, 0),
-    new Background("Grafics/img/5_background/layers/2_second_layer/2.png", 719, 0),
-    new Background("Grafics/img/5_background/layers/1_first_layer/2.png", 719, 0),
-
-    new Background("Grafics/img/5_background/layers/air.png", 719*2, 0),
-    new Background("Grafics/img/5_background/layers/3_third_layer/1.png", 719*2, 0),
-    new Background("Grafics/img/5_background/layers/2_second_layer/1.png", 719*2, 0),
-    new Background("Grafics/img/5_background/layers/1_first_layer/1.png", 719*2, 0),
-
-    new Background("Grafics/img/5_background/layers/air.png", 719*3, 0),
-    new Background("Grafics/img/5_background/layers/3_third_layer/2.png", 719*3, 0),
-    new Background("Grafics/img/5_background/layers/2_second_layer/2.png", 719*3, 0),
-    new Background("Grafics/img/5_background/layers/1_first_layer/2.png", 719*3, 0),
-  ];
+  level = level1;
   canvas;
   ctx;
   keyboard;
@@ -39,30 +12,19 @@ class World {
     this.keyboard = keyboard;
 
     this.character.keyboard = this.keyboard;
-    // this.setKeyboard(); my other alternative
-    // this.setWorld(); Junus Code
-
-    // this.character.camera_x = this.camera_x;
 
     this.draw();
   }
 
-  // setKeyboard() {
-  //   this.character.keyboard = this.keyboard;
-  // }
-
-  // setWorld() {
-  //   this.character.world = this; Junus Code
-  // }
 
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
     this.ctx.translate(this.camera_x, 0);
 
-    this.addObjectToMap(this.background);
-    this.addObjectToMap(this.clouds);
-    this.addObjectToMap(this.enemies);
+    this.addObjectToMap(this.level.background);
+    this.addObjectToMap(this.level.clouds);
+    this.addObjectToMap(this.level.enemies);
     this.addToMap(this.character);
 
     this.ctx.translate(-this.camera_x, 0);
@@ -77,20 +39,6 @@ class World {
       this.addToMap(o);
     });
   }
-
-  // addToMap(movableObject) {        Junus Code
-  //   if (movableObject.facingLeft) {
-  //     this.ctx.save();
-  //     this.ctx.translate(movableObject.width, 0)
-  //     this.ctx.scale(-1, 1);
-  //     movableObject.x = movableObject.x * -1;
-  //   } 
-  //   this.ctx.drawImage(movableObject.img, movableObject.x, movableObject.y, movableObject.width, movableObject.height);
-  //   if (movableObject.facingLeft) {
-  //     movableObject.x = movableObject.x * -1;
-  //     this.ctx.restore();
-  //   }
-  // }
 
   addToMap(movableObject) {
     this.ctx.save(); // Salva lo stato corrente del contesto

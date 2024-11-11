@@ -11,8 +11,6 @@ class Character extends MovableObject {
     "Grafics/img/2_character_pepe/2_walk/W-26.png",
   ];
   keyboard;
-  // world;
-  // camera_x;
   speed = 3;
 
   constructor() {
@@ -24,14 +22,16 @@ class Character extends MovableObject {
 
   walk() {
     setInterval(() => {
-      if (this.keyboard.RIGHT) {
+      if (this.keyboard.RIGHT && this.x < world.level.LEVEL_END_X) {
+        console.log(world.level.LEVEL_END_X);
+        console.log(this.x);
         this.x += this.speed;
         this.facingLeft = false;
-      } else if (this.keyboard.LEFT) {
+      } else if (this.keyboard.LEFT && this.x > -100) {
         this.x -= this.speed;
         this.facingLeft = true;
       }
-      world.camera_x = -this.x;
+      world.camera_x = -this.x + 100;
     }, 1000 / 60);
 
     setInterval(() => {
@@ -42,15 +42,6 @@ class Character extends MovableObject {
         this.currentImageIndex++;
       }
     }, 100);
-
-    // setInterval(() => {
-    //   if (this.world.keyboard.RIGHT) {
-    //     let index = this.currentImageIndex % this.IMAGES_WALKING.length;
-    //     let path = this.IMAGES_WALKING[index];
-    //     this.img = this.imageCache[path];
-    //     this.currentImageIndex++;
-    //   }
-    // }, 100);
   }
 
   jump() {}
