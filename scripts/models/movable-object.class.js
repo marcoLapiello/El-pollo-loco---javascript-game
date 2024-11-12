@@ -22,11 +22,18 @@ class MovableObject {
     });
   }
 
+  playAnimation() {
+    let index = this.currentImageIndex % this.IMAGES_WALKING.length;
+    let path = this.IMAGES_WALKING[index];
+    this.img = this.imageCache[path];
+    this.currentImageIndex++;
+  }
+
   moveRight() {
     console.log("Moving right");
   }
 
-  moveLeft(){
+  moveLeft() {
     setInterval(() => {
       this.x -= this.speed;
       if (this.x + this.width < 0) {
