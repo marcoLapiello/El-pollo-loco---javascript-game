@@ -12,6 +12,11 @@ class Clouds extends MovableObject {
   }
 
   cloudsConstantMove() {
-    this.moveLeft();
+    setInterval(() => {
+      this.x -= this.speed;
+      if (this.x + this.width < 0) {
+        this.x = 720;
+      }
+    }, 1000 / 60);
   }
 }

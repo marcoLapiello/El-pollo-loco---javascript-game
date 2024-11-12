@@ -42,6 +42,12 @@ class World {
 
   addToMap(movableObject) {
     this.ctx.save(); // Salva lo stato corrente del contesto
+
+    // this.ctx.beginPath();
+    // this.ctx.rect(movableObject.x, movableObject.y, movableObject.width, movableObject.height);
+    // this.ctx.strokeStyle = 'red';
+    // this.ctx.lineWidth = 2;
+    // this.ctx.stroke();
   
     if (movableObject.facingLeft) {
       this.ctx.translate(movableObject.x + movableObject.width, 0); // Trasla il contesto verso destra dell'immagine
@@ -62,6 +68,7 @@ class World {
         movableObject.height
       );
     }
+    
   
     this.ctx.restore(); // Ripristina lo stato del contesto originale
   }
