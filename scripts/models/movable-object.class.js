@@ -4,7 +4,7 @@ export class MovableObject {
   img;
   height = 150;
   width = 100;
-  speed = 0.5;
+  speedX = 0.5;
   facingLeft = false;
   imageCache = {};
   currentImageIndex = 0;
@@ -34,12 +34,12 @@ export class MovableObject {
   }
 
   moveRight() {
-    this.x += this.speed;
+    this.x += this.speedX;
     this.facingLeft = false;
   }
 
   moveLeft() {
-    this.x -= this.speed;
+    this.x -= this.speedX;
     this.facingLeft = true;
   }
 

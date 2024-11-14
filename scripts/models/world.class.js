@@ -1,8 +1,10 @@
 import { StatusBars } from "../game.js";
 import { Character } from "../game.js";
+import { Bottle } from "./bottle.class.js";
 
 export class World {
   character;
+  bottle;
   level = level1;
   canvas;
   ctx;
@@ -15,7 +17,8 @@ export class World {
     this.keyboard = keyboard;
     this.character = new Character(this);
     this.character.keyboard = this.keyboard;
-
+    this.bottle = new Bottle(this.character.x, this.character.y);
+    this.bottle.keyboard = this.keyboard;
     this.healthBar = new StatusBars(this.ctx, this.character.health);
 
     this.draw();
@@ -45,6 +48,7 @@ export class World {
     this.addObjectToMap(this.level.clouds);
     this.addObjectToMap(this.level.enemies);
     this.addToMap(this.character);
+    this.addToMap(this.bottle);
 
     this.ctx.translate(-this.camera_x, 0);
 

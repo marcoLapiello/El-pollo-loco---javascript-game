@@ -39,7 +39,7 @@ export class Character extends MovableObject {
   ];
   keyboard;
   world;
-  speed = 3;
+  speedX = 3;
   walking_sound = new Audio("audio/running.wav");
 
   constructor(world) {

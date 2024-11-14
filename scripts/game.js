@@ -10,6 +10,9 @@ window.MovableObject = MovableObject;
 import { StatusBars } from "./models/statusBars.class.js";
 window.StatusBars = StatusBars;
 
+import { Bottle } from "./models/bottle.class.js";
+window.Bottle = Bottle;
+
 import { Background } from "./models/background.class.js";
 window.Background = Background;
 
@@ -46,31 +49,35 @@ window.init = init;
 window.addEventListener("keydown", keyboardInputsTrue);
 
 function keyboardInputsTrue(event) {
-  if (event.key == "ArrowUp") {
+  if (event.code == "ArrowUp") {
     keyboard.UP = true;
-  } else if (event.key == "ArrowDown") {
+  } else if (event.code == "ArrowDown") {
     keyboard.DOWN = true;
-  } else if (event.key == "ArrowLeft") {
+  } else if (event.code == "ArrowLeft") {
     keyboard.LEFT = true;
-  } else if (event.key == "ArrowRight") {
+  } else if (event.code == "ArrowRight") {
     keyboard.RIGHT = true;
-  } else if (event.key == " ") {
+  } else if (event.code == "Space") {
     keyboard.SPACE = true;
+  } else if (event.code == "KeyB") {
+    keyboard.B = true;
   }
 }
 
 window.addEventListener("keyup", keyboardInputsFalse);
 
 function keyboardInputsFalse(event) {
-  if (event.key == "ArrowUp") {
+  if (event.code == "ArrowUp") {
     keyboard.UP = false;
-  } else if (event.key == "ArrowDown") {
+  } else if (event.code == "ArrowDown") {
     keyboard.DOWN = false;
-  } else if (event.key == "ArrowLeft") {
+  } else if (event.code == "ArrowLeft") {
     keyboard.LEFT = false;
-  } else if (event.key == "ArrowRight") {
+  } else if (event.code == "ArrowRight") {
     keyboard.RIGHT = false;
-  } else if (event.key == " ") {
+  } else if (event.code == "Space") {
     keyboard.SPACE = false;
+  } else if (event.code == "KeyB") {
+    keyboard.B = false;
   }
 }
