@@ -1,4 +1,6 @@
-class Character extends MovableObject {
+import { MovableObject } from "./movable-object.class.js";
+
+export class Character extends MovableObject {
   y = 190;
   height = 270;
   width = 135;
@@ -36,15 +38,17 @@ class Character extends MovableObject {
     "Grafics/img/2_character_pepe/4_hurt/H-43.png"
   ];
   keyboard;
+  world;
   speed = 3;
   walking_sound = new Audio("audio/running.wav");
 
-  constructor() {
+  constructor(world) {
     super().loadImage("Grafics/img/2_character_pepe/2_walk/W-21.png");
     this.loadImages(this.IMAGES_WALKING);
     this.loadImages(this.IMAGES_JUMPING);
     this.loadImages(this.IMAGES_DEAD);
     this.loadImages(this.IMAGES_HURT);
+    this.world = world;
     this.applyGravity();
     this.walk();
     this.jump();
@@ -54,14 +58,14 @@ class Character extends MovableObject {
     setInterval(() => {
       this.walking_sound.pause();
 
-      if (this.keyboard.RIGHT && this.x < world.level.LEVEL_END_X) {
+      if (this.keyboard.RIGHT && this.x < this.world.level.LEVEL_END_X) {
         this.moveRight();
         this.walking_sound.play();
       } else if (this.keyboard.LEFT && this.x > -100) {
         this.moveLeft();
         this.walking_sound.play();
       }
-      world.camera_x = -this.x + 100;
+      this.world.camera_x = -this.x + 100;
     }, 1000 / 60);
 
     setInterval(() => {

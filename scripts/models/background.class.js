@@ -1,4 +1,6 @@
-class Background extends MovableObject {
+import { MovableObject } from "./movable-object.class.js"; 
+
+export class Background extends MovableObject {
     width = 720;
     height = 480;
 
