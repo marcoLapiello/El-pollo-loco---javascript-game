@@ -18,14 +18,16 @@ class World {
   }
 
   checkCollision() {
+    
     setInterval(() => {
       this.level.enemies.forEach((enemy) => {
         if (this.character.isColliding(enemy)) {
-          console.log(enemy);
+          this.character.getsHit();
+          // console.log(this.character.health);
           
         }
       })
-    }, 1000);
+    }, 200);
   }
 
   draw() {

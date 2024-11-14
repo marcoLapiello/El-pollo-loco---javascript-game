@@ -1,6 +1,5 @@
 class Character extends MovableObject {
   y = 190;
-  // y = 0;
   height = 270;
   width = 135;
   IMAGES_WALKING = [
@@ -9,7 +8,7 @@ class Character extends MovableObject {
     "Grafics/img/2_character_pepe/2_walk/W-23.png",
     "Grafics/img/2_character_pepe/2_walk/W-24.png",
     "Grafics/img/2_character_pepe/2_walk/W-25.png",
-    "Grafics/img/2_character_pepe/2_walk/W-26.png",
+    "Grafics/img/2_character_pepe/2_walk/W-26.png"
   ];
   IMAGES_JUMPING = [
     "Grafics/img/2_character_pepe/3_jump/J-31.png",
@@ -20,7 +19,21 @@ class Character extends MovableObject {
     "Grafics/img/2_character_pepe/3_jump/J-36.png",
     "Grafics/img/2_character_pepe/3_jump/J-37.png",
     "Grafics/img/2_character_pepe/3_jump/J-38.png",
-    "Grafics/img/2_character_pepe/3_jump/J-39.png",
+    "Grafics/img/2_character_pepe/3_jump/J-39.png"
+  ];
+  IMAGES_DEAD = [
+    "Grafics/img/2_character_pepe/5_dead/D-51.png",
+    "Grafics/img/2_character_pepe/5_dead/D-52.png",
+    "Grafics/img/2_character_pepe/5_dead/D-53.png",
+    "Grafics/img/2_character_pepe/5_dead/D-54.png",
+    "Grafics/img/2_character_pepe/5_dead/D-55.png",
+    "Grafics/img/2_character_pepe/5_dead/D-56.png",
+    "Grafics/img/2_character_pepe/5_dead/D-57.png"
+  ];
+  IMAGES_HURT = [
+    "Grafics/img/2_character_pepe/4_hurt/H-41.png",
+    "Grafics/img/2_character_pepe/4_hurt/H-42.png",
+    "Grafics/img/2_character_pepe/4_hurt/H-43.png"
   ];
   keyboard;
   speed = 3;
@@ -30,6 +43,8 @@ class Character extends MovableObject {
     super().loadImage("Grafics/img/2_character_pepe/2_walk/W-21.png");
     this.loadImages(this.IMAGES_WALKING);
     this.loadImages(this.IMAGES_JUMPING);
+    this.loadImages(this.IMAGES_DEAD);
+    this.loadImages(this.IMAGES_HURT);
     this.applyGravity();
     this.walk();
     this.jump();
@@ -50,7 +65,11 @@ class Character extends MovableObject {
     }, 1000 / 60);
 
     setInterval(() => {
-      if (this.isJumping()) {
+      if (this.isDead()) {
+        // this.playAnimation(this.IMAGES_DEAD);
+      } else if (this.getsHurt()) { 
+        // this.playAnimation(this.IMAGES_HURT)
+      } else if (this.isJumping()) {
         this.playAnimation(this.IMAGES_JUMPING);
       } else {
         if (this.keyboard.RIGHT || this.keyboard.LEFT) {

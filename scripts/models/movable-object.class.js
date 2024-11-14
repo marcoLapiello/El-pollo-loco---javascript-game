@@ -10,6 +10,8 @@ class MovableObject {
   currentImageIndex = 0;
   speedY = 0;
   acceleration = 1;
+  health = 100;
+  lastHit = 0;
 
   loadImage(path) {
     this.img = new Image();
@@ -63,12 +65,30 @@ class MovableObject {
   }
 
   isColliding(obj) {
-    return (
-      this.x + this.width >= obj.x &&
-      this.x <= obj.x + obj.width &&
-      this.x + this.offsetY + this.height >= obj.x &&
-      this.x + this.offsetY <= obj.Y + obj.height &&
-      obj.onCollisionCourse
-    ); // Optional: hiermit könnten wir schauen, ob ein Objekt sich in die richtige Richtung bewegt. Nur dann kollidieren wir. Nützlich bei Gegenständen, auf denen man stehen kann.
+    return this.x + this.width > obj.x && 
+    this.y + this.height > obj.y && 
+    this.x < obj.x + obj.width && 
+    this.y < obj.y + obj.height;
+  }
+
+  getsHit() {
+    this.health -= 5;
+    if (this.health < 0) {
+      this.health = 0;
+    } else {
+      this.lastHit = new Date().getTime();
+      // console.log(this.lastHit);
+      
+    }
+  }
+
+  getsHurt() {
+    let timePassed = new Date().getTime() - this.lastHit; // Difference in ms
+    timePassed = timePassed / 1000; // Difference in s
+    return timePassed < 1;
+  }
+
+  isDead() {
+    return this.health == 0;
   }
 }
