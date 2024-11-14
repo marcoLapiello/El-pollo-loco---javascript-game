@@ -1,9 +1,33 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
 body {
+    height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    background-image: url('Grafics/background4.webp');
+    background-position: center;
+    background-size: cover;
+}
+
+.mainContent {
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 48px;
+}
+
+h1 {
+    font-size: 48px;
 }
 
 canvas {
+    
     background-color: black;
+    border-radius: 20px;
+    border: solid black 2px;
 }

@@ -4,7 +4,7 @@ import { Bottle } from "./bottle.class.js";
 
 export class World {
   character;
-  bottle;
+  bottles = [];
   level = level1;
   canvas;
   ctx;
@@ -17,26 +17,44 @@ export class World {
     this.keyboard = keyboard;
     this.character = new Character(this);
     this.character.keyboard = this.keyboard;
-    this.bottle = new Bottle(this.character.x, this.character.y);
-    this.bottle.keyboard = this.keyboard;
+    // this.bottle = new Bottle(
+    //   this.character.x + 80,
+    //   this.character.y + 140,
+    //   this.keyboard
+    // );
+    // this.bottle.keyboard = this.keyboard;
     this.healthBar = new StatusBars(this.ctx, this.character.health);
 
     this.draw();
-    this.checkCollision();
+    this.run();
+  }
+
+  run() {
+    setInterval(() => {
+      this.checkCollision();
+      this.handleThrowBottle();
+    }, 200);
+  }
+
+  handleThrowBottle() {
+    if (this.keyboard.B && !this.character.facingLeft) {
+      let bottle = new Bottle(
+        this.character.x + 80,
+        this.character.y + 140
+      );
+      this.bottles.push(bottle);
+    }
+    
   }
 
   checkCollision() {
-    
-    setInterval(() => {
-      this.level.enemies.forEach((enemy) => {
-        if (this.character.isColliding(enemy)) {
-          this.character.getsHit();
-          this.healthBar.update(this.character.health);
-          // console.log(this.character.health);
-          
-        }
-      })
-    }, 200);
+    this.level.enemies.forEach((enemy) => {
+      if (this.character.isColliding(enemy)) {
+        this.character.getsHit();
+        this.healthBar.update(this.character.health);
+        // console.log(this.character.health);
+      }
+    });
   }
 
   draw() {
@@ -47,8 +65,9 @@ export class World {
     this.addObjectToMap(this.level.background);
     this.addObjectToMap(this.level.clouds);
     this.addObjectToMap(this.level.enemies);
+    this.addObjectToMap(this.bottles);
     this.addToMap(this.character);
-    this.addToMap(this.bottle);
+    // this.addToMap(this.bottle);
 
     this.ctx.translate(-this.camera_x, 0);
 

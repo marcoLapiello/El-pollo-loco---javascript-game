@@ -1,3 +1,5 @@
+import { Bottle } from "./bottle.class.js";
+
 export class MovableObject {
   x = 120;
   y = 300;
@@ -45,10 +47,10 @@ export class MovableObject {
 
   applyGravity() {
     setInterval(() => {
-      if (this.isJumping() || this.speedY > 0) {
+      if (this.isInTheAir() || this.speedY > 0) {
         this.y -= this.speedY;
         this.speedY -= this.acceleration;
-        if (this.y >= 190) {
+        if (this instanceof Character && this.y >= 190) {
           this.y = 190;
           this.speedY = 0;
         }
@@ -56,7 +58,10 @@ export class MovableObject {
     }, 1000 / 60);
   }
 
-  isJumping() {
+  isInTheAir() {
+    if (this instanceof Bottle) {
+      return true;
+    }
     return this.y < 190;
   }
 
