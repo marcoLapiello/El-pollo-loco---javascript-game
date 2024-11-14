@@ -31,11 +31,31 @@ body {
 
 h1 {
     font-size: 48px;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
 }
 
 canvas {
-    
+    display: block;
     background-color: black;
     border-radius: 20px;
     border: solid black 2px;
+}
+
+/* Smartphone */
+@media only screen and (max-width: 720px) {
+    canvas {
+        width: 100%;
+    }
+}
+
+/* Smartphone */
+@media only screen and (max-height: 480px) {
+    canvas {
+        height: 100dvh;
+    }
+
+    h1 {
+        display: none;
+    }
 }
