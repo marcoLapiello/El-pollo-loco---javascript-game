@@ -13,6 +13,9 @@ window.StatusBars = StatusBars;
 import { Bottle } from "./models/bottle.class.js";
 window.Bottle = Bottle;
 
+import { BottlesOnTheGround } from "./models/bottlesOnTheGround.class.js";
+window.BottlesOnTheGround = BottlesOnTheGround;
+
 import { Background } from "./models/background.class.js";
 window.Background = Background;
 

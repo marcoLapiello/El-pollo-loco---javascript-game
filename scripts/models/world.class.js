@@ -1,10 +1,12 @@
 import { StatusBars } from "../game.js";
 import { Character } from "../game.js";
 import { Bottle } from "./bottle.class.js";
+import { BottlesOnTheGround } from "./bottlesOnTheGround.class.js";
 
 export class World {
   character;
   bottles = [];
+  bottlesOnTheGround = [];
   level = level1;
   canvas;
   ctx;
@@ -17,12 +19,7 @@ export class World {
     this.keyboard = keyboard;
     this.character = new Character(this);
     this.character.keyboard = this.keyboard;
-    // this.bottle = new Bottle(
-    //   this.character.x + 80,
-    //   this.character.y + 140,
-    //   this.keyboard
-    // );
-    // this.bottle.keyboard = this.keyboard;
+    this.generateBottleOnTheGrounds(10);
     this.healthBar = new StatusBars(this.ctx, this.character.health);
 
     this.draw();
@@ -52,9 +49,17 @@ export class World {
       if (this.character.isColliding(enemy)) {
         this.character.getsHit();
         this.healthBar.update(this.character.health);
-        // console.log(this.character.health);
       }
     });
+  }
+
+  generateBottleOnTheGrounds(numberOfBottles) {
+    for (let i = 0; i < numberOfBottles; i++) {
+      let x = Math.random() * 2000;
+      let y = 390;
+      let bottleOnTheGround = new BottlesOnTheGround(x, y);
+      this.bottlesOnTheGround.push(bottleOnTheGround);
+    }
   }
 
   draw() {
@@ -64,10 +69,12 @@ export class World {
 
     this.addObjectToMap(this.level.background);
     this.addObjectToMap(this.level.clouds);
+    this.addObjectToMap(this.bottlesOnTheGround);
     this.addObjectToMap(this.level.enemies);
     this.addObjectToMap(this.bottles);
+    
     this.addToMap(this.character);
-    // this.addToMap(this.bottle);
+    
 
     this.ctx.translate(-this.camera_x, 0);
 
@@ -85,7 +92,7 @@ export class World {
   }
 
   addToMap(movableObject) {
-    this.ctx.save(); // Salva lo stato corrente del contesto
+    this.ctx.save();
 
     if (movableObject instanceof Character || movableObject instanceof Chicken || movableObject instanceof Endboss) {
       this.ctx.beginPath();
@@ -103,6 +110,6 @@ export class World {
       this.ctx.drawImage(movableObject.img, movableObject.x, movableObject.y, movableObject.width, movableObject.height);
     }
 
-    this.ctx.restore(); // Ripristina lo stato del contesto originale
+    this.ctx.restore();
   }
 }
