@@ -7,6 +7,9 @@ window.Keyboard = Keyboard;
 import { MovableObject } from "./models/movable-object.class.js";
 window.MovableObject = MovableObject;
 
+import { StatusBars } from "./models/statusBars.class.js";
+window.StatusBars = StatusBars;
+
 import { Background } from "./models/background.class.js";
 window.Background = Background;
 
@@ -28,7 +31,7 @@ window.Level = Level;
 import { level1 } from "./levels/level1.js";
 window.level1 = level1;
 
-export { World, Keyboard, MovableObject, Background, Clouds, Character, Chicken, Endboss, level1 }
+export { World, Keyboard, StatusBars, MovableObject, Background, Clouds, Character, Chicken, Endboss, level1 }
 
 let canvas;
 let world;

@@ -70,9 +70,9 @@ export class Character extends MovableObject {
 
     setInterval(() => {
       if (this.isDead()) {
-        // this.playAnimation(this.IMAGES_DEAD);
+        this.playAnimation(this.IMAGES_DEAD);
       } else if (this.getsHurt()) { 
-        // this.playAnimation(this.IMAGES_HURT)
+        this.playAnimation(this.IMAGES_HURT)
       } else if (this.isJumping()) {
         this.playAnimation(this.IMAGES_JUMPING);
       } else {

@@ -1,3 +1,4 @@
+import { StatusBars } from "../game.js";
 import { Character } from "../game.js";
 
 export class World {
@@ -15,6 +16,8 @@ export class World {
     this.character = new Character(this);
     this.character.keyboard = this.keyboard;
 
+    this.healthBar = new StatusBars(this.ctx, this.character.health);
+
     this.draw();
     this.checkCollision();
   }
@@ -25,6 +28,7 @@ export class World {
       this.level.enemies.forEach((enemy) => {
         if (this.character.isColliding(enemy)) {
           this.character.getsHit();
+          this.healthBar.update(this.character.health);
           // console.log(this.character.health);
           
         }
@@ -43,6 +47,8 @@ export class World {
     this.addToMap(this.character);
 
     this.ctx.translate(-this.camera_x, 0);
+
+    this.healthBar.drawHealthBar();
 
     requestAnimationFrame(() => {
       this.draw();
