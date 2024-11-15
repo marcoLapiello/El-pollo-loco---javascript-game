@@ -1,4 +1,4 @@
-import { Bottle } from "./bottle.class.js";
+// import { Bottle } from "./bottle.class.js";
 
 export class MovableObject {
   x = 120;
@@ -81,9 +81,7 @@ export class MovableObject {
     if (this.health < 0) {
       this.health = 0;
     } else {
-      this.lastHit = new Date().getTime();
-      // console.log(this.lastHit);
-      
+      this.lastHit = new Date().getTime(); 
     }
   }
 

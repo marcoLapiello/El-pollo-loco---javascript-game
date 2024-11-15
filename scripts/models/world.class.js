@@ -1,7 +1,7 @@
-import { StatusBars } from "../game.js";
-import { Character } from "../game.js";
-import { Bottle } from "./bottle.class.js";
-import { BottlesOnTheGround } from "./bottlesOnTheGround.class.js";
+// import { StatusBars } from "../game.js";
+// import { Character } from "../game.js";
+// import { Bottle } from "./bottle.class.js";
+// import { BottlesOnTheGround } from "./bottlesOnTheGround.class.js";
 
 export class World {
   character;
@@ -35,13 +35,9 @@ export class World {
 
   handleThrowBottle() {
     if (this.keyboard.B && !this.character.facingLeft) {
-      let bottle = new Bottle(
-        this.character.x + 80,
-        this.character.y + 140
-      );
+      let bottle = new Bottle(this.character.x + 80, this.character.y + 140);
       this.bottles.push(bottle);
     }
-    
   }
 
   checkCollision() {
@@ -72,9 +68,8 @@ export class World {
     this.addObjectToMap(this.bottlesOnTheGround);
     this.addObjectToMap(this.level.enemies);
     this.addObjectToMap(this.bottles);
-    
+
     this.addToMap(this.character);
-    
 
     this.ctx.translate(-this.camera_x, 0);
 
@@ -95,21 +90,29 @@ export class World {
     this.ctx.save();
 
     if (movableObject instanceof Character || movableObject instanceof Chicken || movableObject instanceof Endboss) {
-      this.ctx.beginPath();
-      this.ctx.rect(movableObject.x, movableObject.y, movableObject.width, movableObject.height);
-      this.ctx.strokeStyle = "red";
-      this.ctx.lineWidth = 2;
-      this.ctx.stroke();
+      this.drawFrame(movableObject);
     }
 
     if (movableObject.facingLeft) {
-      this.ctx.translate(movableObject.x + movableObject.width, 0); // Trasla il contesto verso destra dell'immagine
-      this.ctx.scale(-1, 1); // Riflette l'immagine lungo l'asse x
-      this.ctx.drawImage(movableObject.img, 0, movableObject.y, movableObject.width, movableObject.height);
+      this.drawObjectFacingLeft(movableObject);
     } else {
       this.ctx.drawImage(movableObject.img, movableObject.x, movableObject.y, movableObject.width, movableObject.height);
     }
 
     this.ctx.restore();
+  }
+
+  drawFrame(movableObject) {
+    this.ctx.beginPath();
+    this.ctx.rect(movableObject.x, movableObject.y, movableObject.width, movableObject.height);
+    this.ctx.strokeStyle = "red";
+    this.ctx.lineWidth = 2;
+    this.ctx.stroke();
+  }
+
+  drawObjectFacingLeft(movableObject) {
+    this.ctx.translate(movableObject.x + movableObject.width, 0);
+    this.ctx.scale(-1, 1);
+    this.ctx.drawImage(movableObject.img, 0, movableObject.y, movableObject.width, movableObject.height);
   }
 }
