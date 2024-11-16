@@ -1,10 +1,4 @@
-import { Level } from "../models/level.class.js";
-import { Chicken } from "../game.js";
-import { Endboss } from "../game.js";
-import { Clouds } from "../game.js";
-import { Background } from "../game.js";
-
-export const level1 = new Level(
+const level1 = new Level(
   [new Chicken(), new Chicken(), new Chicken(), new Endboss],
   [new Clouds()],
   [

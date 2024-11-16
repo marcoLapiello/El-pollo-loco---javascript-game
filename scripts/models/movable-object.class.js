@@ -1,6 +1,4 @@
-// import { Bottle } from "./bottle.class.js";
-
-export class MovableObject {
+class MovableObject {
   x = 120;
   y = 300;
   img;
@@ -61,8 +59,9 @@ export class MovableObject {
   isInTheAir() {
     if (this instanceof Bottle) {
       return true;
+    } else {
+      return this.y < 190;
     }
-    return this.y < 190;
   }
 
   isOnTheGround() {
@@ -70,10 +69,7 @@ export class MovableObject {
   }
 
   isColliding(obj) {
-    return this.x + this.width > obj.x && 
-    this.y + this.height > obj.y && 
-    this.x < obj.x + obj.width && 
-    this.y < obj.y + obj.height;
+    return this.x + this.width > obj.x && this.y + this.height > obj.y && this.x < obj.x + obj.width && this.y < obj.y + obj.height;
   }
 
   getsHit() {
@@ -81,7 +77,7 @@ export class MovableObject {
     if (this.health < 0) {
       this.health = 0;
     } else {
-      this.lastHit = new Date().getTime(); 
+      this.lastHit = new Date().getTime();
     }
   }
 

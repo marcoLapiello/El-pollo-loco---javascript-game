@@ -1,9 +1,31 @@
-import { MovableObject } from "./movable-object.class.js";
-
-export class Character extends MovableObject {
+class Character extends MovableObject {
   y = 190;
   height = 270;
   width = 135;
+  IMAGES_IDLE = [
+    "Grafics/img/2_character_pepe/1_idle/idle/I-1.png",
+    "Grafics/img/2_character_pepe/1_idle/idle/I-2.png",
+    "Grafics/img/2_character_pepe/1_idle/idle/I-3.png",
+    "Grafics/img/2_character_pepe/1_idle/idle/I-4.png",
+    "Grafics/img/2_character_pepe/1_idle/idle/I-5.png",
+    "Grafics/img/2_character_pepe/1_idle/idle/I-6.png",
+    "Grafics/img/2_character_pepe/1_idle/idle/I-7.png",
+    "Grafics/img/2_character_pepe/1_idle/idle/I-8.png",
+    "Grafics/img/2_character_pepe/1_idle/idle/I-9.png",
+    "Grafics/img/2_character_pepe/1_idle/idle/I-10.png",
+  ];
+  IMAGES_SLEEP = [
+    "Grafics/img/2_character_pepe/1_idle/long_idle/I-11.png",
+    "Grafics/img/2_character_pepe/1_idle/long_idle/I-12.png",
+    "Grafics/img/2_character_pepe/1_idle/long_idle/I-13.png",
+    "Grafics/img/2_character_pepe/1_idle/long_idle/I-14.png",
+    "Grafics/img/2_character_pepe/1_idle/long_idle/I-15.png",
+    "Grafics/img/2_character_pepe/1_idle/long_idle/I-16.png",
+    "Grafics/img/2_character_pepe/1_idle/long_idle/I-17.png",
+    "Grafics/img/2_character_pepe/1_idle/long_idle/I-18.png",
+    "Grafics/img/2_character_pepe/1_idle/long_idle/I-19.png",
+    "Grafics/img/2_character_pepe/1_idle/long_idle/I-20.png",
+  ];
   IMAGES_WALKING = [
     "Grafics/img/2_character_pepe/2_walk/W-21.png",
     "Grafics/img/2_character_pepe/2_walk/W-22.png",
@@ -38,19 +60,21 @@ export class Character extends MovableObject {
     "Grafics/img/2_character_pepe/4_hurt/H-43.png",
   ];
   keyboard;
-  world;
   speedX = 3;
   jumpDuration = 670; // in ms
   walking_sound = new Audio("audio/running.wav");
 
-  constructor(world) {
-    super().loadImage("Grafics/img/2_character_pepe/2_walk/W-21.png");
+  constructor() {
+    super().loadImage(this.IMAGES_IDLE[0]);
+    this.loadImages(this.IMAGES_IDLE);
+    this.loadImages(this.IMAGES_SLEEP);
     this.loadImages(this.IMAGES_WALKING);
     this.loadImages(this.IMAGES_JUMPING);
     this.loadImages(this.IMAGES_DEAD);
     this.loadImages(this.IMAGES_HURT);
-    this.world = world;
+    this.keyboard = world.keyboard;
     this.applyGravity();
+    
     this.walk();
     this.jump();
   }
@@ -59,23 +83,25 @@ export class Character extends MovableObject {
     setInterval(() => {
       this.walking_sound.pause();
 
-      if (this.keyboard.RIGHT && this.x < this.world.level.LEVEL_END_X) {
+      if (this.keyboard.RIGHT && this.x < world.level.LEVEL_END_X) {
         this.moveRight();
         this.walking_sound.play();
       } else if (this.keyboard.LEFT && this.x > -100) {
         this.moveLeft();
         this.walking_sound.play();
       }
-      this.world.camera_x = -this.x + 100;
+      world.camera_x = -this.x + 100;
     }, 1000 / 60);
 
     setInterval(() => {
       if (this.isDead()) {
-        this.playAnimation(this.IMAGES_DEAD);
-      } else if (this.getsHurt()) {
-        this.playAnimation(this.IMAGES_HURT);
+        // this.playAnimation(this.IMAGES_DEAD);
+      } else if (this.getsHurt()) { 
+        // this.playAnimation(this.IMAGES_HURT)
+      } else if (this.isJumping()) {
+        this.playAnimation(this.IMAGES_JUMPING);
       } else {
-        if ((this.isOnTheGround() && this.keyboard.RIGHT) || (this.isOnTheGround() && this.keyboard.LEFT)) {
+        if (this.keyboard.RIGHT || this.keyboard.LEFT) {
           this.playAnimation(this.IMAGES_WALKING);
         }
       }
@@ -86,22 +112,22 @@ export class Character extends MovableObject {
     setInterval(() => {
       if (this.keyboard.UP && this.isOnTheGround()) {
         this.speedY = 20;
-        this.playJumpAnimation();
       }
     }, 1000 / 60);
   }
 
-  playJumpAnimation() {
-    const interval = this.jumpDuration / this.IMAGES_JUMPING.length; // Calcola l'intervallo per ogni frame
-    let currentFrame = 0;
 
-    const jumpAnimation = setInterval(() => {
-      if (currentFrame < this.IMAGES_JUMPING.length) {
-        this.img = this.imageCache[this.IMAGES_JUMPING[currentFrame]];
-        currentFrame++;
-      } else {
-        clearInterval(jumpAnimation);
-      }
-    }, interval);
-  }
+  // playJumpAnimation() {
+  //   const interval = this.jumpDuration / this.IMAGES_JUMPING.length; // Calcola l'intervallo per ogni frame
+  //   let currentFrame = 0;
+
+  //   const jumpAnimation = setInterval(() => {
+  //     if (currentFrame < this.IMAGES_JUMPING.length) {
+  //       this.img = this.imageCache[this.IMAGES_JUMPING[currentFrame]];
+  //       currentFrame++;
+  //     } else {
+  //       clearInterval(jumpAnimation);
+  //     }
+  //   }, interval);
+  // }
 }

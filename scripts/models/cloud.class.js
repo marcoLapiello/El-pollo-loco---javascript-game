@@ -1,6 +1,4 @@
-import { MovableObject } from "./movable-object.class.js";
-
-export class Clouds extends MovableObject {
+class Clouds extends MovableObject {
   y = 20;
   width = 500;
   height = 300;

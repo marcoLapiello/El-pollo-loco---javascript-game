@@ -1,4 +1,4 @@
-export class Level {
+class Level {
     enemies;
     clouds;
     background;
