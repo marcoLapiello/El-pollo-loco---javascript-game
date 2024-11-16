@@ -45,7 +45,7 @@ class MovableObject {
 
   applyGravity() {
     setInterval(() => {
-      if (this.isInTheAir() || this.speedY > 0) {
+      if (this.isJumping() || this.speedY > 0) {
         this.y -= this.speedY;
         this.speedY -= this.acceleration;
         if (this instanceof Character && this.y >= 190) {
@@ -56,12 +56,8 @@ class MovableObject {
     }, 1000 / 60);
   }
 
-  isInTheAir() {
-    if (this instanceof Bottle) {
-      return true;
-    } else {
-      return this.y < 190;
-    }
+  isJumping() {
+    return this.y < 190;
   }
 
   isOnTheGround() {

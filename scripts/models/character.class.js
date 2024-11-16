@@ -64,7 +64,7 @@ class Character extends MovableObject {
   jumpDuration = 670; // in ms
   walking_sound = new Audio("audio/running.wav");
 
-  constructor() {
+  constructor(keyboard) {
     super().loadImage(this.IMAGES_IDLE[0]);
     this.loadImages(this.IMAGES_IDLE);
     this.loadImages(this.IMAGES_SLEEP);
@@ -72,7 +72,7 @@ class Character extends MovableObject {
     this.loadImages(this.IMAGES_JUMPING);
     this.loadImages(this.IMAGES_DEAD);
     this.loadImages(this.IMAGES_HURT);
-    this.keyboard = world.keyboard;
+    this.keyboard = keyboard;
     this.applyGravity();
     
     this.walk();
@@ -97,7 +97,7 @@ class Character extends MovableObject {
       if (this.isDead()) {
         // this.playAnimation(this.IMAGES_DEAD);
       } else if (this.getsHurt()) { 
-        // this.playAnimation(this.IMAGES_HURT)
+        this.playAnimation(this.IMAGES_HURT)
       } else if (this.isJumping()) {
         this.playAnimation(this.IMAGES_JUMPING);
       } else {

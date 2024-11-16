@@ -1,5 +1,5 @@
 class World {
-  character;
+  character = new Character();
   // bottles = [];
   // bottlesOnTheGround = [];
   level = level1;
@@ -13,21 +13,23 @@ class World {
     this.canvas = canvas;
     this.keyboard = keyboard;
     
+    
+    
     this.character.keyboard = this.keyboard;
     // this.generateBottleOnTheGrounds(10);
     // this.healthBar = new StatusBars(this.ctx, this.character.health);
 
     this.draw();
     this.checkCollision();
-    // this.run();
+    this.run();
   }
 
-  // run() {
-  //   setInterval(() => {
-  //     // this.checkCollision();
-  //     this.handleThrowBottle();
-  //   }, 200);
-  // }
+  run() {
+    setInterval(() => {
+      this.checkCollision();
+      // this.handleThrowBottle();
+    }, 200);
+  }
 
   // handleThrowBottle() {
   //   if (this.keyboard.B && !this.character.facingLeft) {
@@ -36,14 +38,14 @@ class World {
   //   }
   // }
 
-  // checkCollision() {
-  //   this.level.enemies.forEach((enemy) => {
-  //     if (this.character.isColliding(enemy)) {
-  //       this.character.getsHit();
-  //       this.healthBar.update(this.character.health);
-  //     }
-  //   });
-  // }
+  checkCollision() {
+    this.level.enemies.forEach((enemy) => {
+      if (this.character.isColliding(enemy)) {
+        this.character.getsHit();
+        // this.healthBar.update(this.character.health);
+      }
+    });
+  }
 
   // generateBottleOnTheGrounds(numberOfBottles) {
   //   for (let i = 0; i < numberOfBottles; i++) {
@@ -68,7 +70,7 @@ class World {
 
     this.ctx.translate(-this.camera_x, 0);
 
-    this.healthBar.drawHealthBar();
+    // this.healthBar.drawHealthBar();
 
     requestAnimationFrame(() => {
       this.draw();
