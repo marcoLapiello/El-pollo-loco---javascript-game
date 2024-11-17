@@ -31,16 +31,17 @@ class StatusBars extends DrawableObjects {
     "Grafics/img/7_statusbars/1_statusbar/1_statusbar_coin/orange/100.png",
   ];
 
-  constructor(type, y) {
+  constructor(type, y, percentage) {
     super();
     this.x = 20;
     this.y = y;
     this.width = 180;
-    this.height = 50
+    this.height = 50;
+    this.percentage = percentage;
     this.loadImages(this.healthBarImages);
     this.loadImages(this.bottlesBarImages);
     this.loadImages(this.coinsBarImages);
-    this.setStatusBars(type, 100);
+    this.setStatusBars(type, this.percentage);
     
     console.log();
     
