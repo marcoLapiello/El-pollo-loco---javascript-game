@@ -12,15 +12,40 @@ class StatusBars extends DrawableObjects {
     "Grafics/img/7_statusbars/1_statusbar/2_statusbar_health/blue/80.png",
     "Grafics/img/7_statusbars/1_statusbar/2_statusbar_health/blue/100.png",
   ];
+  bottlesBarImages = [
+    "Grafics/img/7_statusbars/1_statusbar/3_statusbar_bottle/green/0.png",
+    "Grafics/img/7_statusbars/1_statusbar/3_statusbar_bottle/green/20.png",
+    "Grafics/img/7_statusbars/1_statusbar/3_statusbar_bottle/green/40.png",
+    "Grafics/img/7_statusbars/1_statusbar/3_statusbar_bottle/green/60.png",
+    "Grafics/img/7_statusbars/1_statusbar/3_statusbar_bottle/green/80.png",
+    "Grafics/img/7_statusbars/1_statusbar/3_statusbar_bottle/green/100.png"
+  ];
+  coinsBarImages = [
+    "Grafics/img/7_statusbars/1_statusbar/1_statusbar_coin/orange/0.png",
+    "Grafics/img/7_statusbars/1_statusbar/1_statusbar_coin/orange/20.png",
+    "Grafics/img/7_statusbars/1_statusbar/1_statusbar_coin/orange/40.png",
+    "Grafics/img/7_statusbars/1_statusbar/1_statusbar_coin/orange/60.png",
+    "Grafics/img/7_statusbars/1_statusbar/1_statusbar_coin/orange/80.png",
+    "Grafics/img/7_statusbars/1_statusbar/1_statusbar_coin/orange/100.png",
+  ];
 
-  constructor() {
+  constructor(type) {
     super();
     this.x = 20;
     this.y = 0;
     this.width = 200;
     this.height = 60
     this.loadImages(this.healthBarImages);
-    this.setPercentage(100);
+    this.setStatusBars(type);
+    console.log(type);
+    
+  }
+
+  setStatusBars(type) {
+    if (type === "HEALTH") {
+      this.setPercentage(100);
+    }
+    
   }
 
   setPercentage(percentage) {

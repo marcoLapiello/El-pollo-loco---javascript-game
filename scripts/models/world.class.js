@@ -7,7 +7,7 @@ class World {
   ctx;
   keyboard;
   camera_x = 0;
-  statusBar = new StatusBars();
+  healthBar = new StatusBars("HEALTH");
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -36,7 +36,7 @@ class World {
     this.level.enemies.forEach((enemy) => {
       if (this.character.isColliding(enemy)) {
         this.character.getsHit();
-        this.statusBar.setPercentage(this.character.health);
+        this.healthBar.setPercentage(this.character.health);
       }
     });
   }
@@ -62,7 +62,7 @@ class World {
     this.addToMap(this.character);
 
     this.ctx.translate(-this.camera_x, 0);
-    this.addToMap(this.statusBar);
+    this.addToMap(this.healthBar);
     // this.healthBar.drawHealthBar();
 
     requestAnimationFrame(() => {
