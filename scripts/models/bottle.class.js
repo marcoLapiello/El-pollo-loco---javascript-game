@@ -1,4 +1,5 @@
 class Bottle extends MovableObject {
+  
   constructor(initialX, initialY) {
     super();
     this.loadImage("Grafics/img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png");

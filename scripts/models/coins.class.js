@@ -1,7 +1,10 @@
 class Coins extends DrawableObjects {
-    IMAGES = [
-        "Grafics/img/8_coin/coin_2.png"
-    ]
+  offsetX = 33;
+  offsetY = 33;
+  widthCorrection = 65;
+  heightCorrection = 65;
+
+  IMAGES = ["Grafics/img/8_coin/coin_2.png"];
 
   constructor(x, y) {
     super().loadImage(this.IMAGES[0]);

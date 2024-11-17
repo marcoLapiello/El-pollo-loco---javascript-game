@@ -151,7 +151,7 @@ class World {
 
   drawFrame(drawableObject) {
     this.ctx.beginPath();
-    this.ctx.rect(drawableObject.x, drawableObject.y, drawableObject.width, drawableObject.height);
+    this.ctx.rect(drawableObject.x + drawableObject.offsetX, drawableObject.y + drawableObject.offsetY, drawableObject.width - drawableObject.widthCorrection, drawableObject.height - drawableObject.heightCorrection);
     this.ctx.strokeStyle = "red";
     this.ctx.lineWidth = 2;
     this.ctx.stroke();

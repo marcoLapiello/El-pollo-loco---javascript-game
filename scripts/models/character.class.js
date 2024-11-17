@@ -2,6 +2,10 @@ class Character extends MovableObject {
   y = 190;
   height = 270;
   width = 135;
+  offsetX = 20;
+  offsetY = 100;
+  widthCorrection = 60;
+  heightCorrection = 110;
   IMAGES_IDLE = [
     "Grafics/img/2_character_pepe/1_idle/idle/I-1.png",
     "Grafics/img/2_character_pepe/1_idle/idle/I-2.png",
