@@ -3,7 +3,9 @@ class StatusBars extends DrawableObjects {
  
   // maxHealth = 100;
   // currentHealth;
+  world;
   percentage;
+  // imgArray;
   healthBarImages = [
     "Grafics/img/7_statusbars/1_statusbar/2_statusbar_health/blue/0.png",
     "Grafics/img/7_statusbars/1_statusbar/2_statusbar_health/blue/20.png",
@@ -29,28 +31,43 @@ class StatusBars extends DrawableObjects {
     "Grafics/img/7_statusbars/1_statusbar/1_statusbar_coin/orange/100.png",
   ];
 
-  constructor(type) {
+  constructor(type, y) {
     super();
     this.x = 20;
-    this.y = 0;
-    this.width = 200;
-    this.height = 60
+    this.y = y;
+    this.width = 180;
+    this.height = 50
     this.loadImages(this.healthBarImages);
-    this.setStatusBars(type);
-    console.log(type);
+    this.loadImages(this.bottlesBarImages);
+    this.loadImages(this.coinsBarImages);
+    this.setStatusBars(type, 100);
+    
+    console.log();
     
   }
 
-  setStatusBars(type) {
+  setStatusBars(type, percentage) {
     if (type === "HEALTH") {
-      this.setPercentage(100);
+      this.imgArray = this.healthBarImages;
+      this.percentage = percentage;
+      // console.log(this.percentage);
+      this.setPercentage(this.percentage, this.imgArray);
+    } else if (type === "BOTTLES") {
+      this.imgArray = this.bottlesBarImages;
+      this.percentage = percentage;
+      this.setPercentage(this.percentage, this.imgArray);
+    } else if (type === "COINS") {
+      this.imgArray = this.coinsBarImages;
+      this.percentage = percentage;
+      this.setPercentage(this.percentage, this.imgArray);
     }
     
   }
 
-  setPercentage(percentage) {
+  setPercentage(percentage, imgArray) {
     this.percentage = percentage;
-    let path = this.healthBarImages[this.findImgIndex()];
+    this.imgArray = imgArray;
+    let path = this.imgArray[this.findImgIndex()];
     this.img = this.imageCache[path];
   }
 

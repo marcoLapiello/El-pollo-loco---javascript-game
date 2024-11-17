@@ -1,13 +1,16 @@
 class World {
   character = new Character();
   bottles = [];
+  ownedBottles = 0;
   // bottlesOnTheGround = [];
   level = level1;
   canvas;
   ctx;
   keyboard;
   camera_x = 0;
-  healthBar = new StatusBars("HEALTH");
+  healthBar = new StatusBars("HEALTH", 0);
+  bottlesBar = new StatusBars("BOTTLES", 40);
+  coinsBar = new StatusBars("COINS", 80);
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -22,6 +25,9 @@ class World {
   setWorld() {
     // currently just needed for the keyboard in character
     this.character.world = this;
+    this.healthBar.world = this;
+    console.log(this.healthBar.world.character.health);
+    
     
   }
 
@@ -36,14 +42,18 @@ class World {
     this.level.enemies.forEach((enemy) => {
       if (this.character.isColliding(enemy)) {
         this.character.getsHit();
-        this.healthBar.setPercentage(this.character.health);
+        this.healthBar.setStatusBars("HEALTH", this.healthBar.world.character.health);
       }
     });
   }
 
   handleThrowBottle() {
-    if (this.keyboard.B && !this.character.facingLeft) {
+    if (this.keyboard.B && !this.character.facingLeft && this.ownedBottles > 0) {
       let bottle = new Bottle(this.character.x + 80, this.character.y + 140);
+      this.ownedBottles--;
+      console.log(this.ownedBottles);
+      
+      this.bottlesBar.setStatusBars("BOTTLES", this.ownedBottles)
       this.bottles.push(bottle);
     }
   }
@@ -63,7 +73,9 @@ class World {
 
     this.ctx.translate(-this.camera_x, 0);
     this.addToMap(this.healthBar);
-    // this.healthBar.drawHealthBar();
+    this.addToMap(this.bottlesBar);
+    this.addToMap(this.coinsBar);
+    
 
     requestAnimationFrame(() => {
       this.draw();
