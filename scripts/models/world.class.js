@@ -3,8 +3,9 @@ class World {
   bottles = [];
   ownedBottles = 0; // Normally set a t Zero and increases as the bottle get collected
   ownedBottlesPercent = 0; // normally set at Zero and increases as the bottle get collected
-  ownedCoins = 61; // Normally set a t Zero and increases as the coins get collected
+  ownedCoins = 0; // Normally set a t Zero and increases as the coins get collected
   bottlesOnTheGround = [];
+  coinsAroundTheWorld = [];
   level = level1;
   canvas;
   ctx;
@@ -19,6 +20,7 @@ class World {
     this.canvas = canvas;
     this.keyboard = keyboard;
     this.generateBottleOnTheGrounds(20);
+    this.generateCoinsAroundTheWorld(40);
     this.draw();
     this.setWorld();
     this.run();
@@ -38,11 +40,21 @@ class World {
     }
   }
 
+  generateCoinsAroundTheWorld(numberOfCoins) {
+    for (let i = 0; i < numberOfCoins; i++) {
+      let x = 200 + Math.random() * 2000;
+      let y = 100 + Math.random() * 300;
+      let coin = new Coins(x, y);
+      this.coinsAroundTheWorld.push(coin);
+    }
+  }
+
   run() {
     setInterval(() => {
       this.checkCollision();
       this.handleThrowBottle();
       this.checkCollectBottle();
+      this.checkCollectCoins();
     }, 200);
   }
 
@@ -51,10 +63,19 @@ class World {
       if (this.character.isColliding(bottle) && this.ownedBottles < 10) {
         this.ownedBottles++;
         this.ownedBottlesPercent = this.ownedBottles * 10;
-        console.log(this.ownedBottles);
-        console.log(this.ownedBottlesPercent);
         this.bottlesBar.setStatusBars("BOTTLES", this.ownedBottlesPercent);
         return false; // Remove bottle from the array
+      }
+      return true;
+    });
+  }
+
+  checkCollectCoins() {
+    this.coinsAroundTheWorld = this.coinsAroundTheWorld.filter((coin) => {
+      if (this.character.isColliding(coin) && this.ownedCoins < 100) {
+        this.ownedCoins++;
+        this.coinsBar.setStatusBars("COINS", this.ownedCoins);
+        return false; // Remove coin from the array
       }
       return true;
     });
@@ -89,6 +110,7 @@ class World {
     this.addObjectToMap(this.level.background);
     this.addObjectToMap(this.level.clouds);
     this.addObjectToMap(this.bottlesOnTheGround);
+    this.addObjectToMap(this.coinsAroundTheWorld);
     this.addObjectToMap(this.level.enemies);
     this.addObjectToMap(this.bottles);
     this.addToMap(this.character);
@@ -112,7 +134,12 @@ class World {
   addToMap(movableObject) {
     this.ctx.save();
 
-    if (movableObject instanceof BottlesOnTheGround || movableObject instanceof Character || movableObject instanceof Chicken || movableObject instanceof Endboss) {
+    if (
+      movableObject instanceof BottlesOnTheGround ||
+      movableObject instanceof Character ||
+      movableObject instanceof Chicken ||
+      movableObject instanceof Endboss
+    ) {
       this.drawFrame(movableObject);
     }
 
@@ -138,6 +165,4 @@ class World {
     this.ctx.scale(-1, 1);
     this.ctx.drawImage(movableObject.img, 0, movableObject.y, movableObject.width, movableObject.height);
   }
-
-  
 }

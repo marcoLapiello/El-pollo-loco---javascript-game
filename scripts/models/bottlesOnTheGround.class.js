@@ -1,4 +1,4 @@
-class BottlesOnTheGround extends MovableObject {
+class BottlesOnTheGround extends DrawableObjects {
     IMAGES = [
         "Grafics/img/6_salsa_bottle/1_salsa_bottle_on_ground.png",
         "Grafics/img/6_salsa_bottle/2_salsa_bottle_on_ground.png"
