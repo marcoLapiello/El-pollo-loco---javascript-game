@@ -1,6 +1,6 @@
 class World {
   character = new Character();
-  // bottles = [];
+  bottles = [];
   // bottlesOnTheGround = [];
   level = level1;
   canvas;
@@ -19,23 +19,18 @@ class World {
     this.run();
   }
 
-  setWorld() {// currently just needed for the keyboard in character
-    this.character.world = this; 
+  setWorld() {
+    // currently just needed for the keyboard in character
+    this.character.world = this;
+    
   }
 
   run() {
     setInterval(() => {
       this.checkCollision();
-      // this.handleThrowBottle();
+      this.handleThrowBottle();
     }, 200);
   }
-
-  // handleThrowBottle() {
-  //   if (this.keyboard.B && !this.character.facingLeft) {
-  //     let bottle = new Bottle(this.character.x + 80, this.character.y + 140);
-  //     this.bottles.push(bottle);
-  //   }
-  // }
 
   checkCollision() {
     this.level.enemies.forEach((enemy) => {
@@ -46,14 +41,13 @@ class World {
     });
   }
 
-  // generateBottleOnTheGrounds(numberOfBottles) {
-  //   for (let i = 0; i < numberOfBottles; i++) {
-  //     let x = Math.random() * 2000;
-  //     let y = 390;
-  //     let bottleOnTheGround = new BottlesOnTheGround(x, y);
-  //     this.bottlesOnTheGround.push(bottleOnTheGround);
-  //   }
-  // }
+  handleThrowBottle() {
+    if (this.keyboard.B && !this.character.facingLeft) {
+      let bottle = new Bottle(this.character.x + 80, this.character.y + 140);
+      this.bottles.push(bottle);
+    }
+  }
+
 
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -64,9 +58,8 @@ class World {
     this.addObjectToMap(this.level.clouds);
     // this.addObjectToMap(this.bottlesOnTheGround);
     this.addObjectToMap(this.level.enemies);
-    // this.addObjectToMap(this.bottles);
+    this.addObjectToMap(this.bottles);
     this.addToMap(this.character);
-    
 
     this.ctx.translate(-this.camera_x, 0);
     this.addToMap(this.statusBar);
@@ -112,4 +105,14 @@ class World {
     this.ctx.scale(-1, 1);
     this.ctx.drawImage(movableObject.img, 0, movableObject.y, movableObject.width, movableObject.height);
   }
+
+  
+  // generateBottleOnTheGrounds(numberOfBottles) {
+  //   for (let i = 0; i < numberOfBottles; i++) {
+  //     let x = Math.random() * 2000;
+  //     let y = 390;
+  //     let bottleOnTheGround = new BottlesOnTheGround(x, y);
+  //     this.bottlesOnTheGround.push(bottleOnTheGround);
+  //   }
+  // }
 }

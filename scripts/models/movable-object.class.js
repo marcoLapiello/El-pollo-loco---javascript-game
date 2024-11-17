@@ -1,8 +1,7 @@
 class MovableObject extends DrawableObjects {
-  
-  speedX = 0.5;
   facingLeft = false;
-  speedY = 0;
+  speedX;
+  speedY;
   acceleration = 1;
   health = 100;
   lastHit = 0;
@@ -30,7 +29,7 @@ class MovableObject extends DrawableObjects {
 
   applyGravity() {
     setInterval(() => {
-      if (this.isJumping() || this.speedY > 0) {
+      if (this.isInTheAir() || this.speedY > 0) {
         this.y -= this.speedY;
         this.speedY -= this.acceleration;
         if (this instanceof Character && this.y >= 190) {
@@ -41,8 +40,13 @@ class MovableObject extends DrawableObjects {
     }, 1000 / 60);
   }
 
-  isJumping() {
-    return this.y < 190;
+  isInTheAir() {
+    if (this instanceof Bottle) {
+      return true;
+    } else {
+      return this.y < 190;
+    }
+    
   }
 
   isOnTheGround() {

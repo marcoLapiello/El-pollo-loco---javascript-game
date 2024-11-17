@@ -108,7 +108,7 @@ class Character extends MovableObject {
         this.playAnimation(this.IMAGES_DEAD);
       } else if (this.getsHurt()) {
         this.playAnimation(this.IMAGES_HURT)
-      } else if (this.isJumping()) {
+      } else if (this.isInTheAir()) {
         this.playAnimation(this.IMAGES_JUMPING);
       } else {
         if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
