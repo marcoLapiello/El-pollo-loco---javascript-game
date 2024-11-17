@@ -7,25 +7,20 @@ class World {
   ctx;
   keyboard;
   camera_x = 0;
+  statusBar = new StatusBars();
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
     this.keyboard = keyboard;
-    
-    
-    
-    // this.character.keyboard = this.keyboard;
     // this.generateBottleOnTheGrounds(10);
-    // this.healthBar = new StatusBars(this.ctx, this.character.health);
-
     this.draw();
     this.setWorld();
     this.run();
   }
 
-  setWorld() {
-    this.character.world = this;
+  setWorld() {// currently just needed for the keyboard in character
+    this.character.world = this; 
   }
 
   run() {
@@ -71,9 +66,10 @@ class World {
     this.addObjectToMap(this.level.enemies);
     // this.addObjectToMap(this.bottles);
     this.addToMap(this.character);
+    
 
     this.ctx.translate(-this.camera_x, 0);
-
+    this.addToMap(this.statusBar);
     // this.healthBar.drawHealthBar();
 
     requestAnimationFrame(() => {

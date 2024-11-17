@@ -1,9 +1,6 @@
 class StatusBars extends DrawableObjects {
   // ctx;
-  // x = 20;
-  // y = 10;
-  // width = 200;
-  // height = 50;
+ 
   // maxHealth = 100;
   // currentHealth;
   percentage;
@@ -17,7 +14,13 @@ class StatusBars extends DrawableObjects {
   ];
 
   constructor() {
+    super();
+    this.x = 20;
+    this.y = 0;
+    this.width = 200;
+    this.height = 60
     this.loadImages(this.healthBarImages);
+    this.setPercentage(100);
   }
 
   setPercentage(percentage) {
