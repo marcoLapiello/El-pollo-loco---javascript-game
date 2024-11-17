@@ -104,9 +104,7 @@ class World {
 
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
     this.ctx.translate(this.camera_x, 0);
-
     this.addObjectToMap(this.level.background);
     this.addObjectToMap(this.level.clouds);
     this.addObjectToMap(this.bottlesOnTheGround);
@@ -114,7 +112,6 @@ class World {
     this.addObjectToMap(this.level.enemies);
     this.addObjectToMap(this.bottles);
     this.addToMap(this.character);
-
     this.ctx.translate(-this.camera_x, 0);
     this.addToMap(this.healthBar);
     this.addToMap(this.bottlesBar);
@@ -131,38 +128,38 @@ class World {
     });
   }
 
-  addToMap(movableObject) {
+  addToMap(drawableObject) {
     this.ctx.save();
-
     if (
-      movableObject instanceof BottlesOnTheGround ||
-      movableObject instanceof Character ||
-      movableObject instanceof Chicken ||
-      movableObject instanceof Endboss
+      drawableObject instanceof Coins ||
+      drawableObject instanceof BottlesOnTheGround ||
+      drawableObject instanceof Character ||
+      drawableObject instanceof Chicken ||
+      drawableObject instanceof Endboss
     ) {
-      this.drawFrame(movableObject);
+      this.drawFrame(drawableObject);
     }
 
-    if (movableObject.facingLeft) {
-      this.drawObjectFacingLeft(movableObject);
+    if (drawableObject.facingLeft) {
+      this.drawObjectFacingLeft(drawableObject);
     } else {
-      this.ctx.drawImage(movableObject.img, movableObject.x, movableObject.y, movableObject.width, movableObject.height);
+      this.ctx.drawImage(drawableObject.img, drawableObject.x, drawableObject.y, drawableObject.width, drawableObject.height);
     }
 
     this.ctx.restore();
   }
 
-  drawFrame(movableObject) {
+  drawFrame(drawableObject) {
     this.ctx.beginPath();
-    this.ctx.rect(movableObject.x, movableObject.y, movableObject.width, movableObject.height);
+    this.ctx.rect(drawableObject.x, drawableObject.y, drawableObject.width, drawableObject.height);
     this.ctx.strokeStyle = "red";
     this.ctx.lineWidth = 2;
     this.ctx.stroke();
   }
 
-  drawObjectFacingLeft(movableObject) {
-    this.ctx.translate(movableObject.x + movableObject.width, 0);
+  drawObjectFacingLeft(drawableObject) {
+    this.ctx.translate(drawableObject.x + drawableObject.width, 0);
     this.ctx.scale(-1, 1);
-    this.ctx.drawImage(movableObject.img, 0, movableObject.y, movableObject.width, movableObject.height);
+    this.ctx.drawImage(drawableObject.img, 0, drawableObject.y, drawableObject.width, drawableObject.height);
   }
 }
