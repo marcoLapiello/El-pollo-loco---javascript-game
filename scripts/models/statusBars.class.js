@@ -51,7 +51,6 @@ class StatusBars extends DrawableObjects {
     if (type === "HEALTH") {
       this.imgArray = this.healthBarImages;
       this.percentage = percentage;
-      // console.log(this.percentage);
       this.setPercentage(this.percentage, this.imgArray);
     } else if (type === "BOTTLES") {
       this.imgArray = this.bottlesBarImages;

@@ -2,8 +2,8 @@ class World {
   character = new Character();
   bottles = [];
   ownedBottles = 0; // Normally set a t Zero and increases as the bottle get collected
-  ownedBottlesPercent = 0 // normally set at Zero and increases as the bottle get collected
-  ownedCoins = 61; // Normally set a t Zero and increases as the bottle get collected
+  ownedBottlesPercent = 0; // normally set at Zero and increases as the bottle get collected
+  ownedCoins = 61; // Normally set a t Zero and increases as the coins get collected
   bottlesOnTheGround = [];
   level = level1;
   canvas;
@@ -18,7 +18,7 @@ class World {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
     this.keyboard = keyboard;
-    this.generateBottleOnTheGrounds(10);
+    this.generateBottleOnTheGrounds(20);
     this.draw();
     this.setWorld();
     this.run();
@@ -27,6 +27,15 @@ class World {
   setWorld() {
     // currently just needed for the keyboard in character
     this.character.world = this;
+  }
+
+  generateBottleOnTheGrounds(numberOfBottles) {
+    for (let i = 0; i < numberOfBottles; i++) {
+      let x = 200 + Math.random() * 2000;
+      let y = 390;
+      let bottleOnTheGround = new BottlesOnTheGround(x, y);
+      this.bottlesOnTheGround.push(bottleOnTheGround);
+    }
   }
 
   run() {
@@ -38,15 +47,16 @@ class World {
   }
 
   checkCollectBottle() {
-    this.bottlesOnTheGround.forEach((bottle) => {
+    this.bottlesOnTheGround = this.bottlesOnTheGround.filter((bottle) => {
       if (this.character.isColliding(bottle) && this.ownedBottles < 10) {
         this.ownedBottles++;
         this.ownedBottlesPercent = this.ownedBottles * 10;
         console.log(this.ownedBottles);
         console.log(this.ownedBottlesPercent);
-        
-        
+        this.bottlesBar.setStatusBars("BOTTLES", this.ownedBottlesPercent);
+        return false; // Remove bottle from the array
       }
+      return true;
     });
   }
 
@@ -66,11 +76,10 @@ class World {
       this.ownedBottlesPercent = this.ownedBottles * 10;
       console.log(this.ownedBottles);
       console.log(this.ownedBottlesPercent);
-      this.bottlesBar.setStatusBars("BOTTLES", this.ownedBottlesPercent)
+      this.bottlesBar.setStatusBars("BOTTLES", this.ownedBottlesPercent);
       this.bottles.push(bottle);
     }
   }
-
 
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -88,7 +97,6 @@ class World {
     this.addToMap(this.healthBar);
     this.addToMap(this.bottlesBar);
     this.addToMap(this.coinsBar);
-    
 
     requestAnimationFrame(() => {
       this.draw();
@@ -104,7 +112,7 @@ class World {
   addToMap(movableObject) {
     this.ctx.save();
 
-    if (movableObject instanceof Character || movableObject instanceof Chicken || movableObject instanceof Endboss) {
+    if (movableObject instanceof BottlesOnTheGround || movableObject instanceof Character || movableObject instanceof Chicken || movableObject instanceof Endboss) {
       this.drawFrame(movableObject);
     }
 
@@ -132,12 +140,4 @@ class World {
   }
 
   
-  generateBottleOnTheGrounds(numberOfBottles) {
-    for (let i = 0; i < numberOfBottles; i++) {
-      let x = 200 + Math.random() * 2000;
-      let y = 390;
-      let bottleOnTheGround = new BottlesOnTheGround(x, y);
-      this.bottlesOnTheGround.push(bottleOnTheGround);
-    }
-  }
 }
