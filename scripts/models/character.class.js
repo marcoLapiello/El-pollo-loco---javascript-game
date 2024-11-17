@@ -75,11 +75,11 @@ class Character extends MovableObject {
     this.keyboard = keyboard;
     this.applyGravity();
 
-    this.walk();
+    this.animate();
     // this.jump();
   }
 
-  walk() {
+  animate() {
     setInterval(() => {
       this.walking_sound.pause();
 
@@ -101,13 +101,11 @@ class Character extends MovableObject {
     }, 1000 / 60);
 
     setInterval(() => {
-      // if (this.isDead()) {
-      //   // this.playAnimation(this.IMAGES_DEAD);
-      // } else if (this.getsHurt()) {
-      //   this.playAnimation(this.IMAGES_HURT)
-      // } else
-
-      if (this.isJumping()) {
+      if (this.isDead()) {
+        this.playAnimation(this.IMAGES_DEAD);
+      } else if (this.getsHurt()) {
+        this.playAnimation(this.IMAGES_HURT)
+      } else if (this.isJumping()) {
         this.playAnimation(this.IMAGES_JUMPING);
       } else {
         if (this.keyboard.RIGHT || this.keyboard.LEFT) {
