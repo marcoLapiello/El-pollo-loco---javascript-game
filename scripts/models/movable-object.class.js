@@ -43,6 +43,10 @@ class MovableObject {
     this.facingLeft = true;
   }
 
+  jump() {
+    this.speedY = 20;
+  }
+
   applyGravity() {
     setInterval(() => {
       if (this.isJumping() || this.speedY > 0) {
