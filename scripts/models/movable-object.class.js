@@ -1,9 +1,5 @@
-class MovableObject {
-  x = 120;
-  y = 300;
-  img;
-  height = 150;
-  width = 100;
+class MovableObject extends DrawableObjects {
+  
   speedX = 0.5;
   facingLeft = false;
   imageCache = {};
@@ -12,19 +8,6 @@ class MovableObject {
   acceleration = 1;
   health = 100;
   lastHit = 0;
-
-  loadImage(path) {
-    this.img = new Image();
-    this.img.src = path;
-  }
-
-  loadImages(imgArray) {
-    imgArray.forEach((path) => {
-      let img = new Image();
-      img.src = path;
-      this.imageCache[path] = img;
-    });
-  }
 
   playAnimation(imgArray) {
     let index = this.currentImageIndex % imgArray.length;
@@ -84,7 +67,7 @@ class MovableObject {
   getsHurt() {
     let timePassed = new Date().getTime() - this.lastHit; // Difference in ms
     timePassed = timePassed / 1000; // Difference in s
-    return timePassed < 1;
+    return timePassed < 0.7;
   }
 
   isDead() {

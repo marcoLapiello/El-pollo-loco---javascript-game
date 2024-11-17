@@ -1,6 +1,4 @@
-import { MovableObject } from "./movable-object.class.js";
-
-export class StatusBars extends MovableObject {
+class StatusBars extends MovableObject {
   ctx;
   x = 20;
   y = 10;
