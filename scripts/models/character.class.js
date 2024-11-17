@@ -59,7 +59,8 @@ class Character extends MovableObject {
     "Grafics/img/2_character_pepe/4_hurt/H-42.png",
     "Grafics/img/2_character_pepe/4_hurt/H-43.png",
   ];
-  keyboard;
+  // keyboard;
+  world;
   speedX = 3;
   jumpDuration = 670; // in ms
   walking_sound = new Audio("audio/running.wav");
@@ -72,28 +73,30 @@ class Character extends MovableObject {
     this.loadImages(this.IMAGES_JUMPING);
     this.loadImages(this.IMAGES_DEAD);
     this.loadImages(this.IMAGES_HURT);
-    this.keyboard = keyboard;
+    // this.keyboard = keyboard;
     this.applyGravity();
 
     this.animate();
     // this.jump();
   }
+  
+  
 
   animate() {
     setInterval(() => {
       this.walking_sound.pause();
 
-      if (this.keyboard.RIGHT && this.x < world.level.LEVEL_END_X) {
+      if (this.world.keyboard.RIGHT && this.x < world.level.LEVEL_END_X) {
         this.moveRight();
         this.walking_sound.play();
       }
 
-      if (this.keyboard.LEFT && this.x > -100) {
+      if (this.world.keyboard.LEFT && this.x > -100) {
         this.moveLeft();
         this.walking_sound.play();
       }
 
-      if (this.keyboard.SPACE && this.isOnTheGround()) {
+      if (this.world.keyboard.SPACE && this.isOnTheGround()) {
         this.jump();
       }
 
@@ -108,7 +111,7 @@ class Character extends MovableObject {
       } else if (this.isJumping()) {
         this.playAnimation(this.IMAGES_JUMPING);
       } else {
-        if (this.keyboard.RIGHT || this.keyboard.LEFT) {
+        if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
           this.playAnimation(this.IMAGES_WALKING);
         }
       }

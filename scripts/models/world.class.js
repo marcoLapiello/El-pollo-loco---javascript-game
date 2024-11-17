@@ -15,13 +15,17 @@ class World {
     
     
     
-    this.character.keyboard = this.keyboard;
+    // this.character.keyboard = this.keyboard;
     // this.generateBottleOnTheGrounds(10);
     // this.healthBar = new StatusBars(this.ctx, this.character.health);
 
     this.draw();
-    this.checkCollision();
+    this.setWorld();
     this.run();
+  }
+
+  setWorld() {
+    this.character.world = this;
   }
 
   run() {
