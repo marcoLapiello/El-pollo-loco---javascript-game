@@ -1,5 +1,10 @@
 class World {
   character = new Character();
+  level = level1;
+  canvas;
+  ctx;
+  keyboard;
+  camera_x = 0;
   bottles = [];
   ownedBottles = 0; // Normally set a t Zero and increases as the bottle get collected
   ownedBottlesPercent = 0; // normally set at Zero and increases as the bottle get collected
@@ -7,11 +12,6 @@ class World {
   ownedCoinsPercent = 0; // Normally set a t Zero and increases as the coins get collected
   bottlesOnTheGround = [];
   coinsAroundTheWorld = [];
-  level = level1;
-  canvas;
-  ctx;
-  keyboard;
-  camera_x = 0;
   healthBar = new StatusBars("HEALTH", 0, this.character.health);
   bottlesBar = new StatusBars("BOTTLES", 40, this.ownedBottles);
   coinsBar = new StatusBars("COINS", 80, this.ownedCoins);
@@ -56,7 +56,7 @@ class World {
       this.handleThrowBottle();
       this.checkCollectBottle();
       this.checkCollectCoins();
-      this.killChicken();
+      this.killChickenJumping();
     }, 50);
   }
 
@@ -103,7 +103,7 @@ class World {
     }
   }
 
-  killChicken() {
+  killChickenJumping() {
     this.level.enemies = this.level.enemies.filter((enemy) => {
       if (this.character.isInTheAir() && this.character.isColliding(enemy) && !(enemy instanceof Endboss)) {
         return false; // Remove this exact (enemy) from the array if it s a chicken
@@ -145,7 +145,7 @@ class World {
     //   drawableObject instanceof BottlesOnTheGround ||
     //   drawableObject instanceof Character ||
     //   drawableObject instanceof Chicken ||
-    //   drawableObject instanceof Endboss
+    //   drawableObject instanceof Bottle
     // ) {
     //   this.drawFrame(drawableObject);
     // }
