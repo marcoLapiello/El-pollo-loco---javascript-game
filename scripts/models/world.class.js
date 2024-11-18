@@ -86,7 +86,7 @@ class World {
 
   checkCollision() {
     this.level.enemies.forEach((enemy) => {
-      if (this.character.isColliding(enemy) && !this.character.isInTheAir() && this.level.enemies.id !== Endboss) {
+      if (this.character.isColliding(enemy) && !this.character.isInTheAir()) {
         this.character.getsHit();
         this.healthBar.setStatusBars("HEALTH", this.character.health);
       }
@@ -105,12 +105,8 @@ class World {
 
   killChicken() {
     this.level.enemies = this.level.enemies.filter((enemy) => {
-      if (this.character.isInTheAir() && this.character.isColliding(enemy)) {
-        console.log("Character is jumping");
-        console.log("Character is colliding with", enemy);
-        
-        
-        return false; // Remove bottle from the array
+      if (this.character.isInTheAir() && this.character.isColliding(enemy) && !(enemy instanceof Endboss)) {
+        return false; // Remove this exact (enemy) from the array if it s a chicken
       }
       return true;
     });
