@@ -85,4 +85,5 @@ class MovableObject extends DrawableObjects {
   isDead() {
     return this.health == 0;
   }
+
 }

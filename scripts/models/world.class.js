@@ -56,7 +56,8 @@ class World {
       this.handleThrowBottle();
       this.checkCollectBottle();
       this.checkCollectCoins();
-    }, 200);
+      this.killChicken();
+    }, 50);
   }
 
   checkCollectBottle() {
@@ -85,7 +86,7 @@ class World {
 
   checkCollision() {
     this.level.enemies.forEach((enemy) => {
-      if (this.character.isColliding(enemy)) {
+      if (this.character.isColliding(enemy) && !this.character.isInTheAir() && this.level.enemies.id !== Endboss) {
         this.character.getsHit();
         this.healthBar.setStatusBars("HEALTH", this.character.health);
       }
@@ -97,11 +98,22 @@ class World {
       let bottle = new Bottle(this.character.x + 80, this.character.y + 140);
       this.ownedBottles--;
       this.ownedBottlesPercent = this.ownedBottles * 10;
-      console.log(this.ownedBottles);
-      console.log(this.ownedBottlesPercent);
       this.bottlesBar.setStatusBars("BOTTLES", this.ownedBottlesPercent);
       this.bottles.push(bottle);
     }
+  }
+
+  killChicken() {
+    this.level.enemies = this.level.enemies.filter((enemy) => {
+      if (this.character.isInTheAir() && this.character.isColliding(enemy)) {
+        console.log("Character is jumping");
+        console.log("Character is colliding with", enemy);
+        
+        
+        return false; // Remove bottle from the array
+      }
+      return true;
+    });
   }
 
   draw() {
@@ -132,15 +144,15 @@ class World {
 
   addToMap(drawableObject) {
     this.ctx.save();
-    if (
-      drawableObject instanceof Coins ||
-      drawableObject instanceof BottlesOnTheGround ||
-      drawableObject instanceof Character ||
-      drawableObject instanceof Chicken ||
-      drawableObject instanceof Endboss
-    ) {
-      this.drawFrame(drawableObject);
-    }
+    // if (
+    //   drawableObject instanceof Coins ||
+    //   drawableObject instanceof BottlesOnTheGround ||
+    //   drawableObject instanceof Character ||
+    //   drawableObject instanceof Chicken ||
+    //   drawableObject instanceof Endboss
+    // ) {
+    //   this.drawFrame(drawableObject);
+    // }
 
     if (drawableObject.facingLeft) {
       this.drawObjectFacingLeft(drawableObject);
@@ -151,13 +163,13 @@ class World {
     this.ctx.restore();
   }
 
-  drawFrame(drawableObject) {
-    this.ctx.beginPath();
-    this.ctx.rect(drawableObject.x + drawableObject.offsetX, drawableObject.y + drawableObject.offsetY, drawableObject.width - drawableObject.widthCorrection, drawableObject.height - drawableObject.heightCorrection);
-    this.ctx.strokeStyle = "red";
-    this.ctx.lineWidth = 2;
-    this.ctx.stroke();
-  }
+  // drawFrame(drawableObject) {
+  //   this.ctx.beginPath();
+  //   this.ctx.rect(drawableObject.x + drawableObject.offsetX, drawableObject.y + drawableObject.offsetY, drawableObject.width - drawableObject.widthCorrection, drawableObject.height - drawableObject.heightCorrection);
+  //   this.ctx.strokeStyle = "red";
+  //   this.ctx.lineWidth = 2;
+  //   this.ctx.stroke();
+  // }
 
   drawObjectFacingLeft(drawableObject) {
     this.ctx.translate(drawableObject.x + drawableObject.width, 0);
