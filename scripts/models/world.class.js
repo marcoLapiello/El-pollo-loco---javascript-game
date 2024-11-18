@@ -4,6 +4,7 @@ class World {
   ownedBottles = 0; // Normally set a t Zero and increases as the bottle get collected
   ownedBottlesPercent = 0; // normally set at Zero and increases as the bottle get collected
   ownedCoins = 0; // Normally set a t Zero and increases as the coins get collected
+  ownedCoinsPercent = 0; // Normally set a t Zero and increases as the coins get collected
   bottlesOnTheGround = [];
   coinsAroundTheWorld = [];
   level = level1;
@@ -20,7 +21,7 @@ class World {
     this.canvas = canvas;
     this.keyboard = keyboard;
     this.generateBottleOnTheGrounds(20);
-    this.generateCoinsAroundTheWorld(40);
+    this.generateCoinsAroundTheWorld(20);
     this.draw();
     this.setWorld();
     this.run();
@@ -43,7 +44,7 @@ class World {
   generateCoinsAroundTheWorld(numberOfCoins) {
     for (let i = 0; i < numberOfCoins; i++) {
       let x = 200 + Math.random() * 2000;
-      let y = 100 + Math.random() * 300;
+      let y = 100 + Math.random() * 200;
       let coin = new Coins(x, y);
       this.coinsAroundTheWorld.push(coin);
     }
@@ -62,7 +63,7 @@ class World {
     this.bottlesOnTheGround = this.bottlesOnTheGround.filter((bottle) => {
       if (this.character.isColliding(bottle) && this.ownedBottles < 10) {
         this.ownedBottles++;
-        this.ownedBottlesPercent = this.ownedBottles * 10;
+        this.ownedBottlesPercent = this.ownedBottles * 10; // max bottle owned is 10
         this.bottlesBar.setStatusBars("BOTTLES", this.ownedBottlesPercent);
         return false; // Remove bottle from the array
       }
@@ -74,7 +75,8 @@ class World {
     this.coinsAroundTheWorld = this.coinsAroundTheWorld.filter((coin) => {
       if (this.character.isColliding(coin) && this.ownedCoins < 100) {
         this.ownedCoins++;
-        this.coinsBar.setStatusBars("COINS", this.ownedCoins);
+        this.ownedCoinsPercent = this.ownedBottles * 5; // max coins owned is 20
+        this.coinsBar.setStatusBars("COINS", this.ownedBottlesPercent);
         return false; // Remove coin from the array
       }
       return true;
