@@ -46,7 +46,6 @@ class MovableObject extends DrawableObjects {
     } else {
       return this.y < 190;
     }
-    
   }
 
   isOnTheGround() {
@@ -54,17 +53,19 @@ class MovableObject extends DrawableObjects {
   }
 
   // isColliding(obj) {
-  //   return this.x + this.width > obj.x && 
-  //   this.y + this.height > obj.y && 
-  //   this.x < obj.x + obj.width && 
+  //   return this.x + this.width > obj.x &&
+  //   this.y + this.height > obj.y &&
+  //   this.x < obj.x + obj.width &&
   //   this.y < obj.y + obj.height;
   // }
 
   isColliding(obj) {
-    return (this.x + this.offsetX) + (this.width - this.widthCorrection) > (obj.x + obj.offsetX) && 
-    (this.y + this.offsetY) + (this.height - this.heightCorrection) > (obj.y + obj.offsetY) && 
-    (this.x + this.offsetX) < (obj.x + obj.offsetX) + (obj.width - obj.widthCorrection) && 
-    (this.y + this.offsetY) < (obj.y + obj.offsetY) + (obj.height - obj.heightCorrection);
+    return (
+      this.x + this.offsetX + (this.width - this.widthCorrection) > obj.x + obj.offsetX &&
+      this.y + this.offsetY + (this.height - this.heightCorrection) > obj.y + obj.offsetY &&
+      this.x + this.offsetX < obj.x + obj.offsetX + (obj.width - obj.widthCorrection) &&
+      this.y + this.offsetY < obj.y + obj.offsetY + (obj.height - obj.heightCorrection)
+    );
   }
 
   getsHit() {
@@ -86,4 +87,19 @@ class MovableObject extends DrawableObjects {
     return this.health == 0;
   }
 
+  isNotMoving() {
+    if (
+      !this.world.keyboard.LEFT &&
+      !this.world.keyboard.RIGHT &&
+      !this.world.keyboard.UP &&
+      !this.world.keyboard.DOWN &&
+      !this.world.keyboard.SPACE &&
+      !this.world.keyboard.B &&
+      !this.isDead() &&
+      !this.getsHurt() &&
+      !this.isInTheAir()
+    ) {
+      return true;
+    }
+  }
 }
