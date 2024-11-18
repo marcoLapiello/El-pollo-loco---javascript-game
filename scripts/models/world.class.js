@@ -6,6 +6,7 @@ class World {
   keyboard;
   camera_x = 0;
   bottles = [];
+  lastThrownBottleTime = 0;
   ownedBottles = 0; // Normally set a t Zero and increases as the bottle get collected
   ownedBottlesPercent = 0; // normally set at Zero and increases as the bottle get collected
   ownedCoins = 0; // Normally set a t Zero and increases as the coins get collected
@@ -94,13 +95,21 @@ class World {
   }
 
   handleThrowBottle() {
-    if (this.keyboard.B && !this.character.facingLeft && this.ownedBottles > 0) {
+    let timePassed = this.handleThrowBottleTime();
+    if (this.keyboard.B && !this.character.facingLeft && this.ownedBottles > 0 && timePassed > 0.5) {
       let bottle = new Bottle(this.character.x + 80, this.character.y + 140);
+      this.lastThrownBottleTime = new Date().getTime();
       this.ownedBottles--;
       this.ownedBottlesPercent = this.ownedBottles * 10;
       this.bottlesBar.setStatusBars("BOTTLES", this.ownedBottlesPercent);
       this.bottles.push(bottle);
     }
+  }
+
+  handleThrowBottleTime() {
+    let timePassed = new Date().getTime() - this.lastThrownBottleTime; // Difference in ms
+    timePassed = timePassed / 1000; // Difference in s
+    return timePassed;
   }
 
   killChickenJumping() {
