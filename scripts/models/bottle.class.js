@@ -3,6 +3,7 @@ class Bottle extends MovableObject {
   offsetY = 7;
   widthCorrection = 35;
   heightCorrection = 10;
+  isBreaking = false;
 
   ROTATION_IMAGES = [
     "Grafics/img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png",
@@ -10,11 +11,21 @@ class Bottle extends MovableObject {
     "Grafics/img/6_salsa_bottle/bottle_rotation/3_bottle_rotation.png",
     "Grafics/img/6_salsa_bottle/bottle_rotation/4_bottle_rotation.png",
   ]
+
+  CRASH_IMAGES = [
+    "Grafics/img/6_salsa_bottle/bottle_rotation/bottle_splash/1_bottle_splash.png",
+    "Grafics/img/6_salsa_bottle/bottle_rotation/bottle_splash/2_bottle_splash.png",
+    "Grafics/img/6_salsa_bottle/bottle_rotation/bottle_splash/3_bottle_splash.png",
+    "Grafics/img/6_salsa_bottle/bottle_rotation/bottle_splash/4_bottle_splash.png",
+    "Grafics/img/6_salsa_bottle/bottle_rotation/bottle_splash/5_bottle_splash.png",
+    "Grafics/img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png",
+  ]
   
   constructor(initialX, initialY) {
     super();
     this.loadImage("Grafics/img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png");
     this.loadImages(this.ROTATION_IMAGES);
+    this.loadImages(this.CRASH_IMAGES);
     this.x = initialX;
     this.y = initialY;
     this.height = 50;
@@ -28,9 +39,14 @@ class Bottle extends MovableObject {
 
   throw() {
     this.applyGravity();
-    setInterval(() => {
-      this.x += this.speedX;
-      this.playAnimation(this.ROTATION_IMAGES);
+    const movementInterval = setInterval(() => {
+      if (!this.isBreaking) {
+        this.x += this.speedX;
+        this.playAnimation(this.ROTATION_IMAGES);
+      } else {
+        this.playAnimation(this.CRASH_IMAGES);
+        clearInterval(movementInterval)
+      } 
     }, 25);
   }
 }

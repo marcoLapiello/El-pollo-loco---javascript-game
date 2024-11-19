@@ -116,15 +116,15 @@ class World {
 
   killChicken() {
     this.level.enemies = this.level.enemies.filter((enemy) => {
+      let collidingBottle = this.bottles.find(bottle => bottle.isColliding(enemy));
       if (this.character.isInTheAir() && this.character.isColliding(enemy)) {
         return false; // Remove this exact (enemy) from the array if it s a chicken
-      } else if (this.bottles.some(bottle => bottle.isColliding(enemy))) {
+      } else if (collidingBottle) {
         if (enemy instanceof Endboss) {
+          collidingBottle.isBreaking = true;
           enemy.getsHit();
-          this.bottles.splice(0,1);
-          console.log(enemy.health);
         } else {
-          this.bottles.splice(0,1);
+          collidingBottle.isBreaking = true;
           return false;
         }
       }
