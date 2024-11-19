@@ -13,20 +13,22 @@ class World {
   ownedCoinsPercent = 0;
   bottlesOnTheGround = [];
   coinsAroundTheWorld = [];
-  healthBar = new StatusBars("HEALTH", 0, this.character.health);
-  bottlesBar = new StatusBars("BOTTLES", 40, this.ownedBottles);
-  coinsBar = new StatusBars("COINS", 80, this.ownedCoins);
-  bossBar = new StatusBars("BOSS", 120, 100);
+  healthBar = new StatusBars("HEALTH", 0, this.character.health, this);
+  bottlesBar = new StatusBars("BOTTLES", 40, this.ownedBottles, this);
+  coinsBar = new StatusBars("COINS", 80, this.ownedCoins, this);
+  bossBar = new StatusBars("BOSS", 120, 100, this);
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
     this.keyboard = keyboard;
+    
     this.generateBottleOnTheGrounds(20);
     this.generateCoinsAroundTheWorld(20);
     this.draw();
     this.setWorld();
     this.run();
+    
   }
 
   setWorld() {
@@ -59,6 +61,8 @@ class World {
       this.checkCollectBottle();
       this.checkCollectCoins();
       this.killChicken();
+      const endboss = this.level.enemies.find(enemy => enemy instanceof Endboss);
+      this.bossBar.update(endboss);
     }, 50);
   }
 
@@ -143,11 +147,12 @@ class World {
     this.addObjectToMap(this.level.enemies);
     this.addObjectToMap(this.bottles);
     this.addToMap(this.character);
+    this.addToMap(this.bossBar);
     this.ctx.translate(-this.camera_x, 0);
     this.addToMap(this.healthBar);
     this.addToMap(this.bottlesBar);
     this.addToMap(this.coinsBar);
-    this.addToMap(this.bossBar);
+    
     requestAnimationFrame(() => {
       this.draw();
     });

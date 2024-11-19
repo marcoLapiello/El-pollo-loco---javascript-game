@@ -35,22 +35,28 @@ class StatusBars extends DrawableObjects {
     "Grafics/img/7_statusbars/2_statusbar_endboss/orange/orange100.png",
   ];
 
-  constructor(type, y, percentage) {
+  constructor(type, y, percentage, world) {
     super();
     this.x = 20;
     this.y = y;
     this.width = 180;
     this.height = 50;
     this.percentage = percentage;
+    this.world = world;
     this.loadImages(this.healthBarImages);
     this.loadImages(this.bottlesBarImages);
     this.loadImages(this.coinsBarImages);
     this.loadImages(this.bossBarImages);
     this.setStatusBars(type, this.percentage);
-    
-    console.log();
-    
   }
+
+  update(endboss) {
+    if (endboss) {
+      this.x = endboss.x + endboss.width / 2 - this.width / 2; // Centrato sul boss
+      this.y = endboss.y - 20; // Posizionato sopra il boss
+    }
+  }
+  
 
   setStatusBars(type, percentage) {
     if (type === "HEALTH") {
