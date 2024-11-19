@@ -16,6 +16,7 @@ class World {
   healthBar = new StatusBars("HEALTH", 0, this.character.health);
   bottlesBar = new StatusBars("BOTTLES", 40, this.ownedBottles);
   coinsBar = new StatusBars("COINS", 80, this.ownedCoins);
+  bossBar = new StatusBars("BOSS", 120, 100);
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -90,9 +91,7 @@ class World {
       if (this.character.isColliding(enemy) && !this.character.isInTheAir()) {
         this.character.getsHit();
         this.healthBar.setStatusBars("HEALTH", this.character.health);
-      } // Metti qui la logica per danneggiare il boss
-      // correggi la logica di collisione ora il boss non é piú un enemy
-      // poi assegna la status bar al boss 
+      }
     });
   }
 
@@ -116,13 +115,15 @@ class World {
 
   killChicken() {
     this.level.enemies = this.level.enemies.filter((enemy) => {
-      let collidingBottle = this.bottles.find(bottle => bottle.isColliding(enemy));
+      let collidingBottle = this.bottles.find((bottle) => bottle.isColliding(enemy));
       if (this.character.isInTheAir() && this.character.isColliding(enemy)) {
         return false; // Remove this exact (enemy) from the array if it s a chicken
       } else if (collidingBottle) {
         if (enemy instanceof Endboss) {
           collidingBottle.isBreaking = true;
           enemy.getsHit();
+          this.bossBar.setStatusBars("BOSS", enemy.health);
+          console.log(enemy.health);
         } else {
           collidingBottle.isBreaking = true;
           return false;
@@ -146,7 +147,7 @@ class World {
     this.addToMap(this.healthBar);
     this.addToMap(this.bottlesBar);
     this.addToMap(this.coinsBar);
-
+    this.addToMap(this.bossBar);
     requestAnimationFrame(() => {
       this.draw();
     });
@@ -160,32 +161,13 @@ class World {
 
   addToMap(drawableObject) {
     this.ctx.save();
-    // if (
-    //   drawableObject instanceof Coins ||
-    //   drawableObject instanceof BottlesOnTheGround ||
-    //   drawableObject instanceof Character ||
-    //   drawableObject instanceof Chicken ||
-    //   drawableObject instanceof Bottle
-    // ) {
-    //   this.drawFrame(drawableObject);
-    // }
-
     if (drawableObject.facingLeft) {
       this.drawObjectFacingLeft(drawableObject);
     } else {
       this.ctx.drawImage(drawableObject.img, drawableObject.x, drawableObject.y, drawableObject.width, drawableObject.height);
     }
-
     this.ctx.restore();
   }
-
-  // drawFrame(drawableObject) {
-  //   this.ctx.beginPath();
-  //   this.ctx.rect(drawableObject.x + drawableObject.offsetX, drawableObject.y + drawableObject.offsetY, drawableObject.width - drawableObject.widthCorrection, drawableObject.height - drawableObject.heightCorrection);
-  //   this.ctx.strokeStyle = "red";
-  //   this.ctx.lineWidth = 2;
-  //   this.ctx.stroke();
-  // }
 
   drawObjectFacingLeft(drawableObject) {
     this.ctx.translate(drawableObject.x + drawableObject.width, 0);

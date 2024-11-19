@@ -45,7 +45,6 @@ class Bottle extends MovableObject {
         this.playAnimation(this.ROTATION_IMAGES);
       } else {
         this.playAnimation(this.CRASH_IMAGES);
-        clearInterval(movementInterval)
       } 
     }, 25);
   }
