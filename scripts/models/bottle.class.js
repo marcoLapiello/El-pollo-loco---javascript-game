@@ -3,6 +3,8 @@ class Bottle extends MovableObject {
   offsetY = 7;
   widthCorrection = 35;
   heightCorrection = 10;
+
+  
   
   constructor(initialX, initialY) {
     super();

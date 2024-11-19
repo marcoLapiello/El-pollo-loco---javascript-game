@@ -121,9 +121,10 @@ class World {
       } else if (this.bottles.some(bottle => bottle.isColliding(enemy))) {
         if (enemy instanceof Endboss) {
           enemy.getsHit();
+          this.bottles.splice(0,1);
           console.log(enemy.health);
-          
         } else {
+          this.bottles.splice(0,1);
           return false;
         }
       }
