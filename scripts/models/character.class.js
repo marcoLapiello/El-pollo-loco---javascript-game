@@ -123,26 +123,4 @@ class Character extends MovableObject {
       }
     }, 100);
   }
-
-  // jump() {
-  //   setInterval(() => {
-  //     if (this.keyboard.UP && this.isOnTheGround()) {
-  //       this.speedY = 20;
-  //     }
-  //   }, 1000 / 60);
-  // }
-
-  // playJumpAnimation() {
-  //   const interval = this.jumpDuration / this.IMAGES_JUMPING.length; // Calcola l'intervallo per ogni frame
-  //   let currentFrame = 0;
-
-  //   const jumpAnimation = setInterval(() => {
-  //     if (currentFrame < this.IMAGES_JUMPING.length) {
-  //       this.img = this.imageCache[this.IMAGES_JUMPING[currentFrame]];
-  //       currentFrame++;
-  //     } else {
-  //       clearInterval(jumpAnimation);
-  //     }
-  //   }, interval);
-  // }
 }

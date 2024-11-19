@@ -61,9 +61,17 @@ class World {
       this.checkCollectBottle();
       this.checkCollectCoins();
       this.killChicken();
-      const endboss = this.level.enemies.find(enemy => enemy instanceof Endboss);
-      this.bossBar.update(endboss);
+      this.handleBoss();
     }, 50);
+  }
+
+  handleBoss() {
+    const endboss = this.level.enemies.find(enemy => enemy instanceof Endboss);
+    this.bossBar.update(endboss);
+    let distancefromCharacter = endboss.x - this.character.x;
+    if (distancefromCharacter < 720) {
+      endboss.isWalking = true;
+    }
   }
 
   checkCollectBottle() {
