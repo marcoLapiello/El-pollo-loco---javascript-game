@@ -7,10 +7,10 @@ class World {
   camera_x = 0;
   bottles = [];
   lastThrownBottleTime = 0;
-  ownedBottles = 0; // Normally set a t Zero and increases as the bottle get collected
-  ownedBottlesPercent = 0; // normally set at Zero and increases as the bottle get collected
-  ownedCoins = 0; // Normally set a t Zero and increases as the coins get collected
-  ownedCoinsPercent = 0; // Normally set a t Zero and increases as the coins get collected
+  ownedBottles = 0;
+  ownedBottlesPercent = 0;
+  ownedCoins = 0;
+  ownedCoinsPercent = 0;
   bottlesOnTheGround = [];
   coinsAroundTheWorld = [];
   healthBar = new StatusBars("HEALTH", 0, this.character.health);
@@ -57,7 +57,7 @@ class World {
       this.handleThrowBottle();
       this.checkCollectBottle();
       this.checkCollectCoins();
-      this.killChickenJumping();
+      this.killChicken();
     }, 50);
   }
 
@@ -90,7 +90,9 @@ class World {
       if (this.character.isColliding(enemy) && !this.character.isInTheAir()) {
         this.character.getsHit();
         this.healthBar.setStatusBars("HEALTH", this.character.health);
-      }
+      } // Metti qui la logica per danneggiare il boss
+      // correggi la logica di collisione ora il boss non é piú un enemy
+      // poi assegna la status bar al boss 
     });
   }
 
@@ -112,10 +114,18 @@ class World {
     return timePassed;
   }
 
-  killChickenJumping() {
+  killChicken() {
     this.level.enemies = this.level.enemies.filter((enemy) => {
-      if (this.character.isInTheAir() && this.character.isColliding(enemy) && !(enemy instanceof Endboss)) {
+      if (this.character.isInTheAir() && this.character.isColliding(enemy)) {
         return false; // Remove this exact (enemy) from the array if it s a chicken
+      } else if (this.bottles.some(bottle => bottle.isColliding(enemy))) {
+        if (enemy instanceof Endboss) {
+          enemy.getsHit();
+          console.log(enemy.health);
+          
+        } else {
+          return false;
+        }
       }
       return true;
     });
