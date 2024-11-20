@@ -9,6 +9,8 @@ class Endboss extends MovableObject {
   isWalking = false;
   isAttacking = false;
   attackSpeedX = 1;
+  startWalkingDistanceX = 720;
+  startAttackingDistanceX = 180;
   
 
   IMAGES_ALERT = [
@@ -61,6 +63,11 @@ class Endboss extends MovableObject {
     this.animate();
     
     
+  }
+
+  switchWalkingAttacking(bool1, bool2){
+    this.isWalking = bool1;
+    this.isAttacking = bool2;
   }
 
   animate() {
