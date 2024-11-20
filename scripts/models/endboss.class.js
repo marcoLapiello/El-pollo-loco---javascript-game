@@ -8,10 +8,10 @@ class Endboss extends MovableObject {
   heightCorrection = 110;
   isWalking = false;
   isAttacking = false;
-  attackSpeedX = 1;
+  attackSpeedX = 2;
+  getsAttacked = false;
   startWalkingDistanceX = 720;
-  startAttackingDistanceX = 180;
-  
+  startAttackingDistanceX = 220;
 
   IMAGES_ALERT = [
     "Grafics/img/4_enemie_boss_chicken/2_alert/G5.png",
@@ -50,7 +50,6 @@ class Endboss extends MovableObject {
     "Grafics/img/4_enemie_boss_chicken/5_dead/G26.png",
   ];
 
-
   constructor() {
     super().loadImage(this.IMAGES_ALERT[0]);
     this.loadImages(this.IMAGES_ALERT);
@@ -58,26 +57,29 @@ class Endboss extends MovableObject {
     this.loadImages(this.IMAGES_DEAD);
     this.loadImages(this.IMAGES_HURT);
     this.loadImages(this.IMAGES_ATTACKING);
-    this.x = 2500;
-    this.speedX = 0.7;
+    this.x = 2200;
+    this.speedX = 1;
     this.animate();
-    
-    
   }
 
-  switchWalkingAttacking(bool1, bool2){
+  switchWalkingAttacking(bool1, bool2) {
     this.isWalking = bool1;
     this.isAttacking = bool2;
   }
 
   animate() {
     setInterval(() => {
-      if (this.isWalking && !this.isDead()) {
+      if (this.isWalking && !this.getsAttacked && !this.isDead() && !this.getsHurt()) {
         this.moveLeft();
-      } else if (this.isAttacking && !this.isDead()) {
+      } else if (this.isAttacking && !this.getsAttacked && !this.isDead()) {
         this.x -= this.attackSpeedX;
+      } else if (this.getsAttacked) {
+        if (this.isAttacking || this.isWalking) {
+          console.log("Boss arretra per essere stato colpito");
+          this.x += 0.3;
+          this.getsAttacked = false;
+        }
       }
-      
     }, 1000 / 60);
 
     setInterval(() => {
@@ -87,13 +89,12 @@ class Endboss extends MovableObject {
         this.playAnimation(this.IMAGES_DEAD);
       } else if (this.isAttacking && !this.isDead()) {
         this.playAnimation(this.IMAGES_ATTACKING);
-        this.x -= 5;
       } else if (this.getsHurt()) {
-        this.playAnimation(this.IMAGES_HURT)
+        this.playAnimation(this.IMAGES_HURT);
+        
       } else if (this.isWalking && !this.isAttacking) {
         this.playAnimation(this.IMAGES_WALKING);
       }
-      
     }, 100);
   }
 }

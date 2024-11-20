@@ -153,6 +153,7 @@ class World {
       } else if (collidingBottle) {
         if (enemy instanceof Endboss) {
           collidingBottle.isBreaking = true;
+          enemy.getsAttacked = true;
           enemy.getsHit();
           this.bossBar.setStatusBars("BOSS", enemy.health);
         } else {
