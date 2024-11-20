@@ -69,8 +69,16 @@ class World {
     const endboss = this.level.enemies.find(enemy => enemy instanceof Endboss);
     this.bossBar.update(endboss);
     let distancefromCharacter = endboss.x - this.character.x;
-    if (distancefromCharacter < 720) {
+    if (distancefromCharacter < 720 && distancefromCharacter > 120) {
       endboss.isWalking = true;
+      endboss.isAttacking = false;
+      console.log("boss distance", distancefromCharacter);
+      // console.log("boss walking", endboss.isWalking);
+      // console.log("boss attacking", endboss.isAttacking);
+    } else if (distancefromCharacter < 120) {
+      endboss.isAttacking = true;
+      endboss.isWalking = false;
+      // console.log("boss attacking", endboss.isAttacking);
     }
   }
 
