@@ -10,23 +10,23 @@ class Chicken extends MovableObject {
   IMAGES_WALKING = [
     "Grafics/img/3_enemies_chicken/chicken_normal/1_walk/1_w.png",
     "Grafics/img/3_enemies_chicken/chicken_normal/1_walk/2_w.png",
-    "Grafics/img/3_enemies_chicken/chicken_normal/1_walk/3_w.png"
+    "Grafics/img/3_enemies_chicken/chicken_normal/1_walk/3_w.png",
   ];
-  
 
   constructor() {
     super().loadImage(this.IMAGES_WALKING[0]);
     this.loadImages(this.IMAGES_WALKING);
 
-    
-    this.speed = 0.3 + Math.random() * 0.7;
+    this.speedX = 0.3 + Math.random() * 0.7;
     this.animate();
   }
 
   animate() {
     setInterval(() => {
-      this.x -= this.speed;
+      this.moveLeft();
       if (this.x + this.width < 0) {
+        // This let the chicken start again from right
+        // after they disappear at the left side of the screen
         this.x = 720;
       }
     }, 1000 / 60);

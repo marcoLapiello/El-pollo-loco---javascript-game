@@ -15,12 +15,10 @@ class MovableObject extends DrawableObjects {
 
   moveRight() {
     this.x += this.speedX;
-    this.facingLeft = false;
   }
 
   moveLeft() {
     this.x -= this.speedX;
-    this.facingLeft = true;
   }
 
   jump() {
