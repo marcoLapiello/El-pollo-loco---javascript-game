@@ -8,6 +8,7 @@ class Endboss extends MovableObject {
   heightCorrection = 110;
   isWalking = false;
   isAttacking = false;
+  attackSpeedX = 1;
 
   IMAGES_ALERT = [
     "Grafics/img/4_enemie_boss_chicken/2_alert/G5.png",
@@ -55,7 +56,7 @@ class Endboss extends MovableObject {
     this.loadImages(this.IMAGES_HURT);
     this.loadImages(this.IMAGES_ATTACKING);
     this.x = 1000;
-    this.speedX = 0.3 + Math.random() * 0.7;
+    this.speedX = 0.7;
     this.animate();
     
     
@@ -66,7 +67,7 @@ class Endboss extends MovableObject {
       if (this.isWalking && !this.isDead()) {
         this.moveLeft();
       } else if (this.isAttacking) {
-        this.x -= 1;
+        this.x -= this.attackSpeedX;
       }
       
     }, 1000 / 60);
