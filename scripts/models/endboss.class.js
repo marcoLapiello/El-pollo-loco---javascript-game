@@ -9,6 +9,7 @@ class Endboss extends MovableObject {
   isWalking = false;
   isAttacking = false;
   attackSpeedX = 1;
+  
 
   IMAGES_ALERT = [
     "Grafics/img/4_enemie_boss_chicken/2_alert/G5.png",
@@ -80,6 +81,8 @@ class Endboss extends MovableObject {
       } else if (this.isAttacking) {
         this.playAnimation(this.IMAGES_ATTACKING);
         this.x -= 5;
+      } else if (this.getsHurt()) {
+        this.playAnimation(this.IMAGES_HURT)
       } else if (this.isWalking && !this.isAttacking) {
         this.playAnimation(this.IMAGES_WALKING);
       }
