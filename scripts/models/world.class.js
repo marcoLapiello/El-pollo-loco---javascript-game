@@ -60,7 +60,7 @@ class World {
       this.handleThrowBottle();
       this.checkCollectBottle();
       this.checkCollectCoins();
-      this.killChicken();
+      this.killEnemies();
       this.handleBoss();
     }, 50);
   }
@@ -73,12 +73,9 @@ class World {
       endboss.isWalking = true;
       endboss.isAttacking = false;
       console.log("boss distance", distancefromCharacter);
-      // console.log("boss walking", endboss.isWalking);
-      // console.log("boss attacking", endboss.isAttacking);
     } else if (distancefromCharacter < 120) {
       endboss.isAttacking = true;
       endboss.isWalking = false;
-      // console.log("boss attacking", endboss.isAttacking);
     }
   }
 
@@ -133,17 +130,16 @@ class World {
     return timePassed;
   }
 
-  killChicken() {
+  killEnemies() {
     this.level.enemies = this.level.enemies.filter((enemy) => {
       let collidingBottle = this.bottles.find((bottle) => bottle.isColliding(enemy));
-      if (this.character.isInTheAir() && this.character.isColliding(enemy)) {
+      if (this.character.isInTheAir() && this.character.isColliding(enemy) && !(enemy instanceof Endboss)) {
         return false; // Remove this exact (enemy) from the array if it s a chicken
       } else if (collidingBottle) {
         if (enemy instanceof Endboss) {
           collidingBottle.isBreaking = true;
           enemy.getsHit();
           this.bossBar.setStatusBars("BOSS", enemy.health);
-          console.log(enemy.health);
         } else {
           collidingBottle.isBreaking = true;
           return false;
