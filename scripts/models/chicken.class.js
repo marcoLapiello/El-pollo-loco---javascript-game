@@ -1,5 +1,8 @@
 class Chicken extends MovableObject {
-  x = 720;
+  // Proprietà statica per memorizzare il riferimento al character
+  world;
+
+  x = 720 + Math.random() * 1800;
   y = 370;
   height = 80;
   width = 80;
@@ -16,10 +19,23 @@ class Chicken extends MovableObject {
   constructor() {
     super().loadImage(this.IMAGES_WALKING[0]);
     this.loadImages(this.IMAGES_WALKING);
-
-    this.speedX = 0.3 + Math.random() * 0.7;
+    // this.x = generateX();
+    this.speedX = 0.5 + Math.random() * 1.5;
     this.animate();
+    // this.generateX();
+    
   }
+
+  // generateX() {
+  //   if (this.world) {
+  //     this.x = this.world.character.x + 720 + Math.random() * 500;
+  //     console.log("World assegnato correttamente:", this.world);
+  //   } else {
+  //     console.warn("World non assegnato correttamente");
+  //   }
+  //   console.log(this.world.character.x);
+   
+  // }
 
   animate() {
     setInterval(() => {
@@ -27,7 +43,7 @@ class Chicken extends MovableObject {
       if (this.x + this.width < 0) {
         // This let the chicken start again from right
         // after they disappear at the left side of the screen
-        this.x = 720;
+        // this.x = 720;
       }
     }, 1000 / 60);
 

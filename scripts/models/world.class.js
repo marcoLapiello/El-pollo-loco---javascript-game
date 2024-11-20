@@ -34,6 +34,13 @@ class World {
   setWorld() {
     // currently just needed for the keyboard in character
     this.character.world = this;
+    // Imposta il riferimento del mondo in ogni nemico
+    // this.level.enemies.forEach(enemy => {
+    //   enemy.world = this;
+    //   if (enemy instanceof Chicken) {
+    //     enemy.generateX(); // Chiama generateX() dopo aver assegnato world
+    //   }
+    // });
   }
 
   generateBottleOnTheGrounds(numberOfBottles) {
@@ -53,13 +60,13 @@ class World {
     for (let i = 0; i < numberOfCoins; i++) {
       let y = possibleYValues[Math.floor(Math.random() * possibleYValues.length)];
 
-      // Incrementa la posizione di x per mantenere una certa distanza tra le monete
+      
       if (i % 3 === 0 && i !== 0) {
-        x += minDistance * 3; // Sposta più avanti dopo un gruppo di 3-5 monete
+        x += minDistance * 3;
       } else {
         x += minDistance;
       }
-      // Se x supera una certa distanza, riposizionalo all'inizio con un offset
+      
       if (x > 2200) {
         x = 200 + (x - 2200);
       }
@@ -69,7 +76,6 @@ class World {
     }
   }
   
-
   run() {
     setInterval(() => {
       this.checkCollision();
@@ -109,8 +115,6 @@ class World {
       if (this.character.isColliding(coin) && this.ownedCoins < 100) {
         this.ownedCoins++;
         this.ownedCoinsPercent = this.ownedCoins * 5; // max coins owned is 20
-        console.log(this.ownedCoinsPercent);
-        
         this.coinsBar.setStatusBars("COINS", this.ownedCoinsPercent);
         return false; // Remove coin from the array
       }
@@ -140,8 +144,8 @@ class World {
   }
 
   handleThrowBottleTime() {
-    let timePassed = new Date().getTime() - this.lastThrownBottleTime; // Difference in ms
-    timePassed = timePassed / 1000; // Difference in s
+    let timePassed = new Date().getTime() - this.lastThrownBottleTime;
+    timePassed = timePassed / 1000;
     return timePassed;
   }
 
@@ -153,7 +157,7 @@ class World {
       } else if (collidingBottle) {
         if (enemy instanceof Endboss) {
           collidingBottle.isBreaking = true;
-          enemy.getsAttacked = true;
+          // enemy.getsAttacked = true;
           enemy.getsHit();
           this.bossBar.setStatusBars("BOSS", enemy.health);
         } else {

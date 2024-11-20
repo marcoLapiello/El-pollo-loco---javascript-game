@@ -9,7 +9,7 @@ class Endboss extends MovableObject {
   isWalking = false;
   isAttacking = false;
   attackSpeedX = 2;
-  getsAttacked = false;
+  // getsAttacked = false;
   startWalkingDistanceX = 720;
   startAttackingDistanceX = 220;
 
@@ -69,17 +69,16 @@ class Endboss extends MovableObject {
 
   animate() {
     setInterval(() => {
-      if (this.isWalking && !this.getsAttacked && !this.isDead() && !this.getsHurt()) {
+      if (this.isWalking && !this.isDead()) {
         this.moveLeft();
-      } else if (this.isAttacking && !this.getsAttacked && !this.isDead()) {
+      } else if (this.isAttacking && !this.isDead()) {
         this.x -= this.attackSpeedX;
-      } else if (this.getsAttacked) {
-        if (this.isAttacking || this.isWalking) {
-          console.log("Boss arretra per essere stato colpito");
-          this.x += 0.3;
-          this.getsAttacked = false;
-        }
-      }
+      } //else if (this.getsAttacked) {
+      //   if (this.isAttacking || this.isWalking) {
+      //     // this.x += 0.3; // Logic to simulate a body receiving a hit - to fix
+      //     // this.getsAttacked = false;
+      //   }
+      // }
     }, 1000 / 60);
 
     setInterval(() => {
