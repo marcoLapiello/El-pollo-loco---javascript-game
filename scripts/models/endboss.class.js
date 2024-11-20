@@ -7,6 +7,7 @@ class Endboss extends MovableObject {
   widthCorrection = 60;
   heightCorrection = 110;
   isWalking = false;
+  isAttacking = true;
 
   IMAGES_ALERT = [
     "Grafics/img/4_enemie_boss_chicken/2_alert/G5.png",
@@ -73,6 +74,8 @@ class Endboss extends MovableObject {
         this.playAnimation(this.IMAGES_ALERT);
       } else if (this.isDead()) {
         this.playAnimation(this.IMAGES_DEAD);
+      } else if (this.isAttacking) {
+        this.playAnimation(this.IMAGES_ATTACKING);
       } else if (this.isWalking) {
         this.playAnimation(this.IMAGES_WALKING);
       }
