@@ -46,13 +46,29 @@ class World {
   }
 
   generateCoinsAroundTheWorld(numberOfCoins) {
+    const minDistance = 50;
+    let possibleYValues = [150, 300];
+    let x = 200;
+
     for (let i = 0; i < numberOfCoins; i++) {
-      let x = 200 + Math.random() * 2000;
-      let y = 100 + Math.random() * 200;
+      let y = possibleYValues[Math.floor(Math.random() * possibleYValues.length)];
+
+      // Incrementa la posizione di x per mantenere una certa distanza tra le monete
+      if (i % 3 === 0 && i !== 0) {
+        x += minDistance * 3; // Sposta più avanti dopo un gruppo di 3-5 monete
+      } else {
+        x += minDistance;
+      }
+      // Se x supera una certa distanza, riposizionalo all'inizio con un offset
+      if (x > 2200) {
+        x = 200 + (x - 2200);
+      }
+
       let coin = new Coins(x, y);
       this.coinsAroundTheWorld.push(coin);
     }
   }
+  
 
   run() {
     setInterval(() => {
@@ -67,7 +83,7 @@ class World {
 
   handleBoss() {
     const endboss = this.level.enemies.find(enemy => enemy instanceof Endboss);
-    this.bossBar.update(endboss);
+    this.bossBar.updateBossBar(endboss);
     let distancefromCharacter = endboss.x - this.character.x;
     if (distancefromCharacter < endboss.startWalkingDistanceX && distancefromCharacter > endboss.startAttackingDistanceX) {
       endboss.switchWalkingAttacking(true, false);
@@ -92,8 +108,10 @@ class World {
     this.coinsAroundTheWorld = this.coinsAroundTheWorld.filter((coin) => {
       if (this.character.isColliding(coin) && this.ownedCoins < 100) {
         this.ownedCoins++;
-        this.ownedCoinsPercent = this.ownedBottles * 5; // max coins owned is 20
-        this.coinsBar.setStatusBars("COINS", this.ownedBottlesPercent);
+        this.ownedCoinsPercent = this.ownedCoins * 5; // max coins owned is 20
+        console.log(this.ownedCoinsPercent);
+        
+        this.coinsBar.setStatusBars("COINS", this.ownedCoinsPercent);
         return false; // Remove coin from the array
       }
       return true;

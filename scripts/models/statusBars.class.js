@@ -50,7 +50,7 @@ class StatusBars extends DrawableObjects {
     this.setStatusBars(type, this.percentage);
   }
 
-  update(endboss) {
+  updateBossBar(endboss) {
     if (endboss) {
       this.x = endboss.x + endboss.width / 2 - this.width / 2; // Centrato sul boss
       this.y = endboss.y - 20; // Posizionato sopra il boss
