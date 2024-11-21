@@ -111,7 +111,9 @@ class Character extends MovableObject {
       if (this.isNotMoving()) {
         this.playAnimation(this.IMAGES_IDLE)
       } else if (this.isDead()) {
+        // Add a counter-variable to play the animation just one time
         this.playAnimation(this.IMAGES_DEAD);
+        // set here the counter to 1 (default 0)
       } else if (this.getsHurt()) {
         this.playAnimation(this.IMAGES_HURT)
       } else if (this.isInTheAir()) {

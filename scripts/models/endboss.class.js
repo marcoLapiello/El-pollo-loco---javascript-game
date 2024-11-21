@@ -85,7 +85,9 @@ class Endboss extends MovableObject {
       if (!this.isWalking && !this.isAttacking && !this.isDead()) {
         this.playAnimation(this.IMAGES_ALERT);
       } else if (this.isDead()) {
+        // Add a counter-variable to play the animation just one time
         this.playAnimation(this.IMAGES_DEAD);
+        // set here the counter to 1 (default 0)
       } else if (this.isAttacking && !this.isDead()) {
         this.playAnimation(this.IMAGES_ATTACKING);
       } else if (this.getsHurt()) {
