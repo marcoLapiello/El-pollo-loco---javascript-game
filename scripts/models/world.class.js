@@ -1,4 +1,5 @@
 class World {
+  gameIsStarted;
   character = new Character();
   level = level1;
   canvas;
@@ -18,10 +19,12 @@ class World {
   coinsBar = new StatusBars("COINS", 80, this.ownedCoins, this);
   bossBar = new StatusBars("BOSS", 120, 100, this);
 
-  constructor(canvas, keyboard) {
+  constructor(canvas, keyboard, gameIsStarted) {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
     this.keyboard = keyboard;
+    this.gameIsStarted = gameIsStarted;
+    console.log("World " + gameIsStarted);
     
     this.generateBottleOnTheGrounds(20);
     this.generateCoinsAroundTheWorld(20);
@@ -69,6 +72,9 @@ class World {
   }
   
   run() {
+    if (!this.gameIsStarted) {
+      return;
+    }
     setInterval(() => {
       this.checkCollision();
       this.handleThrowBottle();

@@ -1,8 +1,10 @@
 let canvas;
 let world;
+let gameIsStarted = false;
 let keyboard = new Keyboard();
 
 function startGame() {
+  gameIsStarted = true;
   document.getElementById("startScreen").classList.add("dNone");
   document.getElementById("canvas").classList.remove("dNone");
   init();
@@ -10,7 +12,7 @@ function startGame() {
 
 function init() {
   canvas = document.getElementById("canvas");
-  world = new World(canvas, keyboard);
+  world = new World(canvas, keyboard, gameIsStarted);
 }
 
 window.addEventListener("keydown", keyboardInputsTrue);
