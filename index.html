@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="sp">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,10 +23,15 @@
     <script src="./scripts/levels/level1.js"></script>
     <script src="./scripts/game.js"></script>
 </head>
-<body onload="init()">
+<body>
     <section class="mainContent">
         <h1>El pollo loco</h1>
-        <canvas id="canvas" width="720" height="480"></canvas>
+        <div id="startScreen" class="startScreen">
+            <button onclick="startGame()">START</button>
+        </div>
+        
+        <canvas class="dNone" id="canvas" width="720" height="480"></canvas>
+        
         <div class="instructions">
             <div class="instructions">
                 <div class="singleInstruction">

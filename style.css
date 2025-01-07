@@ -29,6 +29,19 @@ body {
     background-size: cover;
 }
 
+button {
+    font-family: 'rioGrandeStriped';
+    font-size: 24px;
+    padding: 8px 16px;
+    border: 2px solid #FFDA00;
+    border-radius: 10px;
+    background-color: #ffaa00a4;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+
+
 .mainContent {
     display: flex;
     flex-direction: column;
@@ -85,6 +98,27 @@ canvas {
     border: solid black 2px;
 }
 
+.startScreen {
+    width: 800px;
+    height: 480px;
+    padding-top: 36px;
+    background-image: url('./Grafics/img/9_intro_outro_screens/start/startscreen_1.png');
+    background-position: center;
+    background-size: cover;
+    border-radius: 20px;
+    border: solid black 2px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.startImg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px;
+}
+
 /* Smartphone */
 @media only screen and (max-width: 720px) {
     canvas {
@@ -101,4 +135,8 @@ canvas {
     h1 {
         display: none;
     }
+}
+
+.dNone {
+    display: none;
 }

@@ -2,7 +2,11 @@ let canvas;
 let world;
 let keyboard = new Keyboard();
 
-
+function startGame() {
+  document.getElementById("startScreen").classList.add("dNone");
+  document.getElementById("canvas").classList.remove("dNone");
+  init();
+}
 
 function init() {
   canvas = document.getElementById("canvas");

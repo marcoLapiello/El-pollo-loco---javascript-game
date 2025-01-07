@@ -32,15 +32,7 @@ class World {
   }
 
   setWorld() {
-    // currently just needed for the keyboard in character
     this.character.world = this;
-    // Imposta il riferimento del mondo in ogni nemico
-    // this.level.enemies.forEach(enemy => {
-    //   enemy.world = this;
-    //   if (enemy instanceof Chicken) {
-    //     enemy.generateX(); // Chiama generateX() dopo aver assegnato world
-    //   }
-    // });
   }
 
   generateBottleOnTheGrounds(numberOfBottles) {
