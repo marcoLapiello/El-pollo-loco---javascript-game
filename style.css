@@ -5,6 +5,13 @@
     font-style: normal;
 }
 
+@font-face {
+    font-family: 'rioGrandeStriped';
+    src: url('fonts/RioGrande_Striped.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 * {
     margin: 0;
     box-sizing: border-box;
@@ -33,6 +40,42 @@ h1 {
     font-size: 48px;
     letter-spacing: 2px;
     text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.instructions {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 18px;
+
+}
+
+.singleInstruction {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.reverse{
+    flex-direction: row-reverse;
+}
+
+.separator {
+    height: 30px;
+    width: 2px;
+    background-color: black;
+}
+
+.arrow {
+    width: 40px;
+    height: 30px;
+}
+
+.btnName {
+    font-family: 'rioGrandeStriped';
+    font-size: 36px;
 }
 
 canvas {
