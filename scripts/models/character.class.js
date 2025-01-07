@@ -6,6 +6,7 @@ class Character extends MovableObject {
   offsetY = 100;
   widthCorrection = 60;
   heightCorrection = 110;
+  counter = 0;
   IMAGES_IDLE = [
     "Grafics/img/2_character_pepe/1_idle/idle/I-1.png",
     "Grafics/img/2_character_pepe/1_idle/idle/I-2.png",
@@ -110,10 +111,10 @@ class Character extends MovableObject {
     setInterval(() => {
       if (this.isNotMoving()) {
         this.playAnimation(this.IMAGES_IDLE)
-      } else if (this.isDead()) {
+      } else if (this.isDead() && this.counter === 0) {
         // Add a counter-variable to play the animation just one time
         this.playAnimation(this.IMAGES_DEAD);
-        // set here the counter to 1 (default 0)
+        this.counter = 1;
       } else if (this.getsHurt()) {
         this.playAnimation(this.IMAGES_HURT)
       } else if (this.isInTheAir()) {
