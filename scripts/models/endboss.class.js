@@ -8,6 +8,7 @@ class Endboss extends MovableObject {
   heightCorrection = 110;
   isWalking = false;
   isAttacking = false;
+  counter = 0;
   attackSpeedX = 2;
   // getsAttacked = false;
   startWalkingDistanceX = 720;
@@ -84,16 +85,19 @@ class Endboss extends MovableObject {
     setInterval(() => {
       if (!this.isWalking && !this.isAttacking && !this.isDead()) {
         this.playAnimation(this.IMAGES_ALERT);
-      } else if (this.isDead()) {
+      } else if (this.isDead() && this.counter === 0) {
         // Add a counter-variable to play the animation just one time
-        this.playAnimation(this.IMAGES_DEAD);
-        // set here the counter to 1 (default 0)
+        this.playAnimationOnce(this.IMAGES_DEAD);
+        // setTimeout(() => {
+        //   this.counter = 1;
+        // }, 170);
+        
       } else if (this.isAttacking && !this.isDead()) {
         this.playAnimation(this.IMAGES_ATTACKING);
-      } else if (this.getsHurt()) {
+      } else if (this.getsHurt() && !this.isDead()) {
         this.playAnimation(this.IMAGES_HURT);
         
-      } else if (this.isWalking && !this.isAttacking) {
+      } else if (this.isWalking && !this.isAttacking && !this.isDead()) {
         this.playAnimation(this.IMAGES_WALKING);
       }
     }, 100);

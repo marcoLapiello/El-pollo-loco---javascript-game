@@ -3,7 +3,7 @@ class MovableObject extends DrawableObjects {
   speedX;
   speedY;
   acceleration = 1;
-  health = 100;
+  health = 10;
   lastHit = 0;
 
   playAnimation(imgArray) {
@@ -11,6 +11,19 @@ class MovableObject extends DrawableObjects {
     let path = imgArray[index];
     this.img = this.imageCache[path];
     this.currentImageIndex++;
+  }
+
+  playAnimationOnce(imgArray) {
+    let index = this.currentImageIndex % imgArray.length;
+    let path = imgArray[index];
+    this.img = this.imageCache[path];
+    if (index === imgArray.length - 1) {
+      this.currentImageIndex = imgArray.length - 1;
+      
+    } else {
+      this.currentImageIndex++;
+    }
+    
   }
 
   moveRight() {

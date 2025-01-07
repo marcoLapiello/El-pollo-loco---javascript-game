@@ -109,21 +109,25 @@ class Character extends MovableObject {
     }, 1000 / 60);
 
     setInterval(() => {
-      if (this.isNotMoving()) {
+      if (this.isNotMoving() && !this.isDead()) {
         this.playAnimation(this.IMAGES_IDLE)
       } else if (this.isDead() && this.counter === 0) {
         // Add a counter-variable to play the animation just one time
-        this.playAnimation(this.IMAGES_DEAD);
-        this.counter = 1;
-      } else if (this.getsHurt()) {
+        this.playAnimationOnce(this.IMAGES_DEAD);
+        
+      } else if (this.getsHurt() && !this.isDead()) {
         this.playAnimation(this.IMAGES_HURT)
-      } else if (this.isInTheAir()) {
+      } else if (this.isInTheAir() && !this.isDead()) {
         this.playAnimation(this.IMAGES_JUMPING);
       } else {
-        if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
+        if (this.world.keyboard.RIGHT && !this.isDead() || this.world.keyboard.LEFT && !this.isDead()) {
           this.playAnimation(this.IMAGES_WALKING);
         }
       }
     }, 100);
+
+    
   }
+
+  
 }
