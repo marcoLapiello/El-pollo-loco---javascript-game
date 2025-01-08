@@ -76,6 +76,8 @@ class MovableObject extends DrawableObjects {
     this.health -= 1;
     if (this.health < 0) {
       this.health = 0;
+    } else if (this instanceof Chicken) {
+      this.health = 0;
     } else {
       this.lastHit = new Date().getTime();
     }

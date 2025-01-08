@@ -157,7 +157,10 @@ class World {
       let collidingBottle = this.bottles.find((bottle) => bottle.isColliding(enemy));
       if (this.character.isInTheAir() && this.character.isColliding(enemy) && !(enemy instanceof Endboss)) {
         this.killedChicken_Sound.play();
-        return false;
+        enemy.getsHit();
+        console.log("Enemy health:", enemy.health);
+        
+        // return false;
       } else if (collidingBottle) {
         if (enemy instanceof Endboss) {
           collidingBottle.isBreaking = true;
