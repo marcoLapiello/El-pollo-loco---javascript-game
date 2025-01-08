@@ -127,7 +127,7 @@ class World {
 
   checkCollision() {
     this.level.enemies.forEach((enemy) => {
-      if (this.character.isColliding(enemy) && !this.character.isInTheAir()) {
+      if (this.character.isColliding(enemy) && !this.character.isInTheAir() && enemy.health > 0) {
         this.character.getsHit();
         this.healthBar.setStatusBars("HEALTH", this.character.health);
       }
@@ -155,10 +155,10 @@ class World {
   killEnemies() {
     this.level.enemies = this.level.enemies.filter((enemy) => {
       let collidingBottle = this.bottles.find((bottle) => bottle.isColliding(enemy));
-      if (this.character.isInTheAir() && this.character.isColliding(enemy) && !(enemy instanceof Endboss)) {
+      if (this.character.isInTheAir() && this.character.isColliding(enemy) && !(enemy instanceof Endboss) && enemy.health > 0) {  
         this.killedChicken_Sound.play();
         enemy.getsHit();
-        console.log("Enemy health:", enemy.health);
+        
         
         // return false;
       } else if (collidingBottle) {
@@ -170,7 +170,8 @@ class World {
         } else {
           collidingBottle.isBreaking = true;
           this.breakingBottle_Sound.play();
-          return false;
+          enemy.getsHit();
+          // return false;
         }
       }
       return true;

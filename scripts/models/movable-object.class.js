@@ -3,7 +3,7 @@ class MovableObject extends DrawableObjects {
   speedX;
   speedY;
   acceleration = 1;
-  health = 10;
+  health = 100;
   lastHit = 0;
 
   playAnimation(imgArray) {
