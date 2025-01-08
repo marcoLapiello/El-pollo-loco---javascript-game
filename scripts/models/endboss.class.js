@@ -51,6 +51,9 @@ class Endboss extends MovableObject {
     "Grafics/img/4_enemie_boss_chicken/5_dead/G26.png",
   ];
 
+  die_sound = new Audio("audio/boss_dies.wav");
+  deadSoundOn = false;
+
   constructor() {
     super().loadImage(this.IMAGES_ALERT[0]);
     this.loadImages(this.IMAGES_ALERT);
@@ -61,6 +64,7 @@ class Endboss extends MovableObject {
     this.x = 2200;
     this.speedX = 1;
     this.animate();
+    this.stopIntervals();
   }
 
   switchWalkingAttacking(bool1, bool2) {
@@ -69,29 +73,22 @@ class Endboss extends MovableObject {
   }
 
   animate() {
-    setInterval(() => {
+    let motionInterval = setInterval(() => {
       if (this.isWalking && !this.isDead()) {
         this.moveLeft();
       } else if (this.isAttacking && !this.isDead()) {
         this.x -= this.attackSpeedX;
-      } //else if (this.getsAttacked) {
-      //   if (this.isAttacking || this.isWalking) {
-      //     // this.x += 0.3; // Logic to simulate a body receiving a hit - to fix
-      //     // this.getsAttacked = false;
-      //   }
-      // }
+      }
     }, 1000 / 60);
 
-    setInterval(() => {
+    let animationInterval = setInterval(() => {
+
       if (!this.isWalking && !this.isAttacking && !this.isDead()) {
         this.playAnimation(this.IMAGES_ALERT);
       } else if (this.isDead() && this.counter === 0) {
-        // Add a counter-variable to play the animation just one time
         this.playAnimationOnce(this.IMAGES_DEAD);
-        // setTimeout(() => {
-        //   this.counter = 1;
-        // }, 170);
-        
+        this.die_sound.play();
+        this.stopIntervals(animationInterval);
       } else if (this.isAttacking && !this.isDead()) {
         this.playAnimation(this.IMAGES_ATTACKING);
       } else if (this.getsHurt() && !this.isDead()) {
@@ -101,5 +98,16 @@ class Endboss extends MovableObject {
         this.playAnimation(this.IMAGES_WALKING);
       }
     }, 100);
+
+    
   }
+
+  stopIntervals(animationInterval) {
+    setTimeout(() => {
+      // clearInterval(this.motionInterval);
+      clearInterval(animationInterval);
+    }, 800);
+  }
+
+  
 }

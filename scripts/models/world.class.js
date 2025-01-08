@@ -18,6 +18,7 @@ class World {
   bottlesBar = new StatusBars("BOTTLES", 40, this.ownedBottles, this);
   coinsBar = new StatusBars("COINS", 80, this.ownedCoins, this);
   bossBar = new StatusBars("BOSS", 120, 100, this);
+  breakingBottle_Sound = new Audio("audio/glass-shatter-sound.wav");
 
   constructor(canvas, keyboard, gameIsStarted) {
     this.ctx = canvas.getContext("2d");
@@ -155,7 +156,7 @@ class World {
       } else if (collidingBottle) {
         if (enemy instanceof Endboss) {
           collidingBottle.isBreaking = true;
-          // enemy.getsAttacked = true;
+          this.breakingBottle_Sound.play();
           enemy.getsHit();
           this.bossBar.setStatusBars("BOSS", enemy.health);
         } else {

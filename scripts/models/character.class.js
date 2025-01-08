@@ -69,6 +69,7 @@ class Character extends MovableObject {
   speedX = 3;
   jumpDuration = 670; // in ms
   walking_sound = new Audio("audio/running.wav");
+  jumping_sound = new Audio("audio/breath_jump.wav");
 
   constructor() {
     super().loadImage(this.IMAGES_IDLE[0]);
@@ -88,6 +89,7 @@ class Character extends MovableObject {
   animate() {
     setInterval(() => {
       this.walking_sound.pause();
+      // this.jumping_sound.pause();
 
       if (this.world.keyboard.RIGHT && this.x < world.level.LEVEL_END_X) {
         this.moveRight();
@@ -103,6 +105,7 @@ class Character extends MovableObject {
 
       if (this.world.keyboard.SPACE && this.isOnTheGround()) {
         this.jump();
+        this.jumping_sound.play();
       }
 
       world.camera_x = -this.x + 100;
@@ -120,7 +123,7 @@ class Character extends MovableObject {
       } else if (this.isInTheAir() && !this.isDead()) {
         this.playAnimation(this.IMAGES_JUMPING);
       } else {
-        if (this.world.keyboard.RIGHT && !this.isDead() || this.world.keyboard.LEFT && !this.isDead()) {
+        if (this.world.keyboard.RIGHT && !this.isDead() && !this.isInTheAir() || this.world.keyboard.LEFT && !this.isDead() && !this.isInTheAir()) {
           this.playAnimation(this.IMAGES_WALKING);
         }
       }
