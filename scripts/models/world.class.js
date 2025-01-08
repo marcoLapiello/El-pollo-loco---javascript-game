@@ -19,19 +19,22 @@ class World {
   coinsBar = new StatusBars("COINS", 80, this.ownedCoins, this);
   bossBar = new StatusBars("BOSS", 120, 100, this);
   breakingBottle_Sound = new Audio("audio/glass-shatter-sound.wav");
+  killedChicken_Sound = new Audio("audio/splatting_Chicken.wav");
+  chickenSound = new Audio("audio/chicken_comes_closer.mp3");
 
   constructor(canvas, keyboard, gameIsStarted) {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
     this.keyboard = keyboard;
     this.gameIsStarted = gameIsStarted;
-    console.log("World " + gameIsStarted);
+    
     
     this.generateBottleOnTheGrounds(20);
     this.generateCoinsAroundTheWorld(20);
     this.draw();
     this.setWorld();
     this.run();
+    
     
   }
 
@@ -76,13 +79,14 @@ class World {
     if (!this.gameIsStarted) {
       return;
     }
-    setInterval(() => {
+    let runInterval = setInterval(() => {
       this.checkCollision();
       this.handleThrowBottle();
       this.checkCollectBottle();
       this.checkCollectCoins();
       this.killEnemies();
       this.handleBoss();
+      this.playChickenSound();
     }, 50);
   }
 
@@ -101,9 +105,9 @@ class World {
     this.bottlesOnTheGround = this.bottlesOnTheGround.filter((bottle) => {
       if (this.character.isColliding(bottle) && this.ownedBottles < 10) {
         this.ownedBottles++;
-        this.ownedBottlesPercent = this.ownedBottles * 10; // max bottle owned is 10
+        this.ownedBottlesPercent = this.ownedBottles * 10;
         this.bottlesBar.setStatusBars("BOTTLES", this.ownedBottlesPercent);
-        return false; // Remove bottle from the array
+        return false;
       }
       return true;
     });
@@ -113,9 +117,9 @@ class World {
     this.coinsAroundTheWorld = this.coinsAroundTheWorld.filter((coin) => {
       if (this.character.isColliding(coin) && this.ownedCoins < 100) {
         this.ownedCoins++;
-        this.ownedCoinsPercent = this.ownedCoins * 5; // max coins owned is 20
+        this.ownedCoinsPercent = this.ownedCoins * 5;
         this.coinsBar.setStatusBars("COINS", this.ownedCoinsPercent);
-        return false; // Remove coin from the array
+        return false;
       }
       return true;
     });
@@ -152,7 +156,8 @@ class World {
     this.level.enemies = this.level.enemies.filter((enemy) => {
       let collidingBottle = this.bottles.find((bottle) => bottle.isColliding(enemy));
       if (this.character.isInTheAir() && this.character.isColliding(enemy) && !(enemy instanceof Endboss)) {
-        return false; // Remove this exact (enemy) from the array if it s a chicken
+        this.killedChicken_Sound.play();
+        return false;
       } else if (collidingBottle) {
         if (enemy instanceof Endboss) {
           collidingBottle.isBreaking = true;
@@ -161,11 +166,20 @@ class World {
           this.bossBar.setStatusBars("BOSS", enemy.health);
         } else {
           collidingBottle.isBreaking = true;
+          this.breakingBottle_Sound.play();
           return false;
         }
       }
       return true;
     });
+  }
+
+  playChickenSound() {
+    this.chickenSound.play();
+    setInterval(() => {
+      this.chickenSound.play();
+    }, 5000);
+    
   }
 
   draw() {

@@ -15,6 +15,7 @@ class Chicken extends MovableObject {
     "Grafics/img/3_enemies_chicken/chicken_normal/1_walk/2_w.png",
     "Grafics/img/3_enemies_chicken/chicken_normal/1_walk/3_w.png",
   ];
+  
 
   constructor() {
     super().loadImage(this.IMAGES_WALKING[0]);
@@ -40,6 +41,7 @@ class Chicken extends MovableObject {
   animate() {
     setInterval(() => {
       this.moveLeft();
+      // this.chickenSound.play();
       if (this.x + this.width < 0) {
         // This let the chicken start again from right
         // after they disappear at the left side of the screen
