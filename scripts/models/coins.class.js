@@ -1,4 +1,6 @@
-class Coins extends DrawableObjects {
+import { DrawableObjects } from './drawable-objects.class.js';
+
+export class Coins extends DrawableObjects {
   offsetX = 33;
   offsetY = 33;
   widthCorrection = 65;
@@ -7,8 +9,8 @@ class Coins extends DrawableObjects {
   IMAGES = ["Grafics/img/8_coin/coin_2.png"];
 
   constructor(x, y) {
-    super().loadImage(this.IMAGES[0]);
-    // this.loadImages(this.IMAGES);
+    super();
+    this.loadImage(this.IMAGES[0]);
     this.x = x;
     this.y = y;
     this.height = 100;

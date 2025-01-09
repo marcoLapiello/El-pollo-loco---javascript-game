@@ -1,4 +1,7 @@
-class Character extends MovableObject {
+import { MovableObject } from "./movable-object.class.js";
+import { intervalManager } from "../managers/intervalManager.class.js";
+
+export class Character extends MovableObject {
   y = 190;
   height = 270;
   width = 135;
@@ -7,6 +10,8 @@ class Character extends MovableObject {
   widthCorrection = 60;
   heightCorrection = 110;
   counter = 0;
+  isCharacter = true;
+
   IMAGES_IDLE = [
     "Grafics/img/2_character_pepe/1_idle/idle/I-1.png",
     "Grafics/img/2_character_pepe/1_idle/idle/I-2.png",
@@ -19,6 +24,7 @@ class Character extends MovableObject {
     "Grafics/img/2_character_pepe/1_idle/idle/I-9.png",
     "Grafics/img/2_character_pepe/1_idle/idle/I-10.png",
   ];
+
   IMAGES_SLEEP = [
     "Grafics/img/2_character_pepe/1_idle/long_idle/I-11.png",
     "Grafics/img/2_character_pepe/1_idle/long_idle/I-12.png",
@@ -31,6 +37,7 @@ class Character extends MovableObject {
     "Grafics/img/2_character_pepe/1_idle/long_idle/I-19.png",
     "Grafics/img/2_character_pepe/1_idle/long_idle/I-20.png",
   ];
+
   IMAGES_WALKING = [
     "Grafics/img/2_character_pepe/2_walk/W-21.png",
     "Grafics/img/2_character_pepe/2_walk/W-22.png",
@@ -39,6 +46,7 @@ class Character extends MovableObject {
     "Grafics/img/2_character_pepe/2_walk/W-25.png",
     "Grafics/img/2_character_pepe/2_walk/W-26.png",
   ];
+
   IMAGES_JUMPING = [
     "Grafics/img/2_character_pepe/3_jump/J-31.png",
     "Grafics/img/2_character_pepe/3_jump/J-32.png",
@@ -50,6 +58,7 @@ class Character extends MovableObject {
     "Grafics/img/2_character_pepe/3_jump/J-38.png",
     "Grafics/img/2_character_pepe/3_jump/J-39.png",
   ];
+
   IMAGES_DEAD = [
     "Grafics/img/2_character_pepe/5_dead/D-51.png",
     "Grafics/img/2_character_pepe/5_dead/D-52.png",
@@ -59,12 +68,13 @@ class Character extends MovableObject {
     "Grafics/img/2_character_pepe/5_dead/D-56.png",
     "Grafics/img/2_character_pepe/5_dead/D-57.png",
   ];
+
   IMAGES_HURT = [
     "Grafics/img/2_character_pepe/4_hurt/H-41.png",
     "Grafics/img/2_character_pepe/4_hurt/H-42.png",
     "Grafics/img/2_character_pepe/4_hurt/H-43.png",
   ];
-  // keyboard;
+
   world;
   speedX = 3;
   jumpDuration = 670; // in ms
@@ -81,17 +91,19 @@ class Character extends MovableObject {
     this.loadImages(this.IMAGES_HURT);
     this.applyGravity();
     this.animate();
-    
   }
-  
- 
+
+  // setWorld(world) {
+  //   this.world = world;
+  //   console.log("World assegnato al character:", this.world);
+  // }
 
   animate() {
-    setInterval(() => {
+    intervalManager.setInterval(() => {
       this.walking_sound.pause();
-      // this.jumping_sound.pause();
-
-      if (this.world.keyboard.RIGHT && this.x < world.level.LEVEL_END_X) {
+      console.log("World:", this.world);
+      
+      if (this.world.keyboard.RIGHT && this.x < this.world.level.LEVEL_END_X) {
         this.moveRight();
         this.facingLeft = false;
         this.walking_sound.play();
@@ -108,29 +120,26 @@ class Character extends MovableObject {
         this.jumping_sound.play();
       }
 
-      world.camera_x = -this.x + 100;
+      this.world.camera_x = -this.x + 100;
     }, 1000 / 60);
 
-    setInterval(() => {
+    intervalManager.setInterval(() => {
       if (this.isNotMoving() && !this.isDead()) {
-        this.playAnimation(this.IMAGES_IDLE)
+        this.playAnimation(this.IMAGES_IDLE);
       } else if (this.isDead() && this.counter === 0) {
-        // Add a counter-variable to play the animation just one time
         this.playAnimationOnce(this.IMAGES_DEAD);
-        
       } else if (this.getsHurt() && !this.isDead()) {
-        this.playAnimation(this.IMAGES_HURT)
+        this.playAnimation(this.IMAGES_HURT);
       } else if (this.isInTheAir() && !this.isDead()) {
         this.playAnimation(this.IMAGES_JUMPING);
       } else {
-        if (this.world.keyboard.RIGHT && !this.isDead() && !this.isInTheAir() || this.world.keyboard.LEFT && !this.isDead() && !this.isInTheAir()) {
+        if (
+          (this.world.keyboard.RIGHT && !this.isDead() && !this.isInTheAir()) ||
+          (this.world.keyboard.LEFT && !this.isDead() && !this.isInTheAir())
+        ) {
           this.playAnimation(this.IMAGES_WALKING);
         }
       }
     }, 100);
-
-    
   }
-
-  
 }

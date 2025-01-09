@@ -1,9 +1,20 @@
-class World {
+import { Bottle } from "./bottle.class.js";
+import { BottlesOnTheGround } from "./bottlesOnTheGround.class.js";
+import { Coins } from "./coins.class.js";
+import { Character } from "./character.class.js";
+import { StatusBars } from "./statusBars.class.js";
+import { Endboss } from "./endboss.class.js";
+import { intervalManager } from "../managers/intervalManager.class.js";
+
+import { level1 } from "../levels/level1.js";
+
+export class World {
   gameIsStarted;
   character = new Character();
   level = level1;
   canvas;
   ctx;
+  // inputHandler;
   keyboard;
   camera_x = 0;
   bottles = [];
@@ -21,22 +32,27 @@ class World {
   breakingBottle_Sound = new Audio("audio/glass-shatter-sound.wav");
   killedChicken_Sound = new Audio("audio/splatting_Chicken.wav");
   chickenSound = new Audio("audio/chicken_comes_closer.mp3");
+  chickenSoundInterval = null;
+  intervalId = null;
 
   constructor(canvas, keyboard, gameIsStarted) {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
     this.keyboard = keyboard;
+    // this.inputHandler = inputHandler;
     this.gameIsStarted = gameIsStarted;
-    
+
+    // this.character = new Character(); // Crea il personaggio
+    // this.character.setWorld(this); // Assegna il riferimento al mondo
+   
     
     this.generateBottleOnTheGrounds(20);
     this.generateCoinsAroundTheWorld(20);
     this.draw();
     this.setWorld();
     this.run();
-    
-    
   }
+
 
   setWorld() {
     this.character.world = this;
@@ -59,13 +75,12 @@ class World {
     for (let i = 0; i < numberOfCoins; i++) {
       let y = possibleYValues[Math.floor(Math.random() * possibleYValues.length)];
 
-      
       if (i % 3 === 0 && i !== 0) {
         x += minDistance * 3;
       } else {
         x += minDistance;
       }
-      
+
       if (x > 2200) {
         x = 200 + (x - 2200);
       }
@@ -74,24 +89,40 @@ class World {
       this.coinsAroundTheWorld.push(coin);
     }
   }
-  
+
   run() {
-    if (!this.gameIsStarted) {
-      return;
-    }
-    let runInterval = setInterval(() => {
-      this.checkCollision();
-      this.handleThrowBottle();
-      this.checkCollectBottle();
-      this.checkCollectCoins();
-      this.killEnemies();
-      this.handleBoss();
-      this.playChickenSound();
+    if (!this.gameIsStarted) return;
+
+    this.intervalId = intervalManager.setInterval(() => {
+      this.updateGameState();
+      if (this.character.health <= 0) {
+        this.stopGame();
+      }
     }, 50);
   }
 
+  updateGameState() {
+    this.checkCollision();
+    this.handleThrowBottle();
+    this.checkCollectBottle();
+    this.checkCollectCoins();
+    this.killEnemies();
+    this.handleBoss();
+    this.playChickenSound();
+  }
+
+  stopGame() {
+    intervalManager.clearInterval(this.intervalId);
+    this.stopChickenSound();
+  }
+
+  stopChickenSound() {
+    intervalManager.clearInterval(this.chickenSoundInterval);
+    this.chickenSoundInterval = null;
+  }
+
   handleBoss() {
-    const endboss = this.level.enemies.find(enemy => enemy instanceof Endboss);
+    const endboss = this.level.enemies.find((enemy) => enemy instanceof Endboss);
     this.bossBar.updateBossBar(endboss);
     let distancefromCharacter = endboss.x - this.character.x;
     if (distancefromCharacter < endboss.startWalkingDistanceX && distancefromCharacter > endboss.startAttackingDistanceX) {
@@ -155,12 +186,9 @@ class World {
   killEnemies() {
     this.level.enemies = this.level.enemies.filter((enemy) => {
       let collidingBottle = this.bottles.find((bottle) => bottle.isColliding(enemy));
-      if (this.character.isInTheAir() && this.character.isColliding(enemy) && !(enemy instanceof Endboss) && enemy.health > 0) {  
+      if (this.character.isInTheAir() && this.character.isColliding(enemy) && !(enemy instanceof Endboss) && enemy.health > 0) {
         this.killedChicken_Sound.play();
         enemy.getsHit();
-        
-        
-        // return false;
       } else if (collidingBottle) {
         if (enemy instanceof Endboss) {
           collidingBottle.isBreaking = true;
@@ -171,7 +199,6 @@ class World {
           collidingBottle.isBreaking = true;
           this.breakingBottle_Sound.play();
           enemy.getsHit();
-          // return false;
         }
       }
       return true;
@@ -179,11 +206,12 @@ class World {
   }
 
   playChickenSound() {
+    if (this.chickenSoundInterval) return; // Prevent multiple intervals
+
     this.chickenSound.play();
-    setInterval(() => {
+    this.chickenSoundInterval = intervalManager.setInterval(() => {
       this.chickenSound.play();
     }, 5000);
-    
   }
 
   draw() {
@@ -201,7 +229,7 @@ class World {
     this.addToMap(this.healthBar);
     this.addToMap(this.bottlesBar);
     this.addToMap(this.coinsBar);
-    
+
     requestAnimationFrame(() => {
       this.draw();
     });

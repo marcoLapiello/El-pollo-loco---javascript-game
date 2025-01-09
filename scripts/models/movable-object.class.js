@@ -1,9 +1,13 @@
-class MovableObject extends DrawableObjects {
+import { DrawableObjects } from './drawable-objects.class.js';
+import { Bottle } from './bottle.class.js';
+
+
+export class MovableObject extends DrawableObjects {
   facingLeft = false;
-  speedX;
-  speedY;
+  speedX = 0;
+  speedY = 0;
   acceleration = 1;
-  health = 100;
+  health = 10;
   lastHit = 0;
 
   playAnimation(imgArray) {
@@ -19,11 +23,9 @@ class MovableObject extends DrawableObjects {
     this.img = this.imageCache[path];
     if (index === imgArray.length - 1) {
       this.currentImageIndex = imgArray.length - 1;
-      
     } else {
       this.currentImageIndex++;
     }
-    
   }
 
   moveRight() {
@@ -39,16 +41,21 @@ class MovableObject extends DrawableObjects {
   }
 
   applyGravity() {
-    setInterval(() => {
+    const gravityInterval = setInterval(() => {
       if (this.isInTheAir() || this.speedY > 0) {
         this.y -= this.speedY;
         this.speedY -= this.acceleration;
-        if (this instanceof Character && this.y >= 190) {
+        if (this.isCharacter && this.y >= 190) {
           this.y = 190;
           this.speedY = 0;
         }
       }
     }, 1000 / 60);
+
+    // Registra l'intervallo in un gestore centrale, se disponibile
+    if (typeof intervalManager !== 'undefined') {
+      intervalManager.setInterval(gravityInterval);
+    }
   }
 
   isInTheAir() {
@@ -76,7 +83,7 @@ class MovableObject extends DrawableObjects {
     this.health -= 1;
     if (this.health < 0) {
       this.health = 0;
-    } else if (this instanceof Chicken) {
+    } else if (this.type === 'chicken') {
       this.health = 0;
     } else {
       this.lastHit = new Date().getTime();
@@ -84,13 +91,13 @@ class MovableObject extends DrawableObjects {
   }
 
   getsHurt() {
-    let timePassed = new Date().getTime() - this.lastHit; // Difference in ms
-    timePassed = timePassed / 1000; // Difference in s
+    let timePassed = new Date().getTime() - this.lastHit; // Differenza in ms
+    timePassed = timePassed / 1000; // Differenza in s
     return timePassed < 0.7;
   }
 
   isDead() {
-    return this.health == 0;
+    return this.health === 0;
   }
 
   isNotMoving() {
@@ -109,3 +116,4 @@ class MovableObject extends DrawableObjects {
     }
   }
 }
+

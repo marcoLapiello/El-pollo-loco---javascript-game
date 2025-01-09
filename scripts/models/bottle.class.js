@@ -1,4 +1,7 @@
-class Bottle extends MovableObject {
+import { MovableObject } from './movable-object.class.js';
+import { intervalManager } from '../managers/intervalManager.class.js';
+
+export class Bottle extends MovableObject {
   offsetX = 15;
   offsetY = 7;
   widthCorrection = 35;
@@ -10,7 +13,7 @@ class Bottle extends MovableObject {
     "Grafics/img/6_salsa_bottle/bottle_rotation/2_bottle_rotation.png",
     "Grafics/img/6_salsa_bottle/bottle_rotation/3_bottle_rotation.png",
     "Grafics/img/6_salsa_bottle/bottle_rotation/4_bottle_rotation.png",
-  ]
+  ];
 
   CRASH_IMAGES = [
     "Grafics/img/6_salsa_bottle/bottle_rotation/bottle_splash/1_bottle_splash.png",
@@ -19,8 +22,8 @@ class Bottle extends MovableObject {
     "Grafics/img/6_salsa_bottle/bottle_rotation/bottle_splash/4_bottle_splash.png",
     "Grafics/img/6_salsa_bottle/bottle_rotation/bottle_splash/5_bottle_splash.png",
     "Grafics/img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png",
-  ]
-  
+  ];
+
   constructor(initialX, initialY) {
     super();
     this.loadImage("Grafics/img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png");
@@ -39,13 +42,18 @@ class Bottle extends MovableObject {
 
   throw() {
     this.applyGravity();
-    const movementInterval = setInterval(() => {
+    this.movementInterval = intervalManager.setInterval(() => {
       if (!this.isBreaking) {
         this.x += this.speedX;
         this.playAnimation(this.ROTATION_IMAGES);
       } else {
         this.playAnimation(this.CRASH_IMAGES);
-      } 
+        this.stopAnimation(); // Ferma l'animazione una volta completata
+      }
     }, 25);
+  }
+
+  stopAnimation() {
+    intervalManager.clearInterval(this.movementInterval);
   }
 }

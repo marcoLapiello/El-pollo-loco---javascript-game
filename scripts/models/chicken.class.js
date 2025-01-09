@@ -1,7 +1,8 @@
-class Chicken extends MovableObject {
-  // Proprietà statica per memorizzare il riferimento al character
-  world;
+import { MovableObject } from './movable-object.class.js';
+import { intervalManager } from '../managers/intervalManager.class.js';
 
+export class Chicken extends MovableObject {
+  type = 'chicken';
   x = 720 + Math.random() * 1800;
   y = 370;
   height = 80;
@@ -10,58 +11,42 @@ class Chicken extends MovableObject {
   offsetY = 5;
   widthCorrection = 8;
   heightCorrection = 10;
+
   IMAGES_WALKING = [
     "Grafics/img/3_enemies_chicken/chicken_normal/1_walk/1_w.png",
     "Grafics/img/3_enemies_chicken/chicken_normal/1_walk/2_w.png",
     "Grafics/img/3_enemies_chicken/chicken_normal/1_walk/3_w.png",
   ];
-  IMAGE_Dead = ["Grafics/img/3_enemies_chicken/chicken_normal/2_dead/dead.png"];
-  
+
+  IMAGE_DEAD = ["Grafics/img/3_enemies_chicken/chicken_normal/2_dead/dead.png"];
 
   constructor() {
     super().loadImage(this.IMAGES_WALKING[0]);
     this.loadImages(this.IMAGES_WALKING);
-    this.loadImages(this.IMAGE_Dead);
-    // this.x = generateX();
+    this.loadImages(this.IMAGE_DEAD);
     this.speedX = 0.5 + Math.random() * 1.5;
     this.animate();
-    
-    
-    // this.generateX();
-    
   }
 
-  // generateX() {
-  //   if (this.world) {
-  //     this.x = this.world.character.x + 720 + Math.random() * 500;
-  //     console.log("World assegnato correttamente:", this.world);
-  //   } else {
-  //     console.warn("World non assegnato correttamente");
-  //   }
-  //   console.log(this.world.character.x);
-   
-  // }
-
   animate() {
-    setInterval(() => {
+    intervalManager.setInterval(() => {
       if (!this.isDead()) {
         this.moveLeft();
       }
-      
-      
+
       if (this.x + this.width < 0) {
-        // This let the chicken start again from right
-        // after they disappear at the left side of the screen
-        // this.x = 720;
+        // Lascia il pollo ricominciare da destra
+        this.x = 720 + Math.random() * 1800;
       }
     }, 1000 / 60);
 
-    setInterval(() => {
+    intervalManager.setInterval(() => {
       if (!this.isDead()) {
         this.playAnimation(this.IMAGES_WALKING);
-      } else if (this.isDead()) {
-        this.playAnimationOnce(this.IMAGE_Dead);
+      } else {
+        this.playAnimationOnce(this.IMAGE_DEAD);
       }
     }, 100);
   }
 }
+

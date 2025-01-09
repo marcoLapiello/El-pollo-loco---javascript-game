@@ -1,7 +1,9 @@
-class StatusBars extends DrawableObjects {
+import { DrawableObjects } from './drawable-objects.class.js';
+
+export class StatusBars extends DrawableObjects {
   world;
   percentage;
-  
+
   healthBarImages = [
     "Grafics/img/7_statusbars/1_statusbar/2_statusbar_health/blue/0.png",
     "Grafics/img/7_statusbars/1_statusbar/2_statusbar_health/blue/20.png",
@@ -10,14 +12,16 @@ class StatusBars extends DrawableObjects {
     "Grafics/img/7_statusbars/1_statusbar/2_statusbar_health/blue/80.png",
     "Grafics/img/7_statusbars/1_statusbar/2_statusbar_health/blue/100.png",
   ];
+
   bottlesBarImages = [
     "Grafics/img/7_statusbars/1_statusbar/3_statusbar_bottle/green/0.png",
     "Grafics/img/7_statusbars/1_statusbar/3_statusbar_bottle/green/20.png",
     "Grafics/img/7_statusbars/1_statusbar/3_statusbar_bottle/green/40.png",
     "Grafics/img/7_statusbars/1_statusbar/3_statusbar_bottle/green/60.png",
     "Grafics/img/7_statusbars/1_statusbar/3_statusbar_bottle/green/80.png",
-    "Grafics/img/7_statusbars/1_statusbar/3_statusbar_bottle/green/100.png"
+    "Grafics/img/7_statusbars/1_statusbar/3_statusbar_bottle/green/100.png",
   ];
+
   coinsBarImages = [
     "Grafics/img/7_statusbars/1_statusbar/1_statusbar_coin/orange/0.png",
     "Grafics/img/7_statusbars/1_statusbar/1_statusbar_coin/orange/20.png",
@@ -26,6 +30,7 @@ class StatusBars extends DrawableObjects {
     "Grafics/img/7_statusbars/1_statusbar/1_statusbar_coin/orange/80.png",
     "Grafics/img/7_statusbars/1_statusbar/1_statusbar_coin/orange/100.png",
   ];
+
   bossBarImages = [
     "Grafics/img/7_statusbars/2_statusbar_endboss/orange/orange0.png",
     "Grafics/img/7_statusbars/2_statusbar_endboss/orange/orange20.png",
@@ -56,26 +61,26 @@ class StatusBars extends DrawableObjects {
       this.y = endboss.y - 20; // Posizionato sopra il boss
     }
   }
-  
 
   setStatusBars(type, percentage) {
-    if (type === "HEALTH") {
-      this.imgArray = this.healthBarImages;
-      this.percentage = percentage;
-      this.setPercentage(this.percentage, this.imgArray);
-    } else if (type === "BOTTLES") {
-      this.imgArray = this.bottlesBarImages;
-      this.percentage = percentage;
-      this.setPercentage(this.percentage, this.imgArray);
-    } else if (type === "COINS") {
-      this.imgArray = this.coinsBarImages;
-      this.percentage = percentage;
-      this.setPercentage(this.percentage, this.imgArray);
-    } else if (type === "BOSS") {
-      this.imgArray = this.bossBarImages;
-      this.percentage = percentage;
-      this.setPercentage(this.percentage, this.imgArray);
+    switch (type) {
+      case "HEALTH":
+        this.imgArray = this.healthBarImages;
+        break;
+      case "BOTTLES":
+        this.imgArray = this.bottlesBarImages;
+        break;
+      case "COINS":
+        this.imgArray = this.coinsBarImages;
+        break;
+      case "BOSS":
+        this.imgArray = this.bossBarImages;
+        break;
+      default:
+        this.imgArray = [];
     }
+    this.percentage = percentage;
+    this.setPercentage(this.percentage, this.imgArray);
   }
 
   setPercentage(percentage, imgArray) {
@@ -86,7 +91,7 @@ class StatusBars extends DrawableObjects {
   }
 
   findImgIndex() {
-    if (this.percentage == 100) {
+    if (this.percentage >= 100) {
       return 5;
     } else if (this.percentage > 80) {
       return 4;
@@ -101,3 +106,4 @@ class StatusBars extends DrawableObjects {
     }
   }
 }
+

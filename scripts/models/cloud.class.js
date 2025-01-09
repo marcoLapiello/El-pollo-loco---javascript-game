@@ -1,4 +1,7 @@
-class Clouds extends MovableObject {
+import { MovableObject } from './movable-object.class.js';
+import { intervalManager } from '../managers/intervalManager.class.js';
+
+export class Clouds extends MovableObject {
   y = 20;
   width = 500;
   height = 300;
@@ -12,7 +15,7 @@ class Clouds extends MovableObject {
   }
 
   cloudsConstantMove() {
-    setInterval(() => {
+    intervalManager.setInterval(() => {
       this.x -= this.speed;
       if (this.x + this.width < 0) {
         this.x = 720;
