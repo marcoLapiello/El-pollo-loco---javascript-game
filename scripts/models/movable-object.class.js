@@ -6,7 +6,7 @@ export class MovableObject extends DrawableObjects {
   speedX = 0;
   speedY = 0;
   acceleration = 1;
-  health = 10;
+  health = 100;
   lastHit = 0;
 
   playAnimation(imgArray, frameSkip = 1, loop = true) {
