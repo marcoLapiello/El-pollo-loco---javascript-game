@@ -26,34 +26,34 @@ export class Bottle extends MovableObject {
 
   constructor(initialX, initialY) {
     super();
-    this.loadImage("Grafics/img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png");
+    this.loadImage(this.ROTATION_IMAGES[0]);
     this.loadImages(this.ROTATION_IMAGES);
     this.loadImages(this.CRASH_IMAGES);
     this.x = initialX;
     this.y = initialY;
     this.height = 50;
     this.width = 50;
-    this.acceleration = 1;
+    this.acceleration = 1.5;
     this.speedX = 25;
     this.speedY = 17;
 
-    this.throw();
-  }
-
-  throw() {
     this.applyGravity();
-    this.movementInterval = intervalManager.setInterval(() => {
-      if (!this.isBreaking) {
-        this.x += this.speedX;
-        this.playAnimation(this.ROTATION_IMAGES);
-      } else {
-        this.playAnimation(this.CRASH_IMAGES);
-        this.stopAnimation(); // Ferma l'animazione una volta completata
-      }
-    }, 25);
+    this.registerAnimation();
   }
 
-  stopAnimation() {
-    intervalManager.clearInterval(this.movementInterval);
+  registerAnimation() {
+    intervalManager.registerAnimation(this, {
+      update: () => {
+        if (!this.isBreaking) {
+          this.x += this.speedX;
+          this.playAnimation(this.ROTATION_IMAGES);
+        } else {
+          this.playAnimation(this.CRASH_IMAGES);
+          if (this.currentImageIndex >= this.CRASH_IMAGES.length - 1) {
+            intervalManager.unregisterAnimation(this);
+          }
+        }
+      },
+    });
   }
 }

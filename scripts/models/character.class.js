@@ -93,15 +93,10 @@ export class Character extends MovableObject {
     this.animate();
   }
 
-  // setWorld(world) {
-  //   this.world = world;
-  //   console.log("World assegnato al character:", this.world);
-  // }
-
   animate() {
     intervalManager.setInterval(() => {
       this.walking_sound.pause();
-      console.log("World:", this.world);
+      
       
       if (this.world.keyboard.RIGHT && this.x < this.world.level.LEVEL_END_X) {
         this.moveRight();
