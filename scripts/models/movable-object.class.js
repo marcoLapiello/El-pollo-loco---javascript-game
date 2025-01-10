@@ -9,12 +9,23 @@ export class MovableObject extends DrawableObjects {
   health = 10;
   lastHit = 0;
 
-  playAnimation(imgArray) {
-    let index = this.currentImageIndex % imgArray.length;
-    let path = imgArray[index];
-    this.img = this.imageCache[path];
+  // playAnimation(imgArray) {
+  //   let index = this.currentImageIndex % imgArray.length;
+  //   let path = imgArray[index];
+  //   this.img = this.imageCache[path];
+  //   this.currentImageIndex++;
+  // }
+
+  playAnimation(imgArray, frameSkip = 1) {
+    if (this.currentImageIndex % frameSkip === 0) { 
+      // Aggiorna immagine solo se il frame attuale è divisibile per frameSkip
+      let index = Math.floor(this.currentImageIndex / frameSkip) % imgArray.length;
+      let path = imgArray[index];
+      this.img = this.imageCache[path];
+    }
     this.currentImageIndex++;
   }
+  
 
   playAnimationOnce(imgArray) {
     let index = this.currentImageIndex % imgArray.length;

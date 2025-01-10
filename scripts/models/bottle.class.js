@@ -46,9 +46,9 @@ export class Bottle extends MovableObject {
       update: () => {
         if (!this.isBreaking) {
           this.x += this.speedX;
-          this.playAnimation(this.ROTATION_IMAGES);
+          this.playAnimation(this.ROTATION_IMAGES, 3);
         } else {
-          this.playAnimation(this.CRASH_IMAGES);
+          this.playAnimation(this.CRASH_IMAGES, 1);
           if (this.currentImageIndex >= this.CRASH_IMAGES.length - 1) {
             intervalManager.unregisterAnimation(this);
           }

@@ -1,8 +1,8 @@
-import { MovableObject } from './movable-object.class.js';
-import { intervalManager } from '../managers/intervalManager.class.js';
+import { MovableObject } from "./movable-object.class.js";
+import { intervalManager } from "../managers/intervalManager.class.js";
 
 export class Chicken extends MovableObject {
-  type = 'chicken';
+  type = "chicken";
   x = 720 + Math.random() * 1800;
   y = 370;
   height = 80;
@@ -25,28 +25,29 @@ export class Chicken extends MovableObject {
     this.loadImages(this.IMAGES_WALKING);
     this.loadImages(this.IMAGE_DEAD);
     this.speedX = 0.5 + Math.random() * 1.5;
-    this.animate();
+    this.registerAnimation();
   }
 
-  animate() {
-    intervalManager.setInterval(() => {
-      if (!this.isDead()) {
-        this.moveLeft();
-      }
+  registerAnimation() {
+    intervalManager.registerAnimation(this, {
+      update: () => {
+        if (!this.isDead()) {
+          this.moveLeft();
+        }
+        if (this.x + this.width < 0) {
+          this.x = 720 + Math.random() * 1800;
+        }
+      },
+    });
 
-      if (this.x + this.width < 0) {
-        // Lascia il pollo ricominciare da destra
-        this.x = 720 + Math.random() * 1800;
-      }
-    }, 1000 / 60);
-
-    intervalManager.setInterval(() => {
-      if (!this.isDead()) {
-        this.playAnimation(this.IMAGES_WALKING);
-      } else {
-        this.playAnimationOnce(this.IMAGE_DEAD);
-      }
-    }, 100);
+    intervalManager.registerAnimation(this, {
+      update: () => {
+        if (!this.isDead()) {
+          this.playAnimation(this.IMAGES_WALKING, 5);
+        } else {
+          this.playAnimationOnce(this.IMAGE_DEAD);
+        }
+      },
+    });
   }
 }
-
