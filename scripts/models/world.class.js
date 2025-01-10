@@ -44,15 +44,13 @@ export class World {
 
     // this.character = new Character(); // Crea il personaggio
     // this.character.setWorld(this); // Assegna il riferimento al mondo
-   
-    
+
     this.generateBottleOnTheGrounds(20);
     this.generateCoinsAroundTheWorld(20);
     this.draw();
     this.setWorld();
     this.run();
   }
-
 
   setWorld() {
     this.character.world = this;
@@ -92,7 +90,7 @@ export class World {
 
   run() {
     if (!this.gameIsStarted) return;
-  
+
     intervalManager.registerAnimation(this, {
       update: () => {
         this.updateGameState();
@@ -102,7 +100,6 @@ export class World {
       },
     });
   }
-  
 
   updateGameState() {
     this.checkCollision();
@@ -119,7 +116,6 @@ export class World {
     intervalManager.unregisterAnimation(this); // Rimuove l'aggiornamento registrato
     this.stopChickenSound();
   }
-  
 
   stopChickenSound() {
     intervalManager.clearInterval(this.chickenSoundInterval);
