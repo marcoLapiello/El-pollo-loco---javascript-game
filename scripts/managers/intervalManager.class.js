@@ -21,8 +21,8 @@ class IntervalManager {
 
   // Cancella tutti gli intervalli
   clearAllIntervals() {
-    this.intervals.forEach((id) => clearInterval(id));
-    this.intervals = [];
+    this.animations.forEach((id) => clearInterval(id));
+    this.animations = [];
   }
 
   logIntervals() {

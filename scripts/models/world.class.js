@@ -92,14 +92,17 @@ export class World {
 
   run() {
     if (!this.gameIsStarted) return;
-
-    this.intervalId = intervalManager.setInterval(() => {
-      this.updateGameState();
-      if (this.character.health <= 0) {
-        this.stopGame();
-      }
-    }, 50);
+  
+    intervalManager.registerAnimation(this, {
+      update: () => {
+        this.updateGameState();
+        if (this.character.health <= 0) {
+          intervalManager.clearAllIntervals();
+        }
+      },
+    });
   }
+  
 
   updateGameState() {
     this.checkCollision();
@@ -112,9 +115,11 @@ export class World {
   }
 
   stopGame() {
-    intervalManager.clearInterval(this.intervalId);
+    this.gameIsStarted = false;
+    intervalManager.unregisterAnimation(this); // Rimuove l'aggiornamento registrato
     this.stopChickenSound();
   }
+  
 
   stopChickenSound() {
     intervalManager.clearInterval(this.chickenSoundInterval);
