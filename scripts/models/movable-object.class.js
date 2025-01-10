@@ -10,6 +10,10 @@ export class MovableObject extends DrawableObjects {
   lastHit = 0;
 
   playAnimation(imgArray, frameSkip = 1, loop = true) {
+    if (!imgArray || imgArray.length === 0) {
+      console.error("Array di immagini non valido:", imgArray);
+      return; // Esce se l'array è undefined o vuoto
+    }
     if (this.currentImageIndex % frameSkip === 0) {
       let index = Math.floor(this.currentImageIndex / frameSkip);
       

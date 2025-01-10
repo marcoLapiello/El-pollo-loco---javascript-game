@@ -1,5 +1,6 @@
 import { MovableObject } from "./movable-object.class.js";
 import { intervalManager } from "../managers/intervalManager.class.js";
+import { IMAGES_WALKING, IMAGE_DEAD } from "../imgsPaths/chickenImgs.js";
 
 export class Chicken extends MovableObject {
   type = "chicken";
@@ -12,18 +13,11 @@ export class Chicken extends MovableObject {
   widthCorrection = 8;
   heightCorrection = 10;
 
-  IMAGES_WALKING = [
-    "Grafics/img/3_enemies_chicken/chicken_normal/1_walk/1_w.png",
-    "Grafics/img/3_enemies_chicken/chicken_normal/1_walk/2_w.png",
-    "Grafics/img/3_enemies_chicken/chicken_normal/1_walk/3_w.png",
-  ];
-
-  IMAGE_DEAD = ["Grafics/img/3_enemies_chicken/chicken_normal/2_dead/dead.png"];
-
+  
   constructor() {
-    super().loadImage(this.IMAGES_WALKING[0]);
-    this.loadImages(this.IMAGES_WALKING);
-    this.loadImages(this.IMAGE_DEAD);
+    super().loadImage(IMAGES_WALKING[0]);
+    this.loadImages(IMAGES_WALKING);
+    this.loadImages(IMAGE_DEAD);
     this.speedX = 0.5 + Math.random() * 1.5;
     this.registerAnimation();
   }
@@ -43,9 +37,9 @@ export class Chicken extends MovableObject {
     intervalManager.registerAnimation(this, {
       update: () => {
         if (!this.isDead()) {
-          this.playAnimation(this.IMAGES_WALKING, 5, true);
+          this.playAnimation(IMAGES_WALKING, 5, true);
         } else {
-          this.playAnimation(this.IMAGE_DEAD, 1, false);
+          this.playAnimation(IMAGE_DEAD, 1, false);
         }
       },
     });
