@@ -43,9 +43,9 @@ export class Chicken extends MovableObject {
     intervalManager.registerAnimation(this, {
       update: () => {
         if (!this.isDead()) {
-          this.playAnimation(this.IMAGES_WALKING, 5);
+          this.playAnimation(this.IMAGES_WALKING, 5, true);
         } else {
-          this.playAnimationOnce(this.IMAGE_DEAD);
+          this.playAnimation(this.IMAGE_DEAD, 1, false);
         }
       },
     });
