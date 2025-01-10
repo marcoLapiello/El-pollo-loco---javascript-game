@@ -2,7 +2,6 @@
 import { World } from "./models/world.class.js";
 import { Keyboard } from "./models/keyboard.class.js";
 import { intervalManager } from "./managers/intervalManager.class.js";
-import { InputHandler } from "./managers/inputHandler.class.js";
 import { stateManager } from "./managers/stateManager.class.js";
 
 let canvas;

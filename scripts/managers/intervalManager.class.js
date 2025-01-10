@@ -1,6 +1,8 @@
 class IntervalManager {
   constructor() {
     this.intervals = []; // Memorizza gli ID degli intervalli
+    this.animations = []; // Memorizza gli oggetti animati
+    this.logIntervals();
     
   }
 
@@ -23,12 +25,41 @@ class IntervalManager {
     this.intervals = [];
   }
 
-  // logIntervals() {
-  //   setInterval(() => {
-  //     console.log(this.intervals);
-  //   }, 3000);
-    
-  // }
+  logIntervals() {
+    console.log(this.animations);
+  }
+
+  // Registra un'animazione centralizzata
+  registerAnimation(object, config) {
+    const animation = {
+      object,
+      update: config.update,
+    };
+    this.animations.push(animation);
+    this.startAnimation();
+  }
+
+  // Avvia il loop di animazione centralizzato
+  startAnimation() {
+    if (!this.animationLoop) {
+      this.animationLoop = this.setInterval(() => {
+        this.animations.forEach((animation) => {
+          animation.update();
+        });
+      }, 1000 / 60); // 60 FPS
+    }
+  }
+
+  // Rimuove un'animazione
+  unregisterAnimation(object) {
+    this.animations = this.animations.filter(
+      (animation) => animation.object !== object
+    );
+    if (this.animations.length === 0 && this.animationLoop) {
+      this.clearInterval(this.animationLoop);
+      this.animationLoop = null;
+    }
+  }
 }
 
 export const intervalManager = new IntervalManager();

@@ -9,17 +9,18 @@ export class Clouds extends MovableObject {
 
   constructor() {
     super().loadImage("Grafics/img/5_background/layers/4_clouds/1.png");
-
     this.x = Math.random() * 720;
-    this.cloudsConstantMove();
+    this.registerMovement();
   }
 
-  cloudsConstantMove() {
-    intervalManager.setInterval(() => {
-      this.x -= this.speed;
-      if (this.x + this.width < 0) {
-        this.x = 720;
+  registerMovement() {
+    intervalManager.registerAnimation(this, {
+      update: () => {
+        this.x -= this.speed;
+        if (this.x + this.width < 0) {
+          this.x = 720;
+        }
       }
-    }, 1000 / 60);
+    });
   }
 }
