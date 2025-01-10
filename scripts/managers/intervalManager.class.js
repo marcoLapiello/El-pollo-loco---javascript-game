@@ -1,6 +1,7 @@
 class IntervalManager {
   constructor() {
     this.intervals = []; // Memorizza gli ID degli intervalli
+    
   }
 
   // Crea un intervallo e lo memorizza
@@ -21,6 +22,13 @@ class IntervalManager {
     this.intervals.forEach((id) => clearInterval(id));
     this.intervals = [];
   }
+
+  // logIntervals() {
+  //   setInterval(() => {
+  //     console.log(this.intervals);
+  //   }, 3000);
+    
+  // }
 }
 
 export const intervalManager = new IntervalManager();

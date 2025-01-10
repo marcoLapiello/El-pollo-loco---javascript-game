@@ -1,6 +1,5 @@
-import { DrawableObjects } from './drawable-objects.class.js';
-import { Bottle } from './bottle.class.js';
-
+import { DrawableObjects } from "./drawable-objects.class.js";
+import { Bottle } from "./bottle.class.js";
 
 export class MovableObject extends DrawableObjects {
   facingLeft = false;
@@ -53,7 +52,7 @@ export class MovableObject extends DrawableObjects {
     }, 1000 / 60);
 
     // Registra l'intervallo in un gestore centrale, se disponibile
-    if (typeof intervalManager !== 'undefined') {
+    if (typeof intervalManager !== "undefined") {
       intervalManager.setInterval(gravityInterval);
     }
   }
@@ -83,7 +82,7 @@ export class MovableObject extends DrawableObjects {
     this.health -= 1;
     if (this.health < 0) {
       this.health = 0;
-    } else if (this.type === 'chicken') {
+    } else if (this.type === "chicken") {
       this.health = 0;
     } else {
       this.lastHit = new Date().getTime();
@@ -104,8 +103,6 @@ export class MovableObject extends DrawableObjects {
     if (
       !this.world.keyboard.LEFT &&
       !this.world.keyboard.RIGHT &&
-      !this.world.keyboard.UP &&
-      !this.world.keyboard.DOWN &&
       !this.world.keyboard.SPACE &&
       !this.world.keyboard.B &&
       !this.isDead() &&
@@ -116,4 +113,3 @@ export class MovableObject extends DrawableObjects {
     }
   }
 }
-
