@@ -7,14 +7,7 @@ import { Endboss } from '../models/endboss.class.js';
 export const level1 = new Level(
   [
     new Chicken(),
-    new Chicken(),
-    new Chicken(),
-    new Chicken(),
-    new Chicken(),
-    new Chicken(),
-    new Chicken(),
-    new Chicken(),
-    new Chicken(),
+    
     new Endboss(),
   ],
   [new Clouds()],

@@ -122,7 +122,7 @@ export class Character extends MovableObject {
       if (this.isNotMoving() && !this.isDead()) {
         this.playAnimation(this.IMAGES_IDLE);
       } else if (this.isDead() && this.counter === 0) {
-        this.playAnimationOnce(this.IMAGES_DEAD);
+        this.playAnimation(this.IMAGES_DEAD);
       } else if (this.getsHurt() && !this.isDead()) {
         this.playAnimation(this.IMAGES_HURT);
       } else if (this.isInTheAir() && !this.isDead()) {

@@ -1,5 +1,5 @@
-import { MovableObject } from './movable-object.class.js';
-import { intervalManager } from '../managers/intervalManager.class.js';
+import { MovableObject } from "./movable-object.class.js";
+import { intervalManager } from "../managers/intervalManager.class.js";
 
 export class Endboss extends MovableObject {
   height = 350;
@@ -67,9 +67,9 @@ export class Endboss extends MovableObject {
     this.loadImages(this.IMAGES_DEAD);
     this.loadImages(this.IMAGES_HURT);
     this.loadImages(this.IMAGES_ATTACKING);
-    this.x = 2200;
+    this.x = 1500;
     this.speedX = 1;
-    this.animate();
+    this.registerAnimation();
   }
 
   switchWalkingAttacking(bool1, bool2) {
@@ -77,30 +77,52 @@ export class Endboss extends MovableObject {
     this.isAttacking = bool2;
   }
 
-  animate() {
-    intervalManager.setInterval(() => {
-      if (this.isWalking && !this.isDead()) {
-        this.moveLeft();
-      } else if (this.isAttacking && !this.isDead()) {
-        this.x -= this.attackSpeedX;
-      }
-    }, 1000 / 60);
+  registerAnimation() {
+    intervalManager.registerAnimation(this, {
+      update: () => {
+        if (this.isWalking && !this.isDead()) {
+          this.moveLeft();
+        } else if (this.isAttacking && !this.isDead()) {
+          this.x -= this.attackSpeedX;
+        }
+      },
+    });
 
-    intervalManager.setInterval(() => {
-      if (!this.isWalking && !this.isAttacking && !this.isDead()) {
-        this.playAnimation(this.IMAGES_ALERT);
-      } else if (this.isDead() && this.counter === 0) {
-        this.playAnimationOnce(this.IMAGES_DEAD);
-        this.die_sound.play();
-        this.counter++; // Incrementa il contatore per evitare di rigiocare l'animazione
-      } else if (this.isAttacking && !this.isDead()) {
-        this.playAnimation(this.IMAGES_ATTACKING);
-      } else if (this.getsHurt() && !this.isDead()) {
-        this.playAnimation(this.IMAGES_HURT);
-      } else if (this.isWalking && !this.isAttacking && !this.isDead()) {
-        this.playAnimation(this.IMAGES_WALKING);
-      }
-    }, 100);
+    intervalManager.registerAnimation(this, {
+      update: () => {
+        if (!this.isWalking && !this.isAttacking && !this.isDead()) {
+          this.playAnimation(this.IMAGES_ALERT, 3, true);
+        } else if (this.isDead() && this.counter === 0) {
+          this.playAnimation(this.IMAGES_DEAD, 0.5, true);
+          this.die_sound.play();
+          this.counter++;
+          
+        } else if (this.isAttacking && !this.isDead()) {
+          this.playAnimation(this.IMAGES_ATTACKING, 10, true);
+        } else if (this.getsHurt() && !this.isDead()) {
+          this.playAnimation(this.IMAGES_HURT, 10, false);
+        } else if (this.isWalking && !this.isAttacking && !this.isDead()) {
+          this.playAnimation(this.IMAGES_WALKING, 10, true);
+        }
+      },
+    });
+
+    intervalManager.registerAnimation(this, {
+      update: () => {
+        if (this.isDead() && this.counter === 0) {
+          this.playAnimation(this.IMAGES_DEAD, 1, true);
+          this.die_sound.play();
+          this.counter++;
+        } else if (this.getsHurt() && !this.isDead()) {
+          this.playAnimation(this.IMAGES_HURT, 10, false);
+        } else if (this.isAttacking && !this.isDead()) {
+          this.playAnimation(this.IMAGES_ATTACKING, 10, true);
+        } else if (this.isWalking && !this.isAttacking && !this.isDead()) {
+          this.playAnimation(this.IMAGES_WALKING, 10, true);
+        } else if (!this.isWalking && !this.isAttacking && !this.isDead()) {
+          this.playAnimation(this.IMAGES_ALERT, 3, true);
+        }
+      },
+    });
   }
 }
-
