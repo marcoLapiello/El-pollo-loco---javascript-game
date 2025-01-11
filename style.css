@@ -112,11 +112,45 @@ canvas {
     align-items: flex-start;
 }
 
+.endScreen {
+    width: 800px;
+    height: 480px;
+    border-radius: 20px;
+    border: solid black 2px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    position: relative;
+    
+}
+
+
+
+.resetButton {
+    position: absolute;
+    top: 36px;
+}
+
+.endScreenImg {
+    max-width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px;
+}
+
 .startImg {
     width: 100%;
     height: 100%;
     object-fit: cover;
     border-radius: 20px;
+}
+
+.scale {
+    scale: 1;
+}
+
+.opacity {
+    opacity: 1;
 }
 
 /* Smartphone */

@@ -33,6 +33,8 @@ export class World {
   chickenSound = new Audio("audio/chicken_comes_closer.mp3");
   chickenSoundInterval = null;
   intervalId = null;
+  gameOverImgPath = "./Grafics/img/9_intro_outro_screens/game_over/game over.png";
+  youWinImgPath = "./Grafics/img/9_intro_outro_screens/win/win_2.png"
 
   constructor(canvas, keyboard, gameIsStarted) {
     this.ctx = canvas.getContext("2d");
@@ -91,7 +93,11 @@ export class World {
     setTimeout(() => {
       intervalManager.clearAllIntervals();
       this.stopChickenSound();
-    }, 1000);
+      const endImg = document.getElementById("endScreenImg");
+      endImg.src = this.character.health <= 0 ? this.gameOverImgPath : this.youWinImgPath;
+      document.getElementById("canvas").classList.add("dNone");
+      document.getElementById("endScreen").classList.remove("dNone");
+    }, 2000);
   }
 
   stopChickenSound() {

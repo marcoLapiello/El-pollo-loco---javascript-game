@@ -59,6 +59,7 @@ export class Character extends MovableObject {
       update: () => {
         if (this.isDead()) {
           this.playAnimation(IMAGES_DEAD, 1, false);
+          intervalManager.unregisterAnimation(this);
         } else if (this.getsHurt() && !this.isDead()) {
           this.playAnimation(IMAGES_HURT, 3, true);
         } else if (!this.isDead() && this.isInTheAir()) {
