@@ -35,19 +35,19 @@ export class Character extends MovableObject {
       update: () => {
         this.walking_sound.pause();
 
-        if (this.world.keyboard.RIGHT && this.x < this.world.level.LEVEL_END_X) {
+        if (this.world.keyboard.RIGHT && this.x < this.world.level.LEVEL_END_X && !this.isDead()) {
           this.moveRight();
           this.facingLeft = false;
           this.walking_sound.play();
         }
 
-        if (this.world.keyboard.LEFT && this.x > -100) {
+        if (this.world.keyboard.LEFT && this.x > -100 && !this.isDead()) {
           this.moveLeft();
           this.facingLeft = true;
           this.walking_sound.play();
         }
 
-        if (this.world.keyboard.SPACE && this.isOnTheGround()) {
+        if (this.world.keyboard.SPACE && this.isOnTheGround() && !this.isDead()) {
           this.jump();
           this.jumping_sound.play();
         }
@@ -59,8 +59,8 @@ export class Character extends MovableObject {
     intervalManager.registerAnimation(this, {
       update: () => {
         if (this.isDead() && this.counter === 0) {
-          this.playAnimation(IMAGES_DEAD, 2, false);
-          this.counter++;
+          this.playAnimation(IMAGES_DEAD, 1, false);
+          // this.counter++;
         } else if (this.getsHurt() && !this.isDead()) {
           this.playAnimation(IMAGES_HURT, 3, true);
         } else if (!this.isDead() && this.isInTheAir()) {

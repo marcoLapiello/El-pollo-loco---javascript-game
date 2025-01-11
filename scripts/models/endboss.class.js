@@ -12,7 +12,6 @@ export class Endboss extends MovableObject {
   heightCorrection = 110;
   isWalking = false;
   isAttacking = false;
-  counter = 0;
   attackSpeedX = 2;
   startWalkingDistanceX = 720;
   startAttackingDistanceX = 220;
@@ -50,16 +49,10 @@ export class Endboss extends MovableObject {
 
     intervalManager.registerAnimation(this, {
       update: () => {
-        // console.log("Controllo animazioni per:", this.constructor.name);
-        if (this.isDead() && this.counter === 0) {
-          console.log("Boss morto. Animazione di morte iniziata.");
-          const isComplete = this.playAnimation(IMAGES_DEAD, 1, false);
-          if (isComplete) {
-            console.log("Animazione di morte completata");
-            this.counter++;
-            this.die_sound.play();
-            intervalManager.unregisterAnimation(this);
-          }
+        if (this.isDead()) {
+          this.playAnimation(IMAGES_DEAD, 1, false);
+          this.die_sound.play();
+          intervalManager.unregisterAnimation(this);
         } else if (this.getsHurt() && !this.isDead()) {
           this.playAnimation(IMAGES_HURT, 8, true);
         } else if (this.isAttacking && !this.isDead() && !this.getsHurt()) {

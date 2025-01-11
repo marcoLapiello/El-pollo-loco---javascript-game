@@ -67,11 +67,6 @@ export class MovableObject extends DrawableObjects {
         }
       }
     }, 1000 / 60);
-
-    // Registra l'intervallo in un gestore centrale, se disponibile
-    if (typeof intervalManager !== "undefined") {
-      intervalManager.setInterval(gravityInterval);
-    }
   }
 
   isInTheAir() {

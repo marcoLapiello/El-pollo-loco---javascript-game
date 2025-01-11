@@ -40,12 +40,7 @@ export class World {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
     this.keyboard = keyboard;
-    // this.inputHandler = inputHandler;
     this.gameIsStarted = gameIsStarted;
-
-    // this.character = new Character(); // Crea il personaggio
-    // this.character.setWorld(this); // Assegna il riferimento al mondo
-
     this.generateBottleOnTheGrounds(20);
     this.generateCoinsAroundTheWorld(20);
     this.draw();
@@ -92,12 +87,12 @@ export class World {
 
   run() {
     if (!this.gameIsStarted) return;
-
     intervalManager.registerAnimation(this, {
       update: () => {
         this.updateGameState();
-        if (this.character.health <= 0) {
-          intervalManager.clearAllIntervals();
+        const endboss = this.level.enemies.find((enemy) => enemy instanceof Endboss);
+        if (this.character.health <= 0 || endboss.health <= 0) {
+          this.stopGame();
         }
       },
     });
@@ -114,10 +109,18 @@ export class World {
   }
 
   stopGame() {
-    this.gameIsStarted = false;
-    intervalManager.unregisterAnimation(this); // Rimuove l'aggiornamento registrato
-    this.stopChickenSound();
+    setTimeout(() => {
+      intervalManager.clearAllIntervals();
+      this.stopChickenSound();
+    }, 1000);
+    
   }
+
+  // stopGame() {
+  //   this.gameIsStarted = false;
+  //   intervalManager.unregisterAnimation(this); // Rimuove l'aggiornamento registrato
+  //   this.stopChickenSound();
+  // }
 
   stopChickenSound() {
     intervalManager.clearInterval(this.chickenSoundInterval);
