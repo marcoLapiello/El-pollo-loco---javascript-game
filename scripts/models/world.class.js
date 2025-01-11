@@ -189,7 +189,7 @@ export class World {
   killEnemies() {
     this.level.enemies = this.level.enemies.filter((enemy) => {
       let collidingBottle = this.bottles.find((bottle) => bottle.isColliding(enemy));
-      if (this.character.isInTheAir() && this.character.isColliding(enemy) && !(enemy instanceof Endboss) && enemy.health > 0) {
+      if (this.character.isInTheAir() && this.character.speedY < 0 && this.character.isColliding(enemy) && !(enemy instanceof Endboss) && enemy.health > 0) {
         this.killedChicken_Sound.play();
         enemy.getsHit();
       } else if (collidingBottle) {
