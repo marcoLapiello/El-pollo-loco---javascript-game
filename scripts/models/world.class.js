@@ -116,12 +116,6 @@ export class World {
     
   }
 
-  // stopGame() {
-  //   this.gameIsStarted = false;
-  //   intervalManager.unregisterAnimation(this); // Rimuove l'aggiornamento registrato
-  //   this.stopChickenSound();
-  // }
-
   stopChickenSound() {
     intervalManager.clearInterval(this.chickenSoundInterval);
     this.chickenSoundInterval = null;
