@@ -34,7 +34,7 @@ export class World {
   chickenSoundInterval = null;
   intervalId = null;
   gameOverImgPath = "./Grafics/img/9_intro_outro_screens/game_over/game over.png";
-  youWinImgPath = "./Grafics/img/9_intro_outro_screens/win/win_2.png"
+  youWinImgPath = "./Grafics/img/9_intro_outro_screens/win/win_2.png";
 
   constructor(canvas, keyboard, gameIsStarted) {
     this.ctx = canvas.getContext("2d");
