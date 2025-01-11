@@ -26,7 +26,7 @@ export class Endboss extends MovableObject {
     this.loadImages(IMAGES_ATTACKING);
     this.x = 1500;
     this.speedX = 1;
-    this.registerAnimation();
+    // this.registerAnimation();
   }
 
   switchWalkingAttacking(bool1, bool2) {

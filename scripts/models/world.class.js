@@ -14,7 +14,6 @@ export class World {
   level = level1;
   canvas;
   ctx;
-  // inputHandler;
   keyboard;
   camera_x = 0;
   bottles = [];
@@ -34,58 +33,33 @@ export class World {
   chickenSound = new Audio("audio/chicken_comes_closer.mp3");
   chickenSoundInterval = null;
   intervalId = null;
-  
 
   constructor(canvas, keyboard, gameIsStarted) {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
     this.keyboard = keyboard;
     this.gameIsStarted = gameIsStarted;
+    this.startGame();
+  }
+
+  startGame() {
+    this.gameIsStarted = true;
+    this.runGameEngine();
+    this.startAnimations();
+    this.cleanUpDeadEnemies();
+    this.setWorld();
+    this.draw();
     this.generateBottleOnTheGrounds(20);
     this.generateCoinsAroundTheWorld(20);
-    this.draw();
-    this.setWorld();
-    this.run();
-    this.cleanUpDeadEnemies();
   }
 
-  setWorld() {
-    this.character.world = this;
+  startAnimations() {
+    this.level.clouds.forEach((cloud) => cloud.registerAnimation());
+    this.level.enemies.forEach((enemy) => enemy.registerAnimation());
+    this.character.registerAnimation();
   }
 
-  generateBottleOnTheGrounds(numberOfBottles) {
-    for (let i = 0; i < numberOfBottles; i++) {
-      let x = 200 + Math.random() * 2000;
-      let y = 390;
-      let bottleOnTheGround = new BottlesOnTheGround(x, y);
-      this.bottlesOnTheGround.push(bottleOnTheGround);
-    }
-  }
-
-  generateCoinsAroundTheWorld(numberOfCoins) {
-    const minDistance = 50;
-    let possibleYValues = [150, 300];
-    let x = 200;
-
-    for (let i = 0; i < numberOfCoins; i++) {
-      let y = possibleYValues[Math.floor(Math.random() * possibleYValues.length)];
-
-      if (i % 3 === 0 && i !== 0) {
-        x += minDistance * 3;
-      } else {
-        x += minDistance;
-      }
-
-      if (x > 2200) {
-        x = 200 + (x - 2200);
-      }
-
-      let coin = new Coins(x, y);
-      this.coinsAroundTheWorld.push(coin);
-    }
-  }
-
-  run() {
+  runGameEngine() {
     if (!this.gameIsStarted) return;
     intervalManager.registerAnimation(this, {
       update: () => {
@@ -108,12 +82,16 @@ export class World {
     this.playChickenSound();
   }
 
+  setWorld() {
+    this.character.world = this;
+  }
+
   stopGame() {
+    this.chickenSound.pause();
     setTimeout(() => {
       intervalManager.clearAllIntervals();
       this.stopChickenSound();
     }, 1000);
-    
   }
 
   stopChickenSound() {
@@ -186,7 +164,13 @@ export class World {
   killEnemies() {
     this.level.enemies = this.level.enemies.filter((enemy) => {
       let collidingBottle = this.bottles.find((bottle) => bottle.isColliding(enemy));
-      if (this.character.isInTheAir() && this.character.speedY < 0 && this.character.isColliding(enemy) && !(enemy instanceof Endboss) && enemy.health > 0) {
+      if (
+        this.character.isInTheAir() &&
+        this.character.speedY < 0 &&
+        this.character.isColliding(enemy) &&
+        !(enemy instanceof Endboss) &&
+        enemy.health > 0
+      ) {
         this.killedChicken_Sound.play();
         enemy.getsHit();
       } else if (collidingBottle) {
@@ -217,12 +201,44 @@ export class World {
   }
 
   playChickenSound() {
-    if (this.chickenSoundInterval) return; // Prevent multiple intervals
+    if (this.chickenSoundInterval) return;
 
     this.chickenSound.play();
     this.chickenSoundInterval = intervalManager.setInterval(() => {
       this.chickenSound.play();
     }, 5000);
+  }
+
+  generateBottleOnTheGrounds(numberOfBottles) {
+    for (let i = 0; i < numberOfBottles; i++) {
+      let x = 200 + Math.random() * 2000;
+      let y = 390;
+      let bottleOnTheGround = new BottlesOnTheGround(x, y);
+      this.bottlesOnTheGround.push(bottleOnTheGround);
+    }
+  }
+
+  generateCoinsAroundTheWorld(numberOfCoins) {
+    const minDistance = 50;
+    let possibleYValues = [150, 300];
+    let x = 200;
+
+    for (let i = 0; i < numberOfCoins; i++) {
+      let y = possibleYValues[Math.floor(Math.random() * possibleYValues.length)];
+
+      if (i % 3 === 0 && i !== 0) {
+        x += minDistance * 3;
+      } else {
+        x += minDistance;
+      }
+
+      if (x > 2200) {
+        x = 200 + (x - 2200);
+      }
+
+      let coin = new Coins(x, y);
+      this.coinsAroundTheWorld.push(coin);
+    }
   }
 
   draw() {

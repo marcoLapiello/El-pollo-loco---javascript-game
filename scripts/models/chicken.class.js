@@ -18,7 +18,7 @@ export class Chicken extends MovableObject {
     this.loadImages(IMAGES_WALKING);
     this.loadImages(IMAGE_DEAD);
     this.speedX = 0.5 + Math.random() * 1.5;
-    this.registerAnimation();
+    // this.registerAnimation();
   }
 
   registerAnimation() {

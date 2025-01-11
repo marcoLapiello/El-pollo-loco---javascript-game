@@ -26,7 +26,7 @@ export class Character extends MovableObject {
     this.loadImages(IMAGES_DEAD);
     this.loadImages(IMAGES_HURT);
     this.applyGravity();
-    this.registerAnimation();
+    // this.registerAnimation();
   }
 
   registerAnimation() {
@@ -36,12 +36,16 @@ export class Character extends MovableObject {
         if (this.world.keyboard.RIGHT && this.x < this.world.level.LEVEL_END_X && !this.isDead()) {
           this.moveRight();
           this.facingLeft = false;
-          this.walking_sound.play();
+          if (!this.isInTheAir()) {
+            this.walking_sound.play();
+          }
         }
         if (this.world.keyboard.LEFT && this.x > -100 && !this.isDead()) {
           this.moveLeft();
           this.facingLeft = true;
-          this.walking_sound.play();
+          if (!this.isInTheAir()) {
+            this.walking_sound.play();
+          }
         }
         if (this.world.keyboard.SPACE && this.isOnTheGround() && !this.isDead()) {
           this.jump();
@@ -53,21 +57,17 @@ export class Character extends MovableObject {
 
     intervalManager.registerAnimation(this, {
       update: () => {
-        if (this.isDead() && this.counter === 0) {
+        if (this.isDead()) {
           this.playAnimation(IMAGES_DEAD, 1, false);
         } else if (this.getsHurt() && !this.isDead()) {
           this.playAnimation(IMAGES_HURT, 3, true);
         } else if (!this.isDead() && this.isInTheAir()) {
           this.playAnimation(IMAGES_JUMPING, 6, true);
-        } else if (
-          (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) &&
-          !this.isDead() &&
-          !this.isInTheAir()
-        ) {
+        } else if ((this.world.keyboard.RIGHT || this.world.keyboard.LEFT) && !this.isDead() && !this.isInTheAir()) {
           this.playAnimation(IMAGES_WALKING, 6, true);
         } else if (!this.isDead() && this.isNotMoving()) {
           this.playAnimation(IMAGES_IDLE, 10, true);
-        } 
+        }
       },
     });
   }
