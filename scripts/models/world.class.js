@@ -34,6 +34,7 @@ export class World {
   chickenSound = new Audio("audio/chicken_comes_closer.mp3");
   chickenSoundInterval = null;
   intervalId = null;
+  
 
   constructor(canvas, keyboard, gameIsStarted) {
     this.ctx = canvas.getContext("2d");
@@ -50,6 +51,7 @@ export class World {
     this.draw();
     this.setWorld();
     this.run();
+    this.cleanUpDeadEnemies();
   }
 
   setWorld() {
@@ -204,6 +206,17 @@ export class World {
       }
       return true;
     });
+  }
+
+  cleanUpDeadEnemies() {
+    setInterval(() => {
+      this.level.enemies = this.level.enemies.filter((enemyToRemove) => {
+        if (enemyToRemove.isDead() && !(enemyToRemove instanceof Endboss)) {
+          return false;
+        }
+        return true;
+      });
+    }, 2000);
   }
 
   playChickenSound() {

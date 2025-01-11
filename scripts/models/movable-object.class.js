@@ -12,22 +12,37 @@ export class MovableObject extends DrawableObjects {
   playAnimation(imgArray, frameSkip = 1, loop = true) {
     if (!imgArray || imgArray.length === 0) {
       console.error("Array di immagini non valido:", imgArray);
-      return; // Esce se l'array è undefined o vuoto
+      return false; // Esce se l'array è undefined o vuoto
     }
+  
+    let animationComplete = false;
+  
     if (this.currentImageIndex % frameSkip === 0) {
       let index = Math.floor(this.currentImageIndex / frameSkip);
-      
       if (loop) {
         index = index % imgArray.length;
       } else if (index >= imgArray.length) {
         index = imgArray.length - 1;
+        animationComplete = true; // Segnala il completamento
+        console.log("Animazione completata:", imgArray);
       }
       this.img = this.imageCache[imgArray[index]];
     }
+  
     if (loop || this.currentImageIndex / frameSkip < imgArray.length) {
       this.currentImageIndex++;
     }
+  
+    return animationComplete;
   }
+  
+
+  isAnimationComplete(imgArray, frameSkip = 1) {
+    const totalFrames = imgArray.length * frameSkip; // Considera il frameSkip
+    const currentFrame = this.currentImageIndex;
+    return currentFrame >= totalFrames;
+  }
+  
 
   moveRight() {
     this.x += this.speedX;

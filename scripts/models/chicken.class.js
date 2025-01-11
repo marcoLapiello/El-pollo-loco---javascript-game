@@ -13,7 +13,6 @@ export class Chicken extends MovableObject {
   widthCorrection = 8;
   heightCorrection = 10;
 
-  
   constructor() {
     super().loadImage(IMAGES_WALKING[0]);
     this.loadImages(IMAGES_WALKING);
@@ -27,19 +26,13 @@ export class Chicken extends MovableObject {
       update: () => {
         if (!this.isDead()) {
           this.moveLeft();
-        }
-        if (this.x + this.width < 0) {
-          this.x = 720 + Math.random() * 1800;
-        }
-      },
-    });
-
-    intervalManager.registerAnimation(this, {
-      update: () => {
-        if (!this.isDead()) {
           this.playAnimation(IMAGES_WALKING, 5, true);
         } else {
           this.playAnimation(IMAGE_DEAD, 1, false);
+          intervalManager.unregisterAnimation(this);
+        }
+        if (this.x + this.width < 0) {
+          this.x = 720 + Math.random() * 1800;
         }
       },
     });

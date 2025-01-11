@@ -16,9 +16,7 @@ export class Endboss extends MovableObject {
   attackSpeedX = 2;
   startWalkingDistanceX = 720;
   startAttackingDistanceX = 220;
-
-  
-
+  isDying = false; // Nuova proprietà
   die_sound = new Audio("audio/boss_dies.wav");
   deadSoundOn = false;
 
@@ -52,10 +50,16 @@ export class Endboss extends MovableObject {
 
     intervalManager.registerAnimation(this, {
       update: () => {
+        // console.log("Controllo animazioni per:", this.constructor.name);
         if (this.isDead() && this.counter === 0) {
-          this.playAnimation(IMAGES_DEAD, 1, false);
-          this.die_sound.play();
-          this.counter++;
+          console.log("Boss morto. Animazione di morte iniziata.");
+          const isComplete = this.playAnimation(IMAGES_DEAD, 1, false);
+          if (isComplete) {
+            console.log("Animazione di morte completata");
+            this.counter++;
+            this.die_sound.play();
+            intervalManager.unregisterAnimation(this);
+          }
         } else if (this.getsHurt() && !this.isDead()) {
           this.playAnimation(IMAGES_HURT, 8, true);
         } else if (this.isAttacking && !this.isDead() && !this.getsHurt()) {
