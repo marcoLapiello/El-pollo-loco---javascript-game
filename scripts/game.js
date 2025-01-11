@@ -52,5 +52,5 @@ function keyboardInputsFalse(event) {
 document.getElementById("startButton").addEventListener("click", startGame);
 
 document.getElementById("resetButton").addEventListener("click", () => {
-  location.reload(); // Ricarica la pagina
+  location.reload();
 });

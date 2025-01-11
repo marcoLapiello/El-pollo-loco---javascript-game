@@ -170,29 +170,30 @@ export class World {
   killEnemies() {
     this.level.enemies = this.level.enemies.filter((enemy) => {
       let collidingBottle = this.bottles.find((bottle) => bottle.isColliding(enemy));
-      if (
-        this.character.isInTheAir() &&
-        this.character.speedY < 0 &&
-        this.character.isColliding(enemy) &&
-        !(enemy instanceof Endboss) &&
-        enemy.health > 0
-      ) {
+      if (this.isCharacterJumpingOnEnemy(enemy)) {
         this.killedChicken_Sound.play();
         enemy.getsHit();
       } else if (collidingBottle) {
-        if (enemy instanceof Endboss) {
-          collidingBottle.isBreaking = true;
-          this.breakingBottle_Sound.play();
-          enemy.getsHit();
-          this.bossBar.setStatusBars("BOSS", enemy.health);
-        } else {
-          collidingBottle.isBreaking = true;
-          this.breakingBottle_Sound.play();
-          enemy.getsHit();
-        }
+        this.handleBottleCollision(enemy, collidingBottle);
       }
       return true;
     });
+  }
+
+  isCharacterJumpingOnEnemy(enemy) {
+    return (
+      this.character.isInTheAir() && this.character.speedY < 0 && this.character.isColliding(enemy) && !(enemy instanceof Endboss) && enemy.health > 0
+    );
+  }
+
+  handleBottleCollision(enemy, collidingBottle) {
+    collidingBottle.isBreaking = true;
+    this.breakingBottle_Sound.play();
+    enemy.getsHit();
+
+    if (enemy instanceof Endboss) {
+      this.bossBar.setStatusBars("BOSS", enemy.health);
+    }
   }
 
   cleanUpDeadEnemies() {
@@ -228,20 +229,16 @@ export class World {
     const minDistance = 50;
     let possibleYValues = [150, 300];
     let x = 200;
-
     for (let i = 0; i < numberOfCoins; i++) {
       let y = possibleYValues[Math.floor(Math.random() * possibleYValues.length)];
-
       if (i % 3 === 0 && i !== 0) {
         x += minDistance * 3;
       } else {
         x += minDistance;
       }
-
       if (x > 2200) {
         x = 200 + (x - 2200);
       }
-
       let coin = new Coins(x, y);
       this.coinsAroundTheWorld.push(coin);
     }
