@@ -34,14 +34,8 @@ export class Bottle extends MovableObject {
           this.playAnimation(ROTATION_IMAGES, 3, true);
         } else {
           this.playAnimation(CRASH_IMAGES, 1, false);
-          console.log("Indice immagine rottura:", this.currentImageIndex);
           if (this.currentImageIndex >= CRASH_IMAGES.length - 1) {
-            console.log("Animazione completa. Rimuovendo bottiglia.");
             intervalManager.unregisterAnimation(this);
-            // const index = this.world.bottles.indexOf(this);
-            // if (index > -1) {
-            //   this.world.bottles.splice(index, 1);
-            // }
           }
         }
       },

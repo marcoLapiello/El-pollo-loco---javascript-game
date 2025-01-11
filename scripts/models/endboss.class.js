@@ -53,16 +53,16 @@ export class Endboss extends MovableObject {
     intervalManager.registerAnimation(this, {
       update: () => {
         if (this.isDead() && this.counter === 0) {
-          this.playAnimation(IMAGES_DEAD, 1, true);
+          this.playAnimation(IMAGES_DEAD, 1, false);
           this.die_sound.play();
           this.counter++;
         } else if (this.getsHurt() && !this.isDead()) {
-          this.playAnimation(IMAGES_HURT, 10, false);
-        } else if (this.isAttacking && !this.isDead()) {
+          this.playAnimation(IMAGES_HURT, 8, true);
+        } else if (this.isAttacking && !this.isDead() && !this.getsHurt()) {
           this.playAnimation(IMAGES_ATTACKING, 10, true);
-        } else if (this.isWalking && !this.isAttacking && !this.isDead()) {
+        } else if (this.isWalking && !this.isAttacking && !this.isDead() && !this.getsHurt()) {
           this.playAnimation(IMAGES_WALKING, 10, true);
-        } else if (!this.isWalking && !this.isAttacking && !this.isDead()) {
+        } else if (!this.isWalking && !this.isAttacking && !this.isDead() && !this.getsHurt()) {
           this.playAnimation(IMAGES_ALERT, 3, true);
         }
       },
