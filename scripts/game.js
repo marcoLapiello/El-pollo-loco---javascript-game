@@ -8,6 +8,7 @@ let gameIsStarted = false;
 let keyboard = new Keyboard();
 let soundManager = new SoundManager();
 
+
 soundManager.registerSound("walk", new Audio("./audio/running.wav"));
 soundManager.registerSound("jump", new Audio("./audio/breath_jump.wav"));
 soundManager.registerSound("hurt", new Audio("./audio/man-hurt.mp3"));
@@ -17,6 +18,8 @@ soundManager.registerSound("bossDies", new Audio("./audio/boss_dies.wav"));
 soundManager.registerSound("bossAttacks", new Audio("./audio/boss_attacks.wav"));
 soundManager.registerSound("gameSound-chickens", new Audio("./audio/chicken_comes_closer.mp3"));
 soundManager.registerSound("gameSound-music", new Audio("./audio/game-music.mp3"));
+soundManager.registerSound("win", new Audio("./audio/win.mp3"));
+soundManager.registerSound("lost", new Audio("./audio/lost.wav"));
 
 export { soundManager };
 

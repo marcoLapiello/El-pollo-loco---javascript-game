@@ -48,13 +48,9 @@ export class World {
     this.draw();
     this.generateBottleOnTheGrounds(20);
     this.generateCoinsAroundTheWorld(20);
-    this.playBackgroundSound();
-  }
-
-  playBackgroundSound() {
     soundManager.playSound("gameSound-music", true);
   }
-
+  
   startAnimations() {
     this.level.clouds.forEach((cloud) => cloud.registerAnimation());
     this.level.enemies.forEach((enemy) => enemy.registerAnimation());
@@ -95,7 +91,14 @@ export class World {
       intervalManager.clearAllIntervals();
       this.stopChickenSound();
       const endImg = document.getElementById("endScreenImg");
-      endImg.src = this.character.health <= 0 ? this.gameOverImgPath : this.youWinImgPath;
+      if (this.character.health <= 0) {
+        endImg.src = this.gameOverImgPath;
+        soundManager.playSound("lost");
+      } else {
+        endImg.src = this.youWinImgPath;
+        soundManager.playSound("win");
+      }
+      // endImg.src = this.character.health <= 0 ? this.gameOverImgPath : this.youWinImgPath;
       document.getElementById("canvas").classList.add("dNone");
       document.getElementById("endScreen").classList.remove("dNone");
     }, 2000);
