@@ -1,6 +1,7 @@
 import { MovableObject } from "./movable-object.class.js";
 import { intervalManager } from "../managers/intervalManager.class.js";
 import { IMAGES_WALKING, IMAGE_DEAD } from "../imgsPaths/chickenImgs.js";
+import { soundManager } from "../game.js";
 
 export class Chicken extends MovableObject {
   type = "chicken";
@@ -18,7 +19,7 @@ export class Chicken extends MovableObject {
     this.loadImages(IMAGES_WALKING);
     this.loadImages(IMAGE_DEAD);
     this.speedX = 0.5 + Math.random() * 1.5;
-    // this.registerAnimation();
+    
   }
 
   registerAnimation() {
@@ -29,6 +30,7 @@ export class Chicken extends MovableObject {
           this.playAnimation(IMAGES_WALKING, 5, true);
         } else {
           this.playAnimation(IMAGE_DEAD, 1, false);
+          soundManager.playSound("chickenDies");
           intervalManager.unregisterAnimation(this);
         }
         if (this.x + this.width < 0) {

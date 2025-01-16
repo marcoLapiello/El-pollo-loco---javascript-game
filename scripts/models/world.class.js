@@ -5,7 +5,7 @@ import { Character } from "./character.class.js";
 import { StatusBars } from "./statusBars.class.js";
 import { Endboss } from "./endboss.class.js";
 import { intervalManager } from "../managers/intervalManager.class.js";
-
+import { soundManager } from "../game.js"; 
 import { level1 } from "../levels/level1.js";
 
 export class World {
@@ -172,9 +172,11 @@ export class World {
     this.level.enemies = this.level.enemies.filter((enemy) => {
       let collidingBottle = this.bottles.find((bottle) => bottle.isColliding(enemy));
       if (this.isCharacterJumpingOnEnemy(enemy)) {
-        this.killedChicken_Sound.play();
+        // this.killedChicken_Sound.play();
+        // soundManager.playSound("chickenDies");
         enemy.getsHit();
       } else if (collidingBottle) {
+        // soundManager.playSound("bottleBreaks");
         this.handleBottleCollision(enemy, collidingBottle);
       }
       return true;
@@ -189,7 +191,8 @@ export class World {
 
   handleBottleCollision(enemy, collidingBottle) {
     collidingBottle.isBreaking = true;
-    this.breakingBottle_Sound.play();
+    // this.breakingBottle_Sound.play();
+    // soundManager.playSound("bottleBreaks");
     enemy.getsHit();
 
     if (enemy instanceof Endboss) {

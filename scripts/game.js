@@ -12,6 +12,8 @@ soundManager.registerSound("walk", new Audio("./audio/running.wav"));
 soundManager.registerSound("jump", new Audio("./audio/breath_jump.wav"));
 soundManager.registerSound("hurt", new Audio("./audio/man-hurt.mp3"));
 soundManager.registerSound("dies", new Audio("./audio/man-dies.wav"));
+soundManager.registerSound("chickenDies", new Audio("./audio/splatting_chicken.wav"));
+
 export { soundManager };
 
 export function startGame() {
