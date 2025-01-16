@@ -11,15 +11,15 @@ let soundManager = new SoundManager();
 
 soundManager.registerSound("walk", new Audio("./audio/running.wav"));
 soundManager.registerSound("jump", new Audio("./audio/breath_jump.wav"));
-soundManager.registerSound("hurt", new Audio("./audio/man-hurt.mp3"));
-soundManager.registerSound("dies", new Audio("./audio/man-dies.wav"));
+soundManager.registerSound("hurt", new Audio("./audio/man-hurt.mp3"), 0.5);
+soundManager.registerSound("dies", new Audio("./audio/man-dies.wav"), 0.5);
 soundManager.registerSound("chickenDies", new Audio("./audio/splatting_chicken.wav"));
-soundManager.registerSound("bossDies", new Audio("./audio/boss_dies.wav"));
+soundManager.registerSound("bossDies", new Audio("./audio/boss_dies.wav"), 0.5);
 soundManager.registerSound("bossAttacks", new Audio("./audio/boss_attacks.wav"));
-soundManager.registerSound("gameSound-chickens", new Audio("./audio/chicken_comes_closer.mp3"));
-soundManager.registerSound("gameSound-music", new Audio("./audio/game-music.mp3"));
-soundManager.registerSound("win", new Audio("./audio/win.mp3"));
-soundManager.registerSound("lost", new Audio("./audio/lost.wav"));
+soundManager.registerSound("gameSound-chickens", new Audio("./audio/chicken_comes_closer.mp3"), 0.5);
+soundManager.registerSound("gameSound-music", new Audio("./audio/game-music.mp3"), 0.3);
+soundManager.registerSound("win", new Audio("./audio/win.mp3"), 0.5);
+soundManager.registerSound("lost", new Audio("./audio/lost.wav"), 0.5);
 soundManager.registerSound("collectCoin", new Audio("./audio/coin.wav"));
 
 export { soundManager };
