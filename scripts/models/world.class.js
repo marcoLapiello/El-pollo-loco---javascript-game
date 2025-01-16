@@ -9,12 +9,12 @@ import { intervalManager } from "../managers/intervalManager.class.js";
 import { level1 } from "../levels/level1.js";
 
 export class World {
-  gameIsStarted;
+  // gameIsStarted;
   character = new Character();
   level = level1;
-  canvas;
-  ctx;
-  keyboard;
+  // canvas;
+  // ctx;
+  // keyboard;
   camera_x = 0;
   bottles = [];
   lastThrownBottleTime = 0;
@@ -41,6 +41,7 @@ export class World {
     this.canvas = canvas;
     this.keyboard = keyboard;
     this.gameIsStarted = gameIsStarted;
+    
     this.startGame();
   }
 

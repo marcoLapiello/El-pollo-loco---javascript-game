@@ -1,13 +1,16 @@
-// Importa tutti i moduli
 import { World } from "./models/world.class.js";
 import { Keyboard } from "./models/keyboard.class.js";
-import { intervalManager } from "./managers/intervalManager.class.js";
-import { stateManager } from "./managers/stateManager.class.js";
+import { SoundManager } from "./managers/soundManager.class.js";
 
 let canvas;
 let world;
 let gameIsStarted = false;
 let keyboard = new Keyboard();
+let soundManager = new SoundManager();
+
+soundManager.registerSound("walk", new Audio("./audio/running.wav"));
+soundManager.registerSound("jump", new Audio("./audio/breath_jump.wav"));
+export { soundManager };
 
 export function startGame() {
   gameIsStarted = true;

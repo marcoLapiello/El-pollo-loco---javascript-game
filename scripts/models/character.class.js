@@ -1,6 +1,7 @@
 import { MovableObject } from "./movable-object.class.js";
 import { intervalManager } from "../managers/intervalManager.class.js";
 import { IMAGES_IDLE, IMAGES_SLEEP, IMAGES_WALKING, IMAGES_JUMPING, IMAGES_DEAD, IMAGES_HURT } from "../imgsPaths/characterImgs.js";
+import { soundManager } from "../game.js";
 
 export class Character extends MovableObject {
   y = 190;
@@ -32,24 +33,24 @@ export class Character extends MovableObject {
   registerAnimation() {
     intervalManager.registerAnimation(this, {
       update: () => {
-        this.walking_sound.pause();
+        soundManager.pauseSound("walk");
         if (this.world.keyboard.RIGHT && this.x < this.world.level.LEVEL_END_X && !this.isDead()) {
           this.moveRight();
           this.facingLeft = false;
           if (!this.isInTheAir()) {
-            this.walking_sound.play();
+            soundManager.playSound("walk");
           }
         }
         if (this.world.keyboard.LEFT && this.x > -100 && !this.isDead()) {
           this.moveLeft();
           this.facingLeft = true;
           if (!this.isInTheAir()) {
-            this.walking_sound.play();
+            soundManager.playSound("walk");
           }
         }
         if (this.world.keyboard.SPACE && this.isOnTheGround() && !this.isDead()) {
           this.jump();
-          this.jumping_sound.play();
+          soundManager.playSound("jump");
         }
         this.world.camera_x = -this.x + 100;
       },
