@@ -5,7 +5,7 @@ import { Character } from "./character.class.js";
 import { StatusBars } from "./statusBars.class.js";
 import { Endboss } from "./endboss.class.js";
 import { intervalManager } from "../managers/intervalManager.class.js";
-import { soundManager } from "../game.js"; 
+import { soundManager } from "../game.js";
 import { level1 } from "../levels/level1.js";
 
 export class World {
@@ -29,15 +29,34 @@ export class World {
   intervalId = null;
   gameOverImgPath = "./Grafics/img/9_intro_outro_screens/game_over/game over.png";
   youWinImgPath = "./Grafics/img/9_intro_outro_screens/win/win_2.png";
-  // isSoundMute = false
+  isSoundMute = false;
+  soundButton = document.getElementById("soundBtn");
 
   constructor(canvas, keyboard, gameIsStarted) {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
     this.keyboard = keyboard;
     this.gameIsStarted = gameIsStarted;
-    
+    this.addEventListener();
     this.startGame();
+  }
+
+  addEventListener() {
+    this.soundButton.addEventListener("click", () => this.soundMute());
+  }
+
+  soundMute() {
+    if (!this.isSoundMute) {
+      this.isSoundMute = true;
+      soundManager.muteAll();
+      this.soundButton.classList.add("active");
+      this.soundButton.blur();
+    } else if (this.isSoundMute) {
+      soundManager.muteAllOff();
+      this.isSoundMute = false;
+      this.soundButton.classList.remove("active");
+      this.soundButton.blur();
+    }
   }
 
   startGame() {
@@ -52,7 +71,7 @@ export class World {
     this.generateCoinsAroundTheWorld(20);
     soundManager.playSound("gameSound-music", true);
   }
-  
+
   startAnimations() {
     this.level.clouds.forEach((cloud) => cloud.registerAnimation());
     this.level.enemies.forEach((enemy) => enemy.registerAnimation());
@@ -89,7 +108,7 @@ export class World {
   // setSoundState() {
   //   this.character.isSoundMute = this.isSoundMute;
   //   console.log(this.character.isSoundMute);
-    
+
   // }
 
   stopGame() {
@@ -111,7 +130,6 @@ export class World {
       document.getElementById("endScreen").classList.remove("dNone");
     }, 2000);
   }
-  
 
   stopChickenSound() {
     intervalManager.clearInterval(this.chickenSoundInterval);
@@ -146,7 +164,10 @@ export class World {
       if (this.character.isColliding(coin) && this.ownedCoins < 100) {
         this.ownedCoins++;
         this.ownedCoinsPercent = this.ownedCoins * 5;
-        soundManager.playSound("collectCoin");
+        if (!this.isSoundMute) {
+          soundManager.playSound("collectCoin");
+        }
+
         this.coinsBar.setStatusBars("COINS", this.ownedCoinsPercent);
         return false;
       }
@@ -166,7 +187,7 @@ export class World {
   handleThrowBottle() {
     let timePassed = this.handleThrowBottleTime();
     if (this.keyboard.B && !this.character.facingLeft && this.ownedBottles > 0 && timePassed > 0.5) {
-      let bottle = new Bottle(this.character.x + 80, this.character.y + 140);
+      let bottle = new Bottle(this.character.x + 80, this.character.y + 140, this.isSoundMute);
       this.lastThrownBottleTime = new Date().getTime();
       this.ownedBottles--;
       this.ownedBottlesPercent = this.ownedBottles * 10;
@@ -222,10 +243,12 @@ export class World {
   playChickenSound() {
     if (this.chickenSoundInterval) return;
 
-    soundManager.playSound("gameSound-chickens");
-    this.chickenSoundInterval = intervalManager.setInterval(() => {
+    if (!this.isSoundMute) {
       soundManager.playSound("gameSound-chickens");
-    }, 5000);
+      this.chickenSoundInterval = intervalManager.setInterval(() => {
+        soundManager.playSound("gameSound-chickens");
+      }, 5000);
+    }
   }
 
   generateBottleOnTheGrounds(numberOfBottles) {

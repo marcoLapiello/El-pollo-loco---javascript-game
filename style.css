@@ -135,6 +135,10 @@ canvas {
     
 }
 
+.active {
+    background-image: url('./Grafics/no-sound-icon.png');
+}
+
 .menuBtn {
     height: 36px;
     border-radius: 18px;

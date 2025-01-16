@@ -65,15 +65,20 @@ function keyboardInputsFalse(event) {
   }
 }
 
-window.addEventListener("click", soundMute);
+// window.addEventListener("click", soundMute);
 
-function soundMute(event) {
-  if (event.target.id == "soundBtn" && !isSoundMute) {
-    soundManager.muteAll();
-  } else if (event.target.id == "soundBtn" && isSoundMute) {
-    soundManager.muteAllOff();
-  }
-}
+// function soundMute(event) {
+//   if (event.target.id == "soundBtn" && !isSoundMute) {
+//     this.world.isSoundMute = true;
+//     console.log(this.world.isSoundMute);
+    
+//     // soundManager.muteAll();
+//   } else if (event.target.id == "soundBtn" && isSoundMute) {
+//     // soundManager.muteAllOff();
+//     this.world.isSoundMute = true;
+//     console.log(this.world.isSoundMute);
+//   }
+// }
 
 document.getElementById("startButton").addEventListener("click", startGame);
 
