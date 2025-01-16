@@ -1,6 +1,7 @@
 import { MovableObject } from "./movable-object.class.js";
 import { intervalManager } from "../managers/intervalManager.class.js";
 import { IMAGES_ALERT, IMAGES_WALKING, IMAGES_DEAD, IMAGES_HURT, IMAGES_ATTACKING } from "../imgsPaths/endbossImgs.js";
+import { soundManager } from "../game.js";
 
 export class Endboss extends MovableObject {
   height = 350;
@@ -15,7 +16,6 @@ export class Endboss extends MovableObject {
   attackSpeedX = 2;
   startWalkingDistanceX = 720;
   startAttackingDistanceX = 220;
-  die_sound = new Audio("audio/boss_dies.wav");
 
   constructor() {
     super().loadImage(IMAGES_ALERT[0]);
@@ -39,7 +39,7 @@ export class Endboss extends MovableObject {
       update: () => {
         if (this.isDead()) {
           this.playAnimation(IMAGES_DEAD, 1, false);
-          this.die_sound.play();
+          soundManager.playSound("bossDies");
           intervalManager.unregisterAnimation(this);
         } else if (this.getsHurt() && !this.isDead()) {
           this.moveLeft();
@@ -47,6 +47,7 @@ export class Endboss extends MovableObject {
         } else if (this.isAttacking && !this.isDead() && !this.getsHurt()) {
           this.x -= this.attackSpeedX;
           this.playAnimation(IMAGES_ATTACKING, 10, true);
+          soundManager.playSound("bossAttacks");
         } else if (this.isWalking && !this.isAttacking && !this.isDead() && !this.getsHurt()) {
           this.moveLeft();
           this.playAnimation(IMAGES_WALKING, 10, true);

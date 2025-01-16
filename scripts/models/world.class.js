@@ -9,12 +9,8 @@ import { soundManager } from "../game.js";
 import { level1 } from "../levels/level1.js";
 
 export class World {
-  // gameIsStarted;
   character = new Character();
   level = level1;
-  // canvas;
-  // ctx;
-  // keyboard;
   camera_x = 0;
   bottles = [];
   lastThrownBottleTime = 0;
@@ -28,8 +24,6 @@ export class World {
   bottlesBar = new StatusBars("BOTTLES", 40, this.ownedBottles, this);
   coinsBar = new StatusBars("COINS", 80, this.ownedCoins, this);
   bossBar = new StatusBars("BOSS", 120, 100, this);
-  breakingBottle_Sound = new Audio("audio/glass-shatter-sound.wav");
-  killedChicken_Sound = new Audio("audio/splatting_Chicken.wav");
   chickenSound = new Audio("audio/chicken_comes_closer.mp3");
   chickenSoundInterval = null;
   intervalId = null;
@@ -172,11 +166,8 @@ export class World {
     this.level.enemies = this.level.enemies.filter((enemy) => {
       let collidingBottle = this.bottles.find((bottle) => bottle.isColliding(enemy));
       if (this.isCharacterJumpingOnEnemy(enemy)) {
-        // this.killedChicken_Sound.play();
-        // soundManager.playSound("chickenDies");
         enemy.getsHit();
       } else if (collidingBottle) {
-        // soundManager.playSound("bottleBreaks");
         this.handleBottleCollision(enemy, collidingBottle);
       }
       return true;
@@ -191,8 +182,6 @@ export class World {
 
   handleBottleCollision(enemy, collidingBottle) {
     collidingBottle.isBreaking = true;
-    // this.breakingBottle_Sound.play();
-    // soundManager.playSound("bottleBreaks");
     enemy.getsHit();
 
     if (enemy instanceof Endboss) {
