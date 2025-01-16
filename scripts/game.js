@@ -27,7 +27,7 @@ export { soundManager };
 export function startGame() {
   gameIsStarted = true;
   document.getElementById("startScreen").classList.add("dNone");
-  document.getElementById("canvas").classList.remove("dNone");
+  document.getElementById("canvasContainer").classList.remove("dNone");
   init();
 }
 
