@@ -20,6 +20,7 @@ soundManager.registerSound("gameSound-chickens", new Audio("./audio/chicken_come
 soundManager.registerSound("gameSound-music", new Audio("./audio/game-music.mp3"));
 soundManager.registerSound("win", new Audio("./audio/win.mp3"));
 soundManager.registerSound("lost", new Audio("./audio/lost.wav"));
+soundManager.registerSound("collectCoin", new Audio("./audio/coin.wav"));
 
 export { soundManager };
 

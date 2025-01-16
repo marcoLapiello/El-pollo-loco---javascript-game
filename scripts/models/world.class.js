@@ -137,6 +137,7 @@ export class World {
       if (this.character.isColliding(coin) && this.ownedCoins < 100) {
         this.ownedCoins++;
         this.ownedCoinsPercent = this.ownedCoins * 5;
+        soundManager.playSound("collectCoin");
         this.coinsBar.setStatusBars("COINS", this.ownedCoinsPercent);
         return false;
       }
@@ -176,7 +177,7 @@ export class World {
       let collidingBottle = this.bottles.find((bottle) => bottle.isColliding(enemy));
       if (this.isCharacterJumpingOnEnemy(enemy)) {
         enemy.getsHit();
-      } else if (collidingBottle) {
+      } else if (collidingBottle && enemy.health > 0) {
         this.handleBottleCollision(enemy, collidingBottle);
       }
       return true;
