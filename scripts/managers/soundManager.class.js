@@ -13,10 +13,11 @@ export class SoundManager {
     this.sounds.set(key, audio);
   }
 
-  playSound(key) {
+  playSound(key, loop = false) {
     const sound = this.sounds.get(key);
     if (sound) {
       if (sound.paused) { // Verifica che il suono sia in pausa prima di riprodurlo
+        sound.loop = loop;
         sound.play();
       }
     } else {

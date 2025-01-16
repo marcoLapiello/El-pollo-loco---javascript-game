@@ -15,8 +15,6 @@ export class Character extends MovableObject {
   world;
   speedX = 3;
   jumpDuration = 670; // in ms
-  walking_sound = new Audio("audio/running.wav");
-  jumping_sound = new Audio("audio/breath_jump.wav");
 
   constructor() {
     super().loadImage(IMAGES_IDLE[0]);
@@ -27,7 +25,6 @@ export class Character extends MovableObject {
     this.loadImages(IMAGES_DEAD);
     this.loadImages(IMAGES_HURT);
     this.applyGravity();
-    // this.registerAnimation();
   }
 
   registerAnimation() {
@@ -60,9 +57,11 @@ export class Character extends MovableObject {
       update: () => {
         if (this.isDead()) {
           this.playAnimation(IMAGES_DEAD, 1, false);
+          soundManager.playSound("dies");
           intervalManager.unregisterAnimation(this);
         } else if (this.getsHurt() && !this.isDead()) {
           this.playAnimation(IMAGES_HURT, 3, true);
+          soundManager.playSound("hurt");
         } else if (!this.isDead() && this.isInTheAir()) {
           this.playAnimation(IMAGES_JUMPING, 6, true);
         } else if ((this.world.keyboard.RIGHT || this.world.keyboard.LEFT) && !this.isDead() && !this.isInTheAir()) {
