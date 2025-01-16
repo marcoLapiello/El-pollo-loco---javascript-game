@@ -15,6 +15,8 @@ soundManager.registerSound("dies", new Audio("./audio/man-dies.wav"));
 soundManager.registerSound("chickenDies", new Audio("./audio/splatting_chicken.wav"));
 soundManager.registerSound("bossDies", new Audio("./audio/boss_dies.wav"));
 soundManager.registerSound("bossAttacks", new Audio("./audio/boss_attacks.wav"));
+soundManager.registerSound("gameSound-chickens", new Audio("./audio/chicken_comes_closer.mp3"));
+soundManager.registerSound("gameSound-music", new Audio("./audio/game-music.mp3"));
 
 export { soundManager };
 

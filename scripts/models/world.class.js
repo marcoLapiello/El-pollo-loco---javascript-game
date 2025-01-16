@@ -24,7 +24,7 @@ export class World {
   bottlesBar = new StatusBars("BOTTLES", 40, this.ownedBottles, this);
   coinsBar = new StatusBars("COINS", 80, this.ownedCoins, this);
   bossBar = new StatusBars("BOSS", 120, 100, this);
-  chickenSound = new Audio("audio/chicken_comes_closer.mp3");
+  // chickenSound = new Audio("audio/chicken_comes_closer.mp3");
   chickenSoundInterval = null;
   intervalId = null;
   gameOverImgPath = "./Grafics/img/9_intro_outro_screens/game_over/game over.png";
@@ -48,6 +48,11 @@ export class World {
     this.draw();
     this.generateBottleOnTheGrounds(20);
     this.generateCoinsAroundTheWorld(20);
+    this.playBackgroundSound();
+  }
+
+  playBackgroundSound() {
+    soundManager.playSound("gameSound-music", true);
   }
 
   startAnimations() {
@@ -84,7 +89,8 @@ export class World {
   }
 
   stopGame() {
-    this.chickenSound.pause();
+    soundManager.pauseSound("gameSound-chickens");
+    soundManager.pauseSound("gameSound-music");
     setTimeout(() => {
       intervalManager.clearAllIntervals();
       this.stopChickenSound();
@@ -203,9 +209,9 @@ export class World {
   playChickenSound() {
     if (this.chickenSoundInterval) return;
 
-    this.chickenSound.play();
+    soundManager.playSound("gameSound-chickens");
     this.chickenSoundInterval = intervalManager.setInterval(() => {
-      this.chickenSound.play();
+      soundManager.playSound("gameSound-chickens");
     }, 5000);
   }
 
