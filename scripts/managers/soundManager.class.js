@@ -62,4 +62,16 @@ export class SoundManager {
       }
     });
   }
+
+  muteAll() {
+    this.sounds.forEach((sound) => {
+      sound.muted = true;
+    });
+  }
+
+  muteAllOff() {
+    this.sounds.forEach((sound) => {
+      sound.muted = false;
+    });
+  }
 }

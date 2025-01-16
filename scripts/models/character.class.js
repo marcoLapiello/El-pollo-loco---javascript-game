@@ -13,6 +13,7 @@ export class Character extends MovableObject {
   heightCorrection = 110;
   isCharacter = true;
   world;
+  // isSoundMute;
   speedX = 3;
   jumpDuration = 670; // in ms
 
@@ -25,6 +26,9 @@ export class Character extends MovableObject {
     this.loadImages(IMAGES_DEAD);
     this.loadImages(IMAGES_HURT);
     this.applyGravity();
+    
+    
+    
   }
 
   registerAnimation() {

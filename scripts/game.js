@@ -4,6 +4,7 @@ import { SoundManager } from "./managers/soundManager.class.js";
 
 let canvas;
 let world;
+let isSoundMute = false;
 let gameIsStarted = false;
 let keyboard = new Keyboard();
 let soundManager = new SoundManager();
@@ -61,6 +62,16 @@ function keyboardInputsFalse(event) {
     keyboard.SPACE = false;
   } else if (event.code == "KeyB") {
     keyboard.B = false;
+  }
+}
+
+window.addEventListener("click", soundMute);
+
+function soundMute(event) {
+  if (event.target.id == "soundBtn" && !isSoundMute) {
+    soundManager.muteAll();
+  } else if (event.target.id == "soundBtn" && isSoundMute) {
+    soundManager.muteAllOff();
   }
 }
 

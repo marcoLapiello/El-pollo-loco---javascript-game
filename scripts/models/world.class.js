@@ -29,6 +29,7 @@ export class World {
   intervalId = null;
   gameOverImgPath = "./Grafics/img/9_intro_outro_screens/game_over/game over.png";
   youWinImgPath = "./Grafics/img/9_intro_outro_screens/win/win_2.png";
+  // isSoundMute = false
 
   constructor(canvas, keyboard, gameIsStarted) {
     this.ctx = canvas.getContext("2d");
@@ -45,6 +46,7 @@ export class World {
     this.startAnimations();
     this.cleanUpDeadEnemies();
     this.setWorld();
+    // this.setSoundState();
     this.draw();
     this.generateBottleOnTheGrounds(20);
     this.generateCoinsAroundTheWorld(20);
@@ -84,6 +86,12 @@ export class World {
     this.character.world = this;
   }
 
+  // setSoundState() {
+  //   this.character.isSoundMute = this.isSoundMute;
+  //   console.log(this.character.isSoundMute);
+    
+  // }
+
   stopGame() {
     soundManager.pauseSound("gameSound-chickens");
     soundManager.pauseSound("gameSound-music");
@@ -99,10 +107,11 @@ export class World {
         soundManager.playSound("win");
       }
       // endImg.src = this.character.health <= 0 ? this.gameOverImgPath : this.youWinImgPath;
-      document.getElementById("canvas").classList.add("dNone");
+      document.getElementById("canvasContainer").classList.add("dNone");
       document.getElementById("endScreen").classList.remove("dNone");
     }, 2000);
   }
+  
 
   stopChickenSound() {
     intervalManager.clearInterval(this.chickenSoundInterval);
