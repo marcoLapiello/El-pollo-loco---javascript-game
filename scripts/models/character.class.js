@@ -26,7 +26,6 @@ export class Character extends MovableObject {
     this.loadImages(IMAGES_DEAD);
     this.loadImages(IMAGES_HURT);
     this.applyGravity();
-    this.logPause();
   }
 
   registerAnimation() {

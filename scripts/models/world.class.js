@@ -91,7 +91,7 @@ export class World {
     this.checkCollectCoins();
     this.killEnemies();
     this.handleBoss();
-    this.playChickenSound();
+    // this.playChickenSound();
   }
 
   startAnimations() {
@@ -101,11 +101,11 @@ export class World {
   }
 
   stopGame() {
-    soundManager.pauseSound("gameSound-chickens");
+    // soundManager.pauseSound("gameSound-chickens");
     soundManager.pauseSound("gameSound-music");
     setTimeout(() => {
       intervalManager.clearAllIntervals();
-      this.stopChickenSound();
+      // this.stopChickenSound();
       const endImg = document.getElementById("endScreenImg");
       if (this.character.health <= 0) {
         endImg.src = this.gameOverImgPath;
@@ -162,21 +162,21 @@ export class World {
     }
   }
 
-  playChickenSound() {
-    if (this.chickenSoundInterval) return;
+  // playChickenSound() {
+  //   if (this.chickenSoundInterval) return;
 
-    if (!this.isSoundMute) {
-      soundManager.playSound("gameSound-chickens");
-      this.chickenSoundInterval = intervalManager.setInterval(() => {
-        soundManager.playSound("gameSound-chickens");
-      }, 5000);
-    }
-  }
+  //   if (!this.isSoundMute) {
+  //     soundManager.playSound("gameSound-chickens");
+  //     this.chickenSoundInterval = intervalManager.setInterval(() => {
+  //       soundManager.playSound("gameSound-chickens");
+  //     }, 5000);
+  //   }
+  // }
 
-  stopChickenSound() {
-    intervalManager.clearInterval(this.chickenSoundInterval);
-    this.chickenSoundInterval = null;
-  }
+  // stopChickenSound() {
+  //   intervalManager.clearInterval(this.chickenSoundInterval);
+  //   this.chickenSoundInterval = null;
+  // }
 
  
 
