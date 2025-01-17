@@ -31,6 +31,8 @@ export class World {
   isSoundMute = false;
   soundButton = document.getElementById("soundBtn");
   pauseButton = document.getElementById("pauseBtn");
+  menuButton = document.getElementById("menuBtn");
+  menuBackButton = document.getElementById("menuBackBtn");
 
   constructor(canvas, keyboard, gameIsStarted) {
     this.ctx = canvas.getContext("2d");
@@ -46,16 +48,14 @@ export class World {
 
   addEventListener() {
     this.pauseButton.addEventListener("click", () => this.togglePause());
+    this.menuButton.addEventListener("click", () => this.togglePause());
+    this.menuBackButton.addEventListener("click", () => this.togglePause());
     this.soundButton.addEventListener("click", () => this.soundMute());
   }
 
   setWorld() {
     this.character.world = this;
   }
-
-
-
-
 
   // ALL ABOUT RUNNING AND CEASING THE GAME ENGINE
 
@@ -114,16 +114,13 @@ export class World {
         endImg.src = this.youWinImgPath;
         soundManager.playSound("win");
       }
-      document.getElementById("canvasContainer").classList.add("dNone");
+      document.getElementById("canvas").classList.add("dNone");
       document.getElementById("endScreen").classList.remove("dNone");
+      document.getElementById("pauseBtn").classList.add("dNone");
+      document.getElementById("soundBtn").classList.add("dNone");
+      document.getElementById("menuBtn").classList.add("dNone");
     }, 2000);
   }
-
-
-
-
-
-
 
   // PAUSE AND SOUND FUNCTIONS
 
@@ -133,7 +130,7 @@ export class World {
     this.character.isGamePaused = this.isGamePaused;
     this.bottles.forEach((bottle) => {
       bottle.isGamePaused = this.isGamePaused;
-    })
+    });
 
     if (this.isGamePaused) {
       intervalManager.pauseGame();
@@ -178,15 +175,6 @@ export class World {
   //   this.chickenSoundInterval = null;
   // }
 
- 
-
-
-
-
-
-
-
-
   // COLLISIONS CHARACTER/ENEMIES
 
   checkCollision() {
@@ -203,10 +191,6 @@ export class World {
       this.character.isInTheAir() && this.character.speedY < 0 && this.character.isColliding(enemy) && !(enemy instanceof Endboss) && enemy.health > 0
     );
   }
-
-
-
-
 
   // BOTTLES
 
@@ -236,13 +220,6 @@ export class World {
       this.bossBar.setStatusBars("BOSS", enemy.health);
     }
   }
-
-
-
-
-
-
-
 
   // BOSS BEHAVIOUR AND COMBAT MECHANICS
 
@@ -280,26 +257,8 @@ export class World {
     }, 2000);
   }
 
-  
-
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   // ALL ABOUT COLLECTIBLES
-  
+
   generateBottleOnTheGrounds(numberOfBottles) {
     for (let i = 0; i < numberOfBottles; i++) {
       let x = 200 + Math.random() * 2000;
@@ -356,25 +315,8 @@ export class World {
     });
   }
 
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   // ALL ABOUT DRAWING
-  
+
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.ctx.translate(this.camera_x, 0);
