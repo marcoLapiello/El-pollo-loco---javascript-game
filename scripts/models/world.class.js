@@ -42,38 +42,22 @@ export class World {
     this.startGame();
   }
 
+  // SETTINGS LISTENERS AND PASSING PROPERTIES
+
   addEventListener() {
     this.pauseButton.addEventListener("click", () => this.togglePause());
     this.soundButton.addEventListener("click", () => this.soundMute());
   }
 
-  togglePause() {
-    this.isGamePaused = !this.isGamePaused;
-
-    if (this.isGamePaused) {
-      intervalManager.pauseGame();
-      this.pauseButton.blur();
-      // this.showPauseScreen(); // Mostra la schermata di pausa
-    } else {
-      intervalManager.resumeGame();
-      this.pauseButton.blur();
-      // this.hidePauseScreen(); // Nasconde la schermata di pausa
-    }
+  setWorld() {
+    this.character.world = this;
   }
 
-  soundMute() {
-    if (!this.isSoundMute) {
-      this.isSoundMute = true;
-      soundManager.muteAll();
-      this.soundButton.classList.add("noSound");
-      this.soundButton.blur();
-    } else if (this.isSoundMute) {
-      this.isSoundMute = false;
-      soundManager.muteAllOff();
-      this.soundButton.classList.remove("noSound");
-      this.soundButton.blur();
-    }
-  }
+
+
+
+
+  // ALL ABOUT RUNNING AND CEASING THE GAME ENGINE
 
   startGame() {
     this.gameIsStarted = true;
@@ -81,17 +65,10 @@ export class World {
     this.startAnimations();
     this.cleanUpDeadEnemies();
     this.setWorld();
-    // this.setSoundState();
     this.draw();
     this.generateBottleOnTheGrounds(20);
     this.generateCoinsAroundTheWorld(20);
     soundManager.playSound("gameSound-music", true);
-  }
-
-  startAnimations() {
-    this.level.clouds.forEach((cloud) => cloud.registerAnimation());
-    this.level.enemies.forEach((enemy) => enemy.registerAnimation());
-    this.character.registerAnimation();
   }
 
   runGameEngine() {
@@ -117,15 +94,11 @@ export class World {
     this.playChickenSound();
   }
 
-  setWorld() {
-    this.character.world = this;
+  startAnimations() {
+    this.level.clouds.forEach((cloud) => cloud.registerAnimation());
+    this.level.enemies.forEach((enemy) => enemy.registerAnimation());
+    this.character.registerAnimation();
   }
-
-  // setSoundState() {
-  //   this.character.isSoundMute = this.isSoundMute;
-  //   console.log(this.character.isSoundMute);
-
-  // }
 
   stopGame() {
     soundManager.pauseSound("gameSound-chickens");
@@ -146,10 +119,127 @@ export class World {
     }, 2000);
   }
 
+
+
+
+
+
+
+  // PAUSE AND SOUND FUNCTIONS
+
+  togglePause() {
+    this.isGamePaused = !this.isGamePaused;
+
+    if (this.isGamePaused) {
+      intervalManager.pauseGame();
+      soundManager.pauseAll();
+      this.pauseButton.blur();
+      // this.showPauseScreen(); // Mostra la schermata di pausa
+    } else {
+      intervalManager.resumeGame();
+      soundManager.resumeAll();
+      this.pauseButton.blur();
+      // this.hidePauseScreen(); // Nasconde la schermata di pausa
+    }
+  }
+
+  soundMute() {
+    if (!this.isSoundMute) {
+      this.isSoundMute = true;
+      soundManager.muteAll();
+      this.soundButton.classList.add("noSound");
+      this.soundButton.blur();
+    } else if (this.isSoundMute) {
+      this.isSoundMute = false;
+      soundManager.muteAllOff();
+      this.soundButton.classList.remove("noSound");
+      this.soundButton.blur();
+    }
+  }
+
+  playChickenSound() {
+    if (this.chickenSoundInterval) return;
+
+    if (!this.isSoundMute) {
+      soundManager.playSound("gameSound-chickens");
+      this.chickenSoundInterval = intervalManager.setInterval(() => {
+        soundManager.playSound("gameSound-chickens");
+      }, 5000);
+    }
+  }
+
   stopChickenSound() {
     intervalManager.clearInterval(this.chickenSoundInterval);
     this.chickenSoundInterval = null;
   }
+
+ 
+
+
+
+
+
+
+  
+
+  // COLLISIONS CHARACTER/ENEMIES
+
+  checkCollision() {
+    this.level.enemies.forEach((enemy) => {
+      if (this.character.isColliding(enemy) && !this.character.isInTheAir() && enemy.health > 0) {
+        this.character.getsHit();
+        this.healthBar.setStatusBars("HEALTH", this.character.health);
+      }
+    });
+  }
+
+  isCharacterJumpingOnEnemy(enemy) {
+    return (
+      this.character.isInTheAir() && this.character.speedY < 0 && this.character.isColliding(enemy) && !(enemy instanceof Endboss) && enemy.health > 0
+    );
+  }
+
+
+
+
+
+  // BOTTLES
+
+  handleThrowBottle() {
+    let timePassed = this.handleThrowBottleTime();
+    if (this.keyboard.B && !this.character.facingLeft && this.ownedBottles > 0 && timePassed > 0.5) {
+      let bottle = new Bottle(this.character.x + 80, this.character.y + 140, this.isSoundMute);
+      this.lastThrownBottleTime = new Date().getTime();
+      this.ownedBottles--;
+      this.ownedBottlesPercent = this.ownedBottles * 10;
+      this.bottlesBar.setStatusBars("BOTTLES", this.ownedBottlesPercent);
+      this.bottles.push(bottle);
+    }
+  }
+
+  handleThrowBottleTime() {
+    let timePassed = new Date().getTime() - this.lastThrownBottleTime;
+    timePassed = timePassed / 1000;
+    return timePassed;
+  }
+
+  handleBottleCollision(enemy, collidingBottle) {
+    collidingBottle.isBreaking = true;
+    enemy.getsHit();
+
+    if (enemy instanceof Endboss) {
+      this.bossBar.setStatusBars("BOSS", enemy.health);
+    }
+  }
+
+
+
+
+
+
+
+
+  // BOSS BEHAVIOUR AND COMBAT MECHANICS
 
   handleBoss() {
     const endboss = this.level.enemies.find((enemy) => enemy instanceof Endboss);
@@ -159,6 +249,77 @@ export class World {
       endboss.switchWalkingAttacking(true, false);
     } else if (distancefromCharacter < endboss.startAttackingDistanceX) {
       endboss.switchWalkingAttacking(false, true);
+    }
+  }
+
+  killEnemies() {
+    this.level.enemies = this.level.enemies.filter((enemy) => {
+      let collidingBottle = this.bottles.find((bottle) => bottle.isColliding(enemy));
+      if (this.isCharacterJumpingOnEnemy(enemy)) {
+        enemy.getsHit();
+      } else if (collidingBottle && enemy.health > 0) {
+        this.handleBottleCollision(enemy, collidingBottle);
+      }
+      return true;
+    });
+  }
+
+  cleanUpDeadEnemies() {
+    setInterval(() => {
+      this.level.enemies = this.level.enemies.filter((enemyToRemove) => {
+        if (enemyToRemove.isDead() && !(enemyToRemove instanceof Endboss)) {
+          return false;
+        }
+        return true;
+      });
+    }, 2000);
+  }
+
+  
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  // ALL ABOUT COLLECTIBLES
+  
+  generateBottleOnTheGrounds(numberOfBottles) {
+    for (let i = 0; i < numberOfBottles; i++) {
+      let x = 200 + Math.random() * 2000;
+      let y = 390;
+      let bottleOnTheGround = new BottlesOnTheGround(x, y);
+      this.bottlesOnTheGround.push(bottleOnTheGround);
+    }
+  }
+
+  generateCoinsAroundTheWorld(numberOfCoins) {
+    const minDistance = 50;
+    let possibleYValues = [150, 300];
+    let x = 200;
+    for (let i = 0; i < numberOfCoins; i++) {
+      let y = possibleYValues[Math.floor(Math.random() * possibleYValues.length)];
+      if (i % 3 === 0 && i !== 0) {
+        x += minDistance * 3;
+      } else {
+        x += minDistance;
+      }
+      if (x > 2200) {
+        x = 200 + (x - 2200);
+      }
+      let coin = new Coins(x, y);
+      this.coinsAroundTheWorld.push(coin);
     }
   }
 
@@ -190,110 +351,25 @@ export class World {
     });
   }
 
-  checkCollision() {
-    this.level.enemies.forEach((enemy) => {
-      if (this.character.isColliding(enemy) && !this.character.isInTheAir() && enemy.health > 0) {
-        this.character.getsHit();
-        this.healthBar.setStatusBars("HEALTH", this.character.health);
-      }
-    });
-  }
-
-  handleThrowBottle() {
-    let timePassed = this.handleThrowBottleTime();
-    if (this.keyboard.B && !this.character.facingLeft && this.ownedBottles > 0 && timePassed > 0.5) {
-      let bottle = new Bottle(this.character.x + 80, this.character.y + 140, this.isSoundMute);
-      this.lastThrownBottleTime = new Date().getTime();
-      this.ownedBottles--;
-      this.ownedBottlesPercent = this.ownedBottles * 10;
-      this.bottlesBar.setStatusBars("BOTTLES", this.ownedBottlesPercent);
-      this.bottles.push(bottle);
-    }
-  }
-
-  handleThrowBottleTime() {
-    let timePassed = new Date().getTime() - this.lastThrownBottleTime;
-    timePassed = timePassed / 1000;
-    return timePassed;
-  }
-
-  killEnemies() {
-    this.level.enemies = this.level.enemies.filter((enemy) => {
-      let collidingBottle = this.bottles.find((bottle) => bottle.isColliding(enemy));
-      if (this.isCharacterJumpingOnEnemy(enemy)) {
-        enemy.getsHit();
-      } else if (collidingBottle && enemy.health > 0) {
-        this.handleBottleCollision(enemy, collidingBottle);
-      }
-      return true;
-    });
-  }
-
-  isCharacterJumpingOnEnemy(enemy) {
-    return (
-      this.character.isInTheAir() && this.character.speedY < 0 && this.character.isColliding(enemy) && !(enemy instanceof Endboss) && enemy.health > 0
-    );
-  }
-
-  handleBottleCollision(enemy, collidingBottle) {
-    collidingBottle.isBreaking = true;
-    enemy.getsHit();
-
-    if (enemy instanceof Endboss) {
-      this.bossBar.setStatusBars("BOSS", enemy.health);
-    }
-  }
-
-  cleanUpDeadEnemies() {
-    setInterval(() => {
-      this.level.enemies = this.level.enemies.filter((enemyToRemove) => {
-        if (enemyToRemove.isDead() && !(enemyToRemove instanceof Endboss)) {
-          return false;
-        }
-        return true;
-      });
-    }, 2000);
-  }
-
-  playChickenSound() {
-    if (this.chickenSoundInterval) return;
-
-    if (!this.isSoundMute) {
-      soundManager.playSound("gameSound-chickens");
-      this.chickenSoundInterval = intervalManager.setInterval(() => {
-        soundManager.playSound("gameSound-chickens");
-      }, 5000);
-    }
-  }
-
-  generateBottleOnTheGrounds(numberOfBottles) {
-    for (let i = 0; i < numberOfBottles; i++) {
-      let x = 200 + Math.random() * 2000;
-      let y = 390;
-      let bottleOnTheGround = new BottlesOnTheGround(x, y);
-      this.bottlesOnTheGround.push(bottleOnTheGround);
-    }
-  }
-
-  generateCoinsAroundTheWorld(numberOfCoins) {
-    const minDistance = 50;
-    let possibleYValues = [150, 300];
-    let x = 200;
-    for (let i = 0; i < numberOfCoins; i++) {
-      let y = possibleYValues[Math.floor(Math.random() * possibleYValues.length)];
-      if (i % 3 === 0 && i !== 0) {
-        x += minDistance * 3;
-      } else {
-        x += minDistance;
-      }
-      if (x > 2200) {
-        x = 200 + (x - 2200);
-      }
-      let coin = new Coins(x, y);
-      this.coinsAroundTheWorld.push(coin);
-    }
-  }
-
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  // ALL ABOUT DRAWING
+  
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.ctx.translate(this.camera_x, 0);
