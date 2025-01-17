@@ -2,6 +2,8 @@ class IntervalManager {
   constructor() {
     this.intervals = []; // Memorizza gli ID degli intervalli
     this.animations = []; // Memorizza gli oggetti animati
+    this.animationLoop = null; // Memorizza l'ID dell'intervallo per l'animazione
+    this.isPaused = false;
     this.logIntervals();
     
   }
@@ -43,11 +45,21 @@ class IntervalManager {
   startAnimation() {
     if (!this.animationLoop) {
       this.animationLoop = this.setInterval(() => {
-        this.animations.forEach((animation) => {
-          animation.update();
-        });
+        if (!this.isPaused) { // Controlla se il gioco è in pausa
+          this.animations.forEach((animation) => {
+            animation.update();
+          });
+        }
       }, 1000 / 60); // 60 FPS
     }
+  }
+
+  pauseGame() {
+    this.isPaused = true;
+  }
+
+  resumeGame() {
+    this.isPaused = false;
   }
 
   // Rimuove un'animazione

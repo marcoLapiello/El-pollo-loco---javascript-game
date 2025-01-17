@@ -135,7 +135,7 @@ canvas {
     
 }
 
-.active {
+.noSound {
     background-image: url('./Grafics/no-sound-icon.png');
 }
 

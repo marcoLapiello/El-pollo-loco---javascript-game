@@ -24,37 +24,53 @@ export class World {
   bottlesBar = new StatusBars("BOTTLES", 40, this.ownedBottles, this);
   coinsBar = new StatusBars("COINS", 80, this.ownedCoins, this);
   bossBar = new StatusBars("BOSS", 120, 100, this);
-  // chickenSound = new Audio("audio/chicken_comes_closer.mp3");
   chickenSoundInterval = null;
   intervalId = null;
   gameOverImgPath = "./Grafics/img/9_intro_outro_screens/game_over/game over.png";
   youWinImgPath = "./Grafics/img/9_intro_outro_screens/win/win_2.png";
   isSoundMute = false;
   soundButton = document.getElementById("soundBtn");
+  pauseButton = document.getElementById("pauseBtn");
 
   constructor(canvas, keyboard, gameIsStarted) {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
     this.keyboard = keyboard;
     this.gameIsStarted = gameIsStarted;
+    this.isGamePaused = false;
     this.addEventListener();
     this.startGame();
   }
 
   addEventListener() {
+    this.pauseButton.addEventListener("click", () => this.togglePause());
     this.soundButton.addEventListener("click", () => this.soundMute());
+  }
+
+  togglePause() {
+    this.isGamePaused = !this.isGamePaused;
+
+    if (this.isGamePaused) {
+      intervalManager.pauseGame();
+      this.pauseButton.blur();
+      // this.showPauseScreen(); // Mostra la schermata di pausa
+    } else {
+      intervalManager.resumeGame();
+      this.pauseButton.blur();
+      // this.hidePauseScreen(); // Nasconde la schermata di pausa
+    }
   }
 
   soundMute() {
     if (!this.isSoundMute) {
       this.isSoundMute = true;
       soundManager.muteAll();
-      this.soundButton.classList.add("active");
+      this.soundButton.classList.add("noSound");
       this.soundButton.blur();
     } else if (this.isSoundMute) {
-      soundManager.muteAllOff();
       this.isSoundMute = false;
-      this.soundButton.classList.remove("active");
+      soundManager.muteAllOff();
+      this.soundButton.classList.remove("noSound");
       this.soundButton.blur();
     }
   }
@@ -125,7 +141,6 @@ export class World {
         endImg.src = this.youWinImgPath;
         soundManager.playSound("win");
       }
-      // endImg.src = this.character.health <= 0 ? this.gameOverImgPath : this.youWinImgPath;
       document.getElementById("canvasContainer").classList.add("dNone");
       document.getElementById("endScreen").classList.remove("dNone");
     }, 2000);

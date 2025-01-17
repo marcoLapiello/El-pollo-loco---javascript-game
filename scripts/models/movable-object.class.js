@@ -12,7 +12,7 @@ export class MovableObject extends DrawableObjects {
   playAnimation(imgArray, frameSkip = 1, loop = true) {
     if (!imgArray || imgArray.length === 0) {
       console.error("Array di immagini non valido:", imgArray);
-      return false; // Esce se l'array è undefined o vuoto
+      return false;
     }
   
     let animationComplete = false;
@@ -23,8 +23,7 @@ export class MovableObject extends DrawableObjects {
         index = index % imgArray.length;
       } else if (index >= imgArray.length) {
         index = imgArray.length - 1;
-        animationComplete = true; // Segnala il completamento
-        console.log("Animazione completata:", imgArray);
+        animationComplete = true;
       }
       this.img = this.imageCache[imgArray[index]];
     }
@@ -38,7 +37,7 @@ export class MovableObject extends DrawableObjects {
   
 
   isAnimationComplete(imgArray, frameSkip = 1) {
-    const totalFrames = imgArray.length * frameSkip; // Considera il frameSkip
+    const totalFrames = imgArray.length * frameSkip;
     const currentFrame = this.currentImageIndex;
     return currentFrame >= totalFrames;
   }
