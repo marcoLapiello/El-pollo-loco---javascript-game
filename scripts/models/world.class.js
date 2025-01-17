@@ -180,7 +180,7 @@ export class World {
 
 
 
-  
+
 
   // COLLISIONS CHARACTER/ENEMIES
 

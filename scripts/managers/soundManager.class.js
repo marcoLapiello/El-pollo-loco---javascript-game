@@ -1,6 +1,7 @@
 export class SoundManager {
   constructor() {
     this.sounds = new Map();
+    this.soundStates = new Map();
     this.logSounds();
   }
 
@@ -15,6 +16,7 @@ export class SoundManager {
     }
     audio.volume = volume; // Imposta il volume del suono
     this.sounds.set(key, audio);
+    this.soundStates.set(key, { isPlaying: false });
   }
 
   playSound(key, loop = false) {
@@ -24,6 +26,7 @@ export class SoundManager {
         // Verifica che il suono sia in pausa prima di riprodurlo
         sound.loop = loop;
         sound.play();
+        this.soundStates.set(key, { isPlaying: true });
       }
     } else {
       console.warn(`Sound with key "${key}" not found.`);
@@ -36,6 +39,7 @@ export class SoundManager {
       if (!sound.paused) {
         // Verifica che il suono sia in esecuzione prima di metterlo in pausa
         sound.pause();
+        // this.soundStates.set(key, { isPlaying: true });
       }
     } else {
       console.warn(`Sound with key "${key}" not found.`);
@@ -43,8 +47,11 @@ export class SoundManager {
   }
 
   pauseAll() {
-    this.sounds.forEach((sound) => {
-      sound.pause();
+    this.sounds.forEach((sound, key) => {
+      if (!sound.paused) {
+        sound.pause(); // Metti in pausa senza resettare
+        this.soundStates.set(key, { isPlaying: true }); // Salva lo stato di riproduzione
+      }
     });
   }
 
@@ -56,9 +63,10 @@ export class SoundManager {
   }
 
   resumeAll() {
-    this.sounds.forEach((sound) => {
-      if (sound.paused) {
-        sound.play();
+    this.sounds.forEach((sound, key) => {
+      const state = this.soundStates.get(key);
+      if (state?.isPlaying) {
+        sound.play(); // Riprendi dal punto di pausa
       }
     });
   }
