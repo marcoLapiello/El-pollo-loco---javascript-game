@@ -129,6 +129,11 @@ export class World {
 
   togglePause() {
     this.isGamePaused = !this.isGamePaused;
+    // pause state gets only passed to objects using gravity
+    this.character.isGamePaused = this.isGamePaused;
+    this.bottles.forEach((bottle) => {
+      bottle.isGamePaused = this.isGamePaused;
+    })
 
     if (this.isGamePaused) {
       intervalManager.pauseGame();

@@ -26,9 +26,7 @@ export class Character extends MovableObject {
     this.loadImages(IMAGES_DEAD);
     this.loadImages(IMAGES_HURT);
     this.applyGravity();
-    
-    
-    
+    this.logPause();
   }
 
   registerAnimation() {
@@ -71,7 +69,7 @@ export class Character extends MovableObject {
         } else if ((this.world.keyboard.RIGHT || this.world.keyboard.LEFT) && !this.isDead() && !this.isInTheAir()) {
           this.playAnimation(IMAGES_WALKING, 6, true);
         } else if (!this.isDead() && this.isNotMoving()) {
-          this.playAnimation(IMAGES_IDLE, 10, true);
+          this.playAnimation(IMAGES_IDLE, 10, true); 
         }
       },
     });

@@ -1,5 +1,6 @@
 import { DrawableObjects } from "./drawable-objects.class.js";
 import { Bottle } from "./bottle.class.js";
+import { intervalManager } from "../managers/intervalManager.class.js";
 
 export class MovableObject extends DrawableObjects {
   facingLeft = false;
@@ -8,15 +9,16 @@ export class MovableObject extends DrawableObjects {
   acceleration = 1;
   health = 100;
   lastHit = 0;
+  isGamePaused = false;
 
   playAnimation(imgArray, frameSkip = 1, loop = true) {
     if (!imgArray || imgArray.length === 0) {
       console.error("Array di immagini non valido:", imgArray);
       return false;
     }
-  
+
     let animationComplete = false;
-  
+
     if (this.currentImageIndex % frameSkip === 0) {
       let index = Math.floor(this.currentImageIndex / frameSkip);
       if (loop) {
@@ -27,21 +29,19 @@ export class MovableObject extends DrawableObjects {
       }
       this.img = this.imageCache[imgArray[index]];
     }
-  
+
     if (loop || this.currentImageIndex / frameSkip < imgArray.length) {
       this.currentImageIndex++;
     }
-  
+
     return animationComplete;
   }
-  
 
   isAnimationComplete(imgArray, frameSkip = 1) {
     const totalFrames = imgArray.length * frameSkip;
     const currentFrame = this.currentImageIndex;
     return currentFrame >= totalFrames;
   }
-  
 
   moveRight() {
     this.x += this.speedX;
@@ -55,9 +55,13 @@ export class MovableObject extends DrawableObjects {
     this.speedY = 20;
   }
 
+  pauseGravity() {
+    this.isGamePaused = true;
+  }
+
   applyGravity() {
     const gravityInterval = setInterval(() => {
-      if (this.isInTheAir() || this.speedY > 0) {
+      if (!this.isGamePaused && (this.isInTheAir() || this.speedY > 0)) {
         this.y -= this.speedY;
         this.speedY -= this.acceleration;
         if (this.isCharacter && this.y >= 190) {

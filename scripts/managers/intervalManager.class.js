@@ -4,7 +4,7 @@ class IntervalManager {
     this.animations = []; // Memorizza gli oggetti animati
     this.animationLoop = null; // Memorizza l'ID dell'intervallo per l'animazione
     this.isPaused = false;
-    this.logIntervals();
+    // this.logIntervals();
     
   }
 

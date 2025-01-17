@@ -29,13 +29,30 @@ export class Bottle extends MovableObject {
     this.registerAnimation();
   }
 
+  // registerAnimation() {
+  //   intervalManager.registerAnimation(this, {
+  //     update: () => {
+  //       if (!this.isBreaking) {
+  //         this.x += this.speedX;
+  //         this.playAnimation(ROTATION_IMAGES, 3, true);
+  //       } else {
+  //         this.playAnimation(CRASH_IMAGES, 1, false);
+  //         if (!this.isSoundMute) {
+  //           soundManager.playSound("bottleBreaks");
+  //         }
+          
+  //         if (this.currentImageIndex >= CRASH_IMAGES.length - 1) {
+  //           intervalManager.unregisterAnimation(this);
+  //         }
+  //       }
+  //     },
+  //   });
+  // }
+
   registerAnimation() {
     intervalManager.registerAnimation(this, {
       update: () => {
-        if (!this.isBreaking) {
-          this.x += this.speedX;
-          this.playAnimation(ROTATION_IMAGES, 3, true);
-        } else {
+        if (this.isBreaking) {
           this.playAnimation(CRASH_IMAGES, 1, false);
           if (!this.isSoundMute) {
             soundManager.playSound("bottleBreaks");
@@ -44,6 +61,9 @@ export class Bottle extends MovableObject {
           if (this.currentImageIndex >= CRASH_IMAGES.length - 1) {
             intervalManager.unregisterAnimation(this);
           }
+        } else {
+          this.x += this.speedX;
+          this.playAnimation(ROTATION_IMAGES, 3, true);
         }
       },
     });

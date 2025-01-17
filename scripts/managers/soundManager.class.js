@@ -2,7 +2,7 @@ export class SoundManager {
   constructor() {
     this.sounds = new Map();
     this.soundStates = new Map();
-    this.logSounds();
+    // this.logSounds();
   }
 
   logSounds() {
@@ -37,9 +37,7 @@ export class SoundManager {
     const sound = this.sounds.get(key);
     if (sound) {
       if (!sound.paused) {
-        // Verifica che il suono sia in esecuzione prima di metterlo in pausa
         sound.pause();
-        // this.soundStates.set(key, { isPlaying: true });
       }
     } else {
       console.warn(`Sound with key "${key}" not found.`);
