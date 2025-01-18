@@ -4,6 +4,7 @@ import { IMAGES_ALERT, IMAGES_WALKING, IMAGES_DEAD, IMAGES_HURT, IMAGES_ATTACKIN
 import { soundManager } from "../game.js";
 
 export class Endboss extends MovableObject {
+  type = "endboss";
   height = 350;
   width = 300;
   y = 125;
@@ -25,7 +26,7 @@ export class Endboss extends MovableObject {
     this.loadImages(IMAGES_HURT);
     this.loadImages(IMAGES_ATTACKING);
     this.x = 3000;
-    this.health = 250;
+    this.health = 100;
     this.speedX = 2;
   }
 

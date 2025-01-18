@@ -1,6 +1,5 @@
 import { DrawableObjects } from "./drawable-objects.class.js";
 import { Bottle } from "./bottle.class.js";
-import { intervalManager } from "../managers/intervalManager.class.js";
 
 export class MovableObject extends DrawableObjects {
   facingLeft = false;
@@ -94,12 +93,15 @@ export class MovableObject extends DrawableObjects {
   }
 
   getsHit() {
-    this.health -= 1;
     if (this.health < 0) {
       this.health = 0;
-    } else if (this.type === "chicken") {
+    }
+    if (this.isCharacter) {
+      this.health -= 1;
+    } else if (this.type === "chicken" || this.type === "chick") {
       this.health = 0;
-    } else {
+    } else if (this.type === "endboss") {
+      this.health -= 0.5;
       this.lastHit = new Date().getTime();
     }
   }

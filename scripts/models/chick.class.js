@@ -3,9 +3,9 @@ import { intervalManager } from "../managers/intervalManager.class.js";
 import { IMAGES_WALKING, IMAGE_DEAD } from "../imgsPaths/chickenImgs.js";
 import { soundManager } from "../game.js";
 
-export class Chicken extends MovableObject {
-  type = "chicken";
-  
+export class Chick extends MovableObject {
+  type = "chick";
+  x = 720 + Math.random() * 1800;
   y = 370;
   height = 80;
   width = 80;
@@ -18,8 +18,8 @@ export class Chicken extends MovableObject {
     super().loadImage(IMAGES_WALKING[0]);
     this.loadImages(IMAGES_WALKING);
     this.loadImages(IMAGE_DEAD);
-    this.speedX = 0.5 + Math.random() * 2;
-    this.x = 720 + Math.random() * 2400;
+    this.speedX = 0.5 + Math.random() * 1.5;
+    
   }
 
   registerAnimation() {
