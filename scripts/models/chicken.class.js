@@ -5,7 +5,7 @@ import { soundManager } from "../game.js";
 
 export class Chicken extends MovableObject {
   type = "chicken";
-  
+
   y = 370;
   height = 80;
   width = 80;
@@ -18,7 +18,7 @@ export class Chicken extends MovableObject {
     super().loadImage(IMAGES_WALKING[0]);
     this.loadImages(IMAGES_WALKING);
     this.loadImages(IMAGE_DEAD);
-    this.speedX = 0.5 + Math.random() * 2;
+    this.speedX = 0.5 + Math.random() * 3;
     this.x = 720 + Math.random() * 2400;
   }
 

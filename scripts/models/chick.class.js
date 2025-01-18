@@ -1,11 +1,11 @@
 import { MovableObject } from "./movable-object.class.js";
 import { intervalManager } from "../managers/intervalManager.class.js";
-import { IMAGES_WALKING, IMAGE_DEAD } from "../imgsPaths/chickenImgs.js";
+import { IMAGES_WALKING, IMAGE_DEAD } from "../imgsPaths/chickImgs.js";
 import { soundManager } from "../game.js";
 
 export class Chick extends MovableObject {
   type = "chick";
-  x = 720 + Math.random() * 1800;
+
   y = 370;
   height = 80;
   width = 80;
@@ -19,7 +19,7 @@ export class Chick extends MovableObject {
     this.loadImages(IMAGES_WALKING);
     this.loadImages(IMAGE_DEAD);
     this.speedX = 0.5 + Math.random() * 1.5;
-    
+    this.x = 720 + Math.random() * 1800;
   }
 
   registerAnimation() {

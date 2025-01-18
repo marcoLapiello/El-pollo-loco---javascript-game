@@ -98,6 +98,7 @@ export class MovableObject extends DrawableObjects {
     }
     if (this.isCharacter) {
       this.health -= 1;
+      this.lastHit = new Date().getTime();
     } else if (this.type === "chicken" || this.type === "chick") {
       this.health = 0;
     } else if (this.type === "endboss") {
