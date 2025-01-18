@@ -28,7 +28,7 @@ export function getDescriptionTemplate() {
       <h2 id="descriptionTitle">WHAT´S GOING ON??</h2>
               <span id="descriptionText" class="gameDescription">
                 A horde of angry chickens, led by their alpha rooster, is advancing toward your ranch with the aim of pillaging it. Block their path and
-                defeat them with blasts of spicy salsa!
+                defeat their boss with blasts of spicy salsa!
               </span>
     `;
 }

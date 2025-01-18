@@ -76,10 +76,6 @@ export class World {
     intervalManager.registerAnimation(this, {
       update: () => {
         this.updateGameState();
-        const endboss = this.level.enemies.find((enemy) => enemy instanceof Endboss);
-        if (this.character.health <= 0 || endboss.health <= 0) {
-          this.stopGame();
-        }
       },
     });
   }
@@ -91,6 +87,7 @@ export class World {
     this.checkCollectCoins();
     this.killEnemies();
     this.handleBoss();
+    this.checkWhoWon();
   }
 
   startAnimations() {
@@ -99,29 +96,42 @@ export class World {
     this.character.registerAnimation();
   }
 
-  stopGame() {
+  stopGame(endState = "") {
     soundManager.pauseSound("gameSound-music");
     setTimeout(() => {
       intervalManager.clearAllIntervals();
-      const endImg = document.getElementById("endScreenImg");
-      if (this.character.health <= 0) {
-        endImg.src = this.gameOverImgPath;
-        soundManager.playSound("lost");
-      } else {
-        endImg.src = this.youWinImgPath;
-        soundManager.playSound("win");
-      }
-      this.showEndScreen();
+      this.showEndScreen(endState);
     }, 2000);
   }
 
-  showEndScreen() {
+  showEndScreen(endState) {
+    const endImg = document.getElementById("endScreenImg");
+    if (endState === "lost") {
+      endImg.src = this.gameOverImgPath;
+      soundManager.playSound("lost");
+    } else if (endState === "won") {
+      endImg.src = this.youWinImgPath;
+      soundManager.playSound("won");
+      
+    }
     document.getElementById("canvas").classList.add("dNone");
     document.getElementById("endScreen").classList.remove("dNone");
     document.getElementById("pauseBtn").classList.add("dNone");
     document.getElementById("soundBtn").classList.add("dNone");
     document.getElementById("menuBtn").classList.add("dNone");
   }
+
+  checkWhoWon() {
+    const endboss = this.level.enemies.find((enemy) => enemy instanceof Endboss);
+    const character = this.character;
+    if (endboss.x <= 0 || character.health <= 0) {
+      this.stopGame("lost");
+    } else if (endboss.health <= 0) {
+      this.stopGame("won");
+    }
+  }
+
+  
 
   // PAUSE AND SOUND FUNCTIONS
 
@@ -182,9 +192,13 @@ export class World {
   checkCollision() {
     this.level.enemies.forEach((enemy) => {
       if (this.character.isColliding(enemy) && !this.character.isInTheAir() && enemy.health > 0) {
-        this.character.getsHit();
-        this.healthBar.setStatusBars("HEALTH", this.character.health);
-      }
+        if (enemy.type === "chick") {
+          enemy.getsHit();
+        } else {
+          this.character.getsHit();
+          this.healthBar.setStatusBars("HEALTH", this.character.health);
+        }
+      }  
     });
   }
 
@@ -327,6 +341,9 @@ export class World {
     this.addObjectToMap(this.bottlesOnTheGround);
     this.addObjectToMap(this.coinsAroundTheWorld);
     this.addObjectToMap(this.level.enemies);
+    // this.level.enemies.forEach((enemy) => {
+    //   this.drawFrame(enemy);
+    // });
     this.addObjectToMap(this.bottles);
     this.addToMap(this.character);
     this.addToMap(this.bossBar);
@@ -350,6 +367,7 @@ export class World {
     this.ctx.save();
     if (drawableObject.facingLeft) {
       this.drawObjectFacingLeft(drawableObject);
+      
     } else {
       this.ctx.drawImage(drawableObject.img, drawableObject.x, drawableObject.y, drawableObject.width, drawableObject.height);
     }
@@ -361,4 +379,10 @@ export class World {
     this.ctx.scale(-1, 1);
     this.ctx.drawImage(drawableObject.img, 0, drawableObject.y, drawableObject.width, drawableObject.height);
   }
+
+  // drawFrame(object) {
+  //   this.ctx.strokeStyle = 'red';
+  //   this.ctx.lineWidth = 2;
+  //   this.ctx.strokeRect(object.x, object.y, object.width, object.height);
+  // }
 }

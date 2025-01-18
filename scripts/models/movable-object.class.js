@@ -102,7 +102,7 @@ export class MovableObject extends DrawableObjects {
     } else if (this.type === "chicken" || this.type === "chick") {
       this.health = 0;
     } else if (this.type === "endboss") {
-      this.health -= 0.5;
+      this.health -= 0.25;
       this.lastHit = new Date().getTime();
     }
   }

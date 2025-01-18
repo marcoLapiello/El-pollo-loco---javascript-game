@@ -5,10 +5,9 @@ import { soundManager } from "../game.js";
 
 export class Chick extends MovableObject {
   type = "chick";
-
-  y = 370;
-  height = 80;
-  width = 80;
+  y = 410;
+  height = 40;
+  width = 40;
   offsetX = 2;
   offsetY = 5;
   widthCorrection = 8;
@@ -18,8 +17,8 @@ export class Chick extends MovableObject {
     super().loadImage(IMAGES_WALKING[0]);
     this.loadImages(IMAGES_WALKING);
     this.loadImages(IMAGE_DEAD);
-    this.speedX = 0.5 + Math.random() * 1.5;
-    this.x = 720 + Math.random() * 1800;
+    this.speedX = 0.5 + Math.random() * 5;
+    this.x = 720 + Math.random() * 4800;
   }
 
   registerAnimation() {
@@ -34,7 +33,7 @@ export class Chick extends MovableObject {
           intervalManager.unregisterAnimation(this);
         }
         if (this.x + this.width < 0) {
-          this.x = 720 + Math.random() * 2400;
+          this.x = 720 + Math.random() * 4800;
         }
       },
     });

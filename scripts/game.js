@@ -39,7 +39,7 @@ function registerSounds() {
   soundManager.registerSound("bossDies", new Audio("./audio/boss_dies.wav"), 0.5);
   soundManager.registerSound("bossAttacks", new Audio("./audio/boss_attacks.wav"));
   soundManager.registerSound("gameSound-music", new Audio("./audio/game-music2.m4a"), 0.3);
-  soundManager.registerSound("win", new Audio("./audio/win.mp3"), 0.5);
+  soundManager.registerSound("won", new Audio("./audio/win.mp3"), 0.5);
   soundManager.registerSound("lost", new Audio("./audio/lost.wav"), 0.5);
   soundManager.registerSound("collectCoin", new Audio("./audio/coin.wav"));
 }
