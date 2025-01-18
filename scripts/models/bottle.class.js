@@ -33,6 +33,9 @@ export class Bottle extends MovableObject {
   registerAnimation() {
     intervalManager.registerAnimation(this, {
       update: () => {
+        // if (this.y >= 350) {
+        //   this.isBreaking = true; 
+        // }
         if (this.isBreaking) {
           this.playAnimation(CRASH_IMAGES, 1, false);
           if (!this.isSoundMute) {

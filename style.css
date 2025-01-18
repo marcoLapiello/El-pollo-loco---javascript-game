@@ -12,6 +12,13 @@
     font-style: normal;
 }
 
+@font-face {
+    font-family: 'roboto';
+    src: url('fonts/Roboto-VariableFont_wdth,wght.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 * {
     margin: 0;
     box-sizing: border-box;
@@ -41,8 +48,6 @@ button {
     transition: all 0.3s;
 }
 
-
-
 .mainContent {
     display: flex;
     flex-direction: column;
@@ -58,7 +63,58 @@ h1 {
 
 
 
+/* START SCREEN */
 
+.startScreen {
+    width: 720px;
+    height: 480px;
+    padding-top: 36px;
+    background-image: url('./Grafics/img/9_intro_outro_screens/start/startscreen_1.png');
+    background-position-x: -100px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-color: black;
+    border-radius: 20px;
+    border: solid black 2px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.startImg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px;
+}
+
+
+/* ENDSCREEN */
+
+.endScreen {
+    width: 720px;
+    height: 480px;
+    border-radius: 20px;
+    border: solid black 2px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    position: relative;
+}
+
+.resetButton {
+    position: absolute;
+    top: 36px;
+}
+
+.endScreenImg {
+    max-width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px;
+}
+
+/* CANVAS */
 
 canvas {
     display: block;
@@ -78,35 +134,7 @@ canvas {
     
 }
 
-.pauseBtn {
-    height: 36px;
-    border-radius: 18px;
-    position: absolute;
-    background-color: #ffaa00a4;
-    background-image: url('./Grafics/pause-icon.png');
-    background-size: 64px;
-    background-position: center;
-    top: 10px;
-    right: 110px;
-    
-}
-
-.soundBtn {
-    height: 36px;
-    border-radius: 18px;
-    position: absolute;
-    background-color: #ffaa00a4;
-    background-image: url('./Grafics/sound-icon.png');
-    background-size: 28px;
-    background-position: center;
-    top: 10px;
-    right: 60px;
-    
-}
-
-.noSound {
-    background-image: url('./Grafics/no-sound-icon.png');
-}
+/* MENU */
 
 .menuBtn {
     height: 36px;
@@ -117,71 +145,7 @@ canvas {
     background-size: 28px;
     background-position: center;
     top: 10px;
-    right: 10px;
-    
-}
-
-.startScreen {
-    width: 720px;
-    height: 480px;
-    padding-top: 36px;
-    background-image: url('./Grafics/img/9_intro_outro_screens/start/startscreen_1.png');
-    background-position-x: -100px;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-color: black;
-    border-radius: 20px;
-    border: solid black 2px;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-}
-
-.endScreen {
-    width: 720px;
-    height: 480px;
-    border-radius: 20px;
-    border: solid black 2px;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    position: relative;
-    
-}
-
-
-
-
-
-
-
-
-.menu {
-    width: 700px;
-    height: 460px;
-    border-radius: 20px;
-    border: solid #ffaa00a4 4px;
-    position: absolute;
-    background-color: rgba(0, 0, 0, 0.881);
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 32px;
-    opacity: 0;
-    transition: all 150ms ease-in;
-}
-
-h2 {
-    font-family: 'rioGrandeStriped';
-    color: white;
-    font-size: 32px;
-}
-
-.gameDescription {
-    text-align: center;
-    font-size: 24px;
-    color: #ffaa00a4;
+    right: 10px; 
 }
 
 .menuBackBtn {
@@ -196,6 +160,32 @@ h2 {
     left: 20px;
 }
 
+.menu {
+    width: 700px;
+    height: 460px;
+    border-radius: 20px;
+    border: solid #ffaa00a4 4px;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.881);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 32px;
+}
+
+h2 {
+    font-family: 'rioGrandeStriped';
+    color: white;
+    font-size: 32px;
+}
+
+.gameDescription {
+    text-align: center;
+    font-size: 24px;
+    color: #ffaa00a4;
+}
+
 h3 {
     color: #ffaa00a4;
     font-size: 24px;
@@ -203,9 +193,16 @@ h3 {
 
 .controls {
     padding: 18px;
-    /* border: 1px solid white; */
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 18px;
+}
+
+.instructionsContainer {
+    width: 100%;
+    display: flex;
     justify-content: center;
     align-items: center;
     gap: 18px;
@@ -217,16 +214,6 @@ h3 {
     justify-content: center;
     align-items: center;
     gap: 18px;
-
-}
-
-.instructionsContainer {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 18px;
-
 }
 
 .singleInstruction {
@@ -264,38 +251,104 @@ span {
 }
 
 
+/* IMPRINT */
+
+.imprintTitle {
+    font-family: 'roboto';
+    font-size: 36px;
+    color: #ffaa00a4;
+}
+
+.small {
+    font-size: 24px;
+}
+
+.imprintText {
+    font-family: 'roboto';
+    font-size: 24px;
+    color: white;
+}
 
 
+/* INGAME BUTTONS */
 
-
-
-
-.resetButton {
+.pauseBtn {
+    height: 36px;
+    border-radius: 18px;
     position: absolute;
-    top: 36px;
+    background-color: #ffaa00a4;
+    background-image: url('./Grafics/pause-icon.png');
+    background-size: 64px;
+    background-position: center;
+    top: 10px;
+    right: 110px;
+    
 }
 
-.endScreenImg {
-    max-width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 20px;
+.soundBtn {
+    height: 36px;
+    border-radius: 18px;
+    position: absolute;
+    background-color: #ffaa00a4;
+    background-image: url('./Grafics/sound-icon.png');
+    background-size: 28px;
+    background-position: center;
+    top: 10px;
+    right: 60px;
+    
 }
 
-.startImg {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 20px;
+.noSound {
+    background-image: url('./Grafics/no-sound-icon.png');
 }
 
-.scale {
-    scale: 1;
-}
 
-.opacity {
-    opacity: 1;
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* Smartphone */
 @media only screen and (max-width: 720px) {
@@ -317,4 +370,12 @@ span {
 
 .dNone {
     display: none;
+}
+
+.scale {
+    scale: 1;
+}
+
+.opacity {
+    opacity: 1;
 }

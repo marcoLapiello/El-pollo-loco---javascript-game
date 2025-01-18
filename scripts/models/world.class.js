@@ -209,9 +209,7 @@ export class World {
   handleThrowBottle() {
     let timePassed = this.handleThrowBottleTime();
     if (this.keyboard.B && this.ownedBottles > 0 && timePassed > 0.5) {
-      let bottle = new Bottle(this.character.x + 80, this.character.y + 140, this.isSoundMute,  this.character.facingLeft);
-      console.log("Character is facing left", this.character.facingLeft);
-      
+      let bottle = new Bottle(this.character.x + 80, this.character.y + 140, this.isSoundMute,  this.character.facingLeft);      
       this.lastThrownBottleTime = new Date().getTime();
       this.ownedBottles--;
       this.ownedBottlesPercent = this.ownedBottles * 10;
