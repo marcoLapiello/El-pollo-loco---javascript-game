@@ -91,7 +91,6 @@ export class World {
     this.checkCollectCoins();
     this.killEnemies();
     this.handleBoss();
-    // this.playChickenSound();
   }
 
   startAnimations() {
@@ -101,11 +100,9 @@ export class World {
   }
 
   stopGame() {
-    // soundManager.pauseSound("gameSound-chickens");
     soundManager.pauseSound("gameSound-music");
     setTimeout(() => {
       intervalManager.clearAllIntervals();
-      // this.stopChickenSound();
       const endImg = document.getElementById("endScreenImg");
       if (this.character.health <= 0) {
         endImg.src = this.gameOverImgPath;
@@ -114,34 +111,55 @@ export class World {
         endImg.src = this.youWinImgPath;
         soundManager.playSound("win");
       }
-      document.getElementById("canvas").classList.add("dNone");
-      document.getElementById("endScreen").classList.remove("dNone");
-      document.getElementById("pauseBtn").classList.add("dNone");
-      document.getElementById("soundBtn").classList.add("dNone");
-      document.getElementById("menuBtn").classList.add("dNone");
+      this.showEndScreen();
     }, 2000);
+  }
+
+  showEndScreen() {
+    document.getElementById("canvas").classList.add("dNone");
+    document.getElementById("endScreen").classList.remove("dNone");
+    document.getElementById("pauseBtn").classList.add("dNone");
+    document.getElementById("soundBtn").classList.add("dNone");
+    document.getElementById("menuBtn").classList.add("dNone");
   }
 
   // PAUSE AND SOUND FUNCTIONS
 
   togglePause() {
     this.isGamePaused = !this.isGamePaused;
-    // pause state gets only passed to objects using gravity
+    // pause state must only be passed to instances using gravity
     this.character.isGamePaused = this.isGamePaused;
     this.bottles.forEach((bottle) => {
       bottle.isGamePaused = this.isGamePaused;
     });
-
     if (this.isGamePaused) {
-      intervalManager.pauseGame();
-      soundManager.pauseAll();
-      this.pauseButton.blur();
-      // this.showPauseScreen(); // Mostra la schermata di pausa
+      this.pauseGame();
     } else {
-      intervalManager.resumeGame();
-      soundManager.resumeAll();
-      this.pauseButton.blur();
-      // this.hidePauseScreen(); // Nasconde la schermata di pausa
+      this.resumeGame();
+    }
+  }
+
+  pauseGame() {
+    let activeBtn = true;
+    intervalManager.pauseGame();
+    soundManager.pauseAll();
+    this.pauseButton.blur();
+    this.toggleActivePauseButton(activeBtn);
+  }
+
+  resumeGame() {
+    let activeBtn = false;
+    intervalManager.resumeGame();
+    soundManager.resumeAll();
+    this.pauseButton.blur();
+    this.toggleActivePauseButton(activeBtn);
+  }
+
+  toggleActivePauseButton(activeBtn) {
+    if (activeBtn) {
+      document.getElementById("pauseBtn").classList.add("pauseActive");
+    } else {
+      document.getElementById("pauseBtn").classList.remove("pauseActive");
     }
   }
 
@@ -158,22 +176,6 @@ export class World {
       this.soundButton.blur();
     }
   }
-
-  // playChickenSound() {
-  //   if (this.chickenSoundInterval) return;
-
-  //   if (!this.isSoundMute) {
-  //     soundManager.playSound("gameSound-chickens");
-  //     this.chickenSoundInterval = intervalManager.setInterval(() => {
-  //       soundManager.playSound("gameSound-chickens");
-  //     }, 5000);
-  //   }
-  // }
-
-  // stopChickenSound() {
-  //   intervalManager.clearInterval(this.chickenSoundInterval);
-  //   this.chickenSoundInterval = null;
-  // }
 
   // COLLISIONS CHARACTER/ENEMIES
 
@@ -194,22 +196,10 @@ export class World {
 
   // BOTTLES
 
-  // handleThrowBottle() {
-  //   let timePassed = this.handleThrowBottleTime();
-  //   if (this.keyboard.B && !this.character.facingLeft && this.ownedBottles > 0 && timePassed > 0.5) {
-  //     let bottle = new Bottle(this.character.x + 80, this.character.y + 140, this.isSoundMute);
-  //     this.lastThrownBottleTime = new Date().getTime();
-  //     this.ownedBottles--;
-  //     this.ownedBottlesPercent = this.ownedBottles * 10;
-  //     this.bottlesBar.setStatusBars("BOTTLES", this.ownedBottlesPercent);
-  //     this.bottles.push(bottle);
-  //   }
-  // }
-
   handleThrowBottle() {
     let timePassed = this.handleThrowBottleTime();
     if (this.keyboard.B && this.ownedBottles > 0 && timePassed > 0.5) {
-      let bottle = new Bottle(this.character.x + 80, this.character.y + 140, this.isSoundMute,  this.character.facingLeft);      
+      let bottle = new Bottle(this.character.x + 80, this.character.y + 140, this.isSoundMute, this.character.facingLeft);
       this.lastThrownBottleTime = new Date().getTime();
       this.ownedBottles--;
       this.ownedBottlesPercent = this.ownedBottles * 10;
