@@ -34,7 +34,7 @@ export class Chicken extends MovableObject {
           intervalManager.unregisterAnimation(this);
         }
         if (this.x + this.width < 0) {
-          this.x = 720 + Math.random() * 1800;
+          this.x = 720 + Math.random() * 2400;
         }
       },
     });
