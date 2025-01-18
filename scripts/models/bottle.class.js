@@ -11,7 +11,7 @@ export class Bottle extends MovableObject {
   isBreaking = false;
   isSoundMute;
 
-  constructor(initialX, initialY, isSoundMute) {
+  constructor(initialX, initialY, isSoundMute, facingLeft) {
     super();
     this.loadImage(ROTATION_IMAGES[0]);
     this.loadImages(ROTATION_IMAGES);
@@ -19,6 +19,7 @@ export class Bottle extends MovableObject {
     this.x = initialX;
     this.y = initialY;
     this.isSoundMute = isSoundMute;
+    this.facingLeft = facingLeft;
     this.height = 50;
     this.width = 50;
     this.acceleration = 1.5;
@@ -29,26 +30,6 @@ export class Bottle extends MovableObject {
     this.registerAnimation();
   }
 
-  // registerAnimation() {
-  //   intervalManager.registerAnimation(this, {
-  //     update: () => {
-  //       if (!this.isBreaking) {
-  //         this.x += this.speedX;
-  //         this.playAnimation(ROTATION_IMAGES, 3, true);
-  //       } else {
-  //         this.playAnimation(CRASH_IMAGES, 1, false);
-  //         if (!this.isSoundMute) {
-  //           soundManager.playSound("bottleBreaks");
-  //         }
-          
-  //         if (this.currentImageIndex >= CRASH_IMAGES.length - 1) {
-  //           intervalManager.unregisterAnimation(this);
-  //         }
-  //       }
-  //     },
-  //   });
-  // }
-
   registerAnimation() {
     intervalManager.registerAnimation(this, {
       update: () => {
@@ -57,12 +38,16 @@ export class Bottle extends MovableObject {
           if (!this.isSoundMute) {
             soundManager.playSound("bottleBreaks");
           }
-          
+
           if (this.currentImageIndex >= CRASH_IMAGES.length - 1) {
             intervalManager.unregisterAnimation(this);
           }
         } else {
-          this.x += this.speedX;
+          if (this.facingLeft) {
+            this.x -= this.speedX;
+          } else {
+            this.x += this.speedX;
+          }
           this.playAnimation(ROTATION_IMAGES, 3, true);
         }
       },
