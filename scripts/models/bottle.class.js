@@ -23,8 +23,8 @@ export class Bottle extends MovableObject {
     this.height = 50;
     this.width = 50;
     this.acceleration = 1.5;
-    this.speedX = 25;
-    this.speedY = 17;
+    this.speedX = 18;
+    this.speedY = 20;
     soundManager.registerSound("bottleBreaks", new Audio("./audio/glass-shatter-sound.wav"));
     this.applyGravity();
     this.registerAnimation();
