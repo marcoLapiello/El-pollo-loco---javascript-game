@@ -11,7 +11,7 @@
     <script type="module" src="./scripts/game.js"></script>
   </head>
   <body>
-    <section class="mainContent">
+    <section id="mainContent" class="mainContent">
       <h1>El pollo loco</h1>
 
       <div id="canvasContainer" class="canvasContainer">
@@ -22,6 +22,13 @@
         <button id="menuBtn" class="menuBtn"></button>
         <button id="pauseBtn" class="pauseBtn dNone"></button>
         <button id="soundBtn" class="soundBtn dNone"></button>
+
+        <button id="leftBtn" class="leftBtn">L</button>
+        <button id="rightBtn" class="rightBtn">R</button>
+        <button id="jumpBtnLeft" class="jumpBtnLeft">J</button>
+        <button id="throwBtnLeft" class="throwBtnLeft">B</button>
+        <button id="jumpBtnRight" class="jumpBtnRight">J</button>
+        <button id="throwBtnRight" class="throwBtnRight">B</button>
 
         <canvas class="dNone" id="canvas" width="720" height="480"></canvas>
 
@@ -37,7 +44,11 @@
           <img id="endScreenImg" class="endScreenImg" src="" alt="" />
           <button id="resetButton" class="resetButton">Try Again</button>
         </div>
+
+        
       </div>
+      
     </section>
+    <div id="mobileTurn" class="mobileTurn dNone"></div>
   </body>
 </html>

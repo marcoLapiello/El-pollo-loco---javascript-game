@@ -117,61 +117,64 @@ function keyboardInputsFalse(event) {
 
 // MOBILE DEVICE DETECTION
 
-// document.addEventListener("DOMContentLoaded", function() {
-//   console.log("DOM fully loaded and parsed");
-//   if (isMobileDevice()) {
-//     console.log("Mobile device detected");
-//     checkOrientation();
-//     window.addEventListener("orientationchange", checkOrientation);
-//     window.addEventListener("resize", checkOrientation);
-//   } else {
-//     console.log("Not a mobile device");
-//   }
-// });
+document.addEventListener("DOMContentLoaded", function() {
+  // console.log("DOM fully loaded and parsed");
+  if (isMobileDevice()) {
+    // console.log("Mobile device detected");
+    checkOrientation();
+    window.addEventListener("orientationchange", checkOrientation);
+    window.addEventListener("resize", checkOrientation);
+  } else {
+    // console.log("Not a mobile device");
+  }
+});
 
-// function isMobileDevice() {
-//   const isMobile = /Mobi|Android/i.test(navigator.userAgent);
-//   console.log("isMobileDevice:", isMobile);
-//   return isMobile;
-// }
+function isMobileDevice() {
+  const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+  // console.log("isMobileDevice:", isMobile);
+  return isMobile;
+}
 
-// function checkOrientation() {
-//   console.log("Checking orientation");
-//   if (window.innerHeight > window.innerWidth) {
-//     console.log("Portrait mode detected");
-//     showLandscapeWarning();
-//   } else {
-//     console.log("Landscape mode detected");
-//     hideLandscapeWarning();
-//   }
-// }
+function checkOrientation() {
+  // console.log("Checking orientation");
+  if (window.innerHeight > window.innerWidth) {
+    // console.log("Portrait mode detected");
+    showLandscapeWarning();
+  } else {
+    // console.log("Landscape mode detected");
+    hideLandscapeWarning();
+  }
+}
 
-// function showLandscapeWarning() {
-//   let warning = document.getElementById("landscapeWarning");
-//   if (!warning) {
-//     console.log("Showing landscape warning");
-//     warning = document.createElement("div");
-//     warning.id = "landscapeWarning";
-//     warning.style.position = "fixed";
-//     warning.style.top = "0";
-//     warning.style.left = "0";
-//     warning.style.width = "100%";
-//     warning.style.height = "100%";
-//     warning.style.backgroundColor = "rgba(0, 0, 0, 0.8)";
-//     warning.style.color = "white";
-//     warning.style.display = "flex";
-//     warning.style.alignItems = "center";
-//     warning.style.justifyContent = "center";
-//     warning.style.zIndex = "1000";
-//     warning.innerText = "Please rotate your device to landscape mode to play the game.";
-//     document.body.appendChild(warning);
-//   }
-// }
+function showLandscapeWarning() {
+  const advice = document.getElementById("mobileTurn");
+  const gameContent = document.getElementById("mainContent");
+  advice.classList.remove("dNone");
+  gameContent.classList.add("dNone");
+  // if (!warning) {
+  //   console.log("Showing landscape warning");
+  //   warning = document.createElement("div");
+  //   warning.id = "landscapeWarning";
+  //   warning.style.position = "fixed";
+  //   warning.style.top = "0";
+  //   warning.style.left = "0";
+  //   warning.style.width = "100%";
+  //   warning.style.height = "100%";
+  //   warning.style.backgroundColor = "rgba(0, 0, 0, 0.8)";
+  //   warning.style.color = "white";
+  //   warning.style.display = "flex";
+  //   warning.style.alignItems = "center";
+  //   warning.style.justifyContent = "center";
+  //   warning.style.zIndex = "1000";
+  //   warning.innerText = "Please rotate your device to landscape mode to play the game.";
+  //   document.body.appendChild(warning);
+  // }
+}
 
-// function hideLandscapeWarning() {
-//   const warning = document.getElementById("landscapeWarning");
-//   if (warning) {
-//     console.log("Hiding landscape warning");
-//     warning.remove();
-//   }
-// }
+function hideLandscapeWarning() {
+  const advice = document.getElementById("mobileTurn");
+  const gameContent = document.getElementById("mainContent");
+  advice.classList.add("dNone");
+  gameContent.classList.remove("dNone");
+  
+}
