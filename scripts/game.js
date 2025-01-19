@@ -24,6 +24,8 @@ function registerEventsListeners() {
   document.getElementById("menuImprintBtn").addEventListener("click", toggleImprint);
   window.addEventListener("keydown", keyboardInputsTrue);
   window.addEventListener("keyup", keyboardInputsFalse);
+  window.addEventListener("touchstart", touchInputsTrue);
+  window.addEventListener("touchend", touchInputsFalse);
   document.getElementById("startButton").addEventListener("click", startGame);
   document.getElementById("resetButton").addEventListener("click", () => {
     location.reload();
@@ -114,10 +116,33 @@ function keyboardInputsFalse(event) {
   }
 }
 
+function touchInputsTrue(event) {
+  if (event.target.id == "leftBtn") {
+    keyboard.LEFT = true;
+  } else if (event.target.id == "rightBtn") {
+    keyboard.RIGHT = true;
+  } else if (event.target.id == "jumpBtnRight" || event.target.id == "jumpBtnLeft") {
+    keyboard.SPACE = true;
+  } else if (event.target.id == "throwBtnRight" || event.target.id == "throwBtnLeft") {
+    keyboard.B = true;
+  }
+}
+
+function touchInputsFalse(event) {
+  if (event.target.id == "leftBtn") {
+    keyboard.LEFT = false;
+  } else if (event.target.id == "rightBtn") {
+    keyboard.RIGHT = false;
+  } else if (event.target.id == "jumpBtnRight" || event.target.id == "jumpBtnLeft") {
+    keyboard.SPACE = false;
+  } else if (event.target.id == "throwBtnRight" || event.target.id == "throwBtnLeft") {
+    keyboard.B = false;
+  }
+}
 
 // MOBILE DEVICE DETECTION
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
   // console.log("DOM fully loaded and parsed");
   if (isMobileDevice()) {
     // console.log("Mobile device detected");
@@ -176,5 +201,4 @@ function hideLandscapeWarning() {
   const gameContent = document.getElementById("mainContent");
   advice.classList.add("dNone");
   gameContent.classList.remove("dNone");
-  
 }
