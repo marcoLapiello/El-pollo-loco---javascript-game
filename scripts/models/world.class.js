@@ -192,7 +192,7 @@ export class World {
   checkCollision() {
     this.level.enemies.forEach((enemy) => {
       if (this.character.isColliding(enemy) && !this.character.isInTheAir() && enemy.health > 0) {
-        if (enemy.type === "chick") {
+        if (enemy.type === "chick" && this.character.health > 0) {
           enemy.getsHit();
         } else {
           this.character.getsHit();
