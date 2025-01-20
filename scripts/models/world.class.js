@@ -65,7 +65,7 @@ export class World {
     this.startAnimations();
     this.cleanUpDeadEnemies();
     this.setWorld();
-    this.draw();
+    // 
     this.generateBottleOnTheGrounds(20);
     this.generateCoinsAroundTheWorld(20);
     soundManager.playSound("gameSound-music", true);
@@ -81,6 +81,7 @@ export class World {
   }
 
   updateGameState() {
+    this.draw();
     this.checkCollision();
     this.handleThrowBottle();
     this.checkCollectBottle();
@@ -352,9 +353,9 @@ export class World {
     this.addToMap(this.bottlesBar);
     this.addToMap(this.coinsBar);
 
-    requestAnimationFrame(() => {
-      this.draw();
-    });
+    // requestAnimationFrame(() => {
+    //   this.draw();
+    // });
   }
 
   addObjectToMap(object) {
