@@ -1,83 +1,81 @@
 @font-face {
-    font-family: 'rioGrande';
-    src: url('fonts/RioGrande.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
+  font-family: "rioGrande";
+  src: url("fonts/RioGrande.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
 }
 
 @font-face {
-    font-family: 'rioGrandeStriped';
-    src: url('fonts/RioGrande_Striped.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
+  font-family: "rioGrandeStriped";
+  src: url("fonts/RioGrande_Striped.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
 }
 
 @font-face {
-    font-family: 'roboto';
-    src: url('fonts/Roboto-VariableFont_wdth,wght.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
+  font-family: "roboto";
+  src: url("fonts/Roboto-VariableFont_wdth,wght.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
 }
 
 * {
-    margin: 0;
-    box-sizing: border-box;
-    font-family: 'rioGrande';
-    user-select: none;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "rioGrande";
+  user-select: none;
 }
 
 body {
-    height: 100dvh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-image: url('Grafics/background4.webp');
-    background-position: center;
-    background-size: cover;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url("Grafics/background4.webp");
+  background-position: center;
+  background-size: cover;
 }
 
 button {
-    font-family: 'rioGrandeStriped';
-    font-size: 24px;
-    padding: 8px 16px;
-    border: 2px solid #FFDA00;
-    border-radius: 10px;
-    background-color: #ffaa00a4;
-    cursor: pointer;
-    transition: all 0.3s;
+  font-family: "rioGrandeStriped";
+  font-size: 24px;
+  padding: 8px 16px;
+  border: 2px solid #ffda00;
+  border-radius: 10px;
+  background-color: #ffaa00a4;
+  cursor: pointer;
+  transition: all 0.3s;
 }
 
 .mainContent {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 36px;
 }
 
 h1 {
-    font-size: 48px;
-    letter-spacing: 2px;
-    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+  font-size: 48px;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
 }
-
-
 
 /* START SCREEN */
 
 .startScreen {
-    width: 720px;
-    height: 480px;
-    padding-top: 36px;
-    background-image: url('./Grafics/img/9_intro_outro_screens/start/startscreen_1.png');
-    background-position-x: -100px;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-color: black;
-    border-radius: 20px;
-    border: solid black 2px;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
+  width: 720px;
+  height: 480px;
+  padding-top: 36px;
+  background-image: url("./Grafics/img/9_intro_outro_screens/start/startscreen_1.png");
+  background-position-x: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-color: black;
+  border-radius: 20px;
+  border: solid black 2px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 }
 
 /* .startImg {
@@ -87,402 +85,356 @@ h1 {
     border-radius: 20px;
 } */
 
-
 /* ENDSCREEN */
 
 .endScreen {
-    width: 720px;
-    height: 480px;
-    border-radius: 20px;
-    border: solid black 2px;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    position: relative;
+  width: 720px;
+  height: 480px;
+  border-radius: 20px;
+  border: solid black 2px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  position: relative;
 }
 
 .resetButton {
-    position: absolute;
-    top: 36px;
+  position: absolute;
+  top: 36px;
 }
 
 .endScreenImg {
-    max-width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 20px;
+  max-width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 20px;
 }
 
 /* CANVAS */
 
 canvas {
-    height: 100%;
-    display: block;
-    background-color: black;
-    border-radius: 20px;
-    border: solid black 2px;
-    
+  height: 100%;
+  display: block;
+  background-color: black;
+  border-radius: 20px;
+  border: solid black 2px;
 }
 
 .canvasContainer {
-    width: 720px;
-    height: 480px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    
+  width: 720px;
+  height: 480px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
 }
-
-
 
 /* MENU */
 
 .menuBtn {
-    height: 36px;
-    border-radius: 18px;
-    position: absolute;
-    background-color: #ffaa00a4;
-    background-image: url('./Grafics/menu-icon.png');
-    background-size: 28px;
-    background-position: center;
-    top: 10px;
-    right: 10px; 
+  height: 36px;
+  border-radius: 18px;
+  position: absolute;
+  background-color: #ffaa00a4;
+  background-image: url("./Grafics/menu-icon.png");
+  background-size: 28px;
+  background-position: center;
+  top: 10px;
+  right: 10px;
 }
 
 .menuBackBtn {
-    position: absolute;
-    top: 20px;
-    right: 20px;
+  position: absolute;
+  top: 20px;
+  right: 20px;
 }
 
 .menuImprintBtn {
-    position: absolute;
-    top: 20px;
-    left: 20px;
+  position: absolute;
+  top: 20px;
+  left: 20px;
 }
 
 .menu {
-    width: 700px;
-    height: 460px;
-    border-radius: 20px;
-    border: solid #ffaa00a4 4px;
-    position: absolute;
-    background-color: rgba(0, 0, 0, 0.881);
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 32px;
+  width: 700px;
+  height: 460px;
+  border-radius: 20px;
+  border: solid #ffaa00a4 4px;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.881);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 32px;
 }
 
 h2 {
-    font-family: 'rioGrandeStriped';
-    color: white;
-    font-size: 32px;
+  font-family: "rioGrandeStriped";
+  color: white;
+  font-size: 32px;
 }
 
 .gameDescription {
-    text-align: center;
-    font-size: 24px;
-    color: #ffaa00a4;
+  text-align: center;
+  font-size: 24px;
+  color: #ffaa00a4;
 }
 
 h3 {
-    color: #ffaa00a4;
-    font-size: 24px;
+  color: #ffaa00a4;
+  font-size: 24px;
 }
 
 .controls {
-    padding: 18px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 18px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
 }
 
 .instructionsContainer {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 18px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
 }
 
 .instructions {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 18px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
 }
 
 .singleInstruction {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
-.reverse{
-    flex-direction: row-reverse;
+.reverse {
+  flex-direction: row-reverse;
 }
 
 .separator {
-    height: 30px;
-    width: 2px;
-    background-color: #ffaa00a4;
+  height: 30px;
+  width: 2px;
+  background-color: #ffaa00a4;
 }
 
 .arrow {
-    width: 40px;
-    height: 30px;
-    background-color: #ffaa00a4;
-    border-radius: 12px;
+  width: 40px;
+  height: 30px;
+  background-color: #ffaa00a4;
+  border-radius: 12px;
 }
 
 .btnName {
-    font-family: 'rioGrandeStriped';
-    font-size: 36px;
-    color: #ffaa00a4;
+  font-family: "rioGrandeStriped";
+  font-size: 36px;
+  color: #ffaa00a4;
 }
 
 span {
-    color: white;
+  color: white;
 }
-
 
 /* IMPRINT */
 
 .imprintTitle {
-    font-family: 'roboto';
-    font-size: 36px;
-    color: #ffaa00a4;
+  font-family: "roboto";
+  font-size: 36px;
+  color: #ffaa00a4;
 }
 
 .small {
-    font-size: 24px;
+  font-size: 24px;
 }
 
 .imprintText {
-    font-family: 'roboto';
-    font-size: 24px;
-    color: white;
+  font-family: "roboto";
+  font-size: 24px;
+  color: white;
 }
-
 
 /* INGAME BUTTONS */
 
 .pauseBtn {
-    height: 36px;
-    border-radius: 18px;
-    position: absolute;
-    background-color: #ffaa00a4;
-    background-image: url('./Grafics/pause-icon.png');
-    background-size: 64px;
-    background-position: center;
-    top: 10px;
-    right: 110px;
-    transition: all 0s;
+  height: 36px;
+  border-radius: 18px;
+  position: absolute;
+  background-color: #ffaa00a4;
+  background-image: url("./Grafics/pause-icon.png");
+  background-size: 64px;
+  background-position: center;
+  top: 10px;
+  right: 110px;
+  transition: all 0s;
 }
 
 .pauseActive {
-    height: 48px;
-    width: 48px;
-    background-size: 84px;
-    border-radius: 24px;
-    border: 2px solid red;
+  height: 48px;
+  width: 48px;
+  background-size: 84px;
+  border-radius: 24px;
+  border: 2px solid red;
 }
 
 .soundBtn {
-    height: 36px;
-    border-radius: 18px;
-    position: absolute;
-    background-color: #ffaa00a4;
-    background-image: url('./Grafics/sound-icon.png');
-    background-size: 28px;
-    background-position: center;
-    top: 10px;
-    right: 60px;
-    
+  height: 36px;
+  border-radius: 18px;
+  position: absolute;
+  background-color: #ffaa00a4;
+  background-image: url("./Grafics/sound-icon.png");
+  background-size: 28px;
+  background-position: center;
+  top: 10px;
+  right: 60px;
 }
 
 .noSound {
-    background-image: url('./Grafics/no-sound-icon.png');
+  background-image: url("./Grafics/no-sound-icon.png");
 }
-
-
-.leftBtn {
-    height: 36px;
-    border-radius: 18px;
-    position: absolute;
-    background-color: #ffaa00a4;
-    /* background-image: url('./Grafics/sound-icon.png'); */
-    /* background-size: 28px; */
-    /* background-position: center; */
-    bottom: 30px;
-    left: 25px;
-    
-}
-
-.rightBtn {
-    height: 36px;
-    border-radius: 18px;
-    position: absolute;
-    background-color: #ffaa00a4;
-    /* background-image: url('./Grafics/sound-icon.png'); */
-    /* background-size: 28px; */
-    /* background-position: center; */
-    bottom: 30px;
-    right: 25px;
-}
-
-.jumpBtnLeft {
-    height: 36px;
-    border-radius: 18px;
-    position: absolute;
-    background-color: #ffaa00a4;
-    /* background-image: url('./Grafics/sound-icon.png'); */
-    /* background-size: 28px; */
-    /* background-position: center; */
-    bottom: 80px;
-    left: 25px;
-    
-}
-
-.throwBtnLeft {
-    height: 36px;
-    border-radius: 18px;
-    position: absolute;
-    background-color: #ffaa00a4;
-    /* background-image: url('./Grafics/sound-icon.png'); */
-    /* background-size: 28px; */
-    /* background-position: center; */
-    bottom: 30px;
-    left: 85px;
-    
-}
-
-.jumpBtnRight {
-    height: 36px;
-    border-radius: 18px;
-    position: absolute;
-    background-color: #ffaa00a4;
-    /* background-image: url('./Grafics/sound-icon.png'); */
-    /* background-size: 28px; */
-    /* background-position: center; */
-    bottom: 80px;
-    right: 25px;
-    
-}
-
-.throwBtnRight {
-    height: 36px;
-    border-radius: 18px;
-    position: absolute;
-    background-color: #ffaa00a4;
-    /* background-image: url('./Grafics/sound-icon.png'); */
-    /* background-size: 28px; */
-    /* background-position: center; */
-    bottom: 30px;
-    right: 85px;
-    
-}
-
-
 
 /* MOBILE */
 
-
 .mobileTurn {
+  height: 100dvh;
+  width: 100%;
+  background-color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.turnAdvice {
+  color: white;
+  font-size: 28px;
+  text-align: center;
+  padding: 18px;
+}
+
+.leftBtn {
+  height: 36px;
+  border-radius: 18px;
+  position: absolute;
+  background-color: #ffaa00a4;
+  /* background-image: url('./Grafics/sound-icon.png'); */
+  /* background-size: 28px; */
+  /* background-position: center; */
+  bottom: 30px;
+  left: 25px;
+}
+
+.rightBtn {
+  height: 36px;
+  border-radius: 18px;
+  position: absolute;
+  background-color: #ffaa00a4;
+  /* background-image: url('./Grafics/sound-icon.png'); */
+  /* background-size: 28px; */
+  /* background-position: center; */
+  bottom: 30px;
+  right: 25px;
+}
+
+.jumpBtnLeft {
+  height: 36px;
+  border-radius: 18px;
+  position: absolute;
+  background-color: #ffaa00a4;
+  /* background-image: url('./Grafics/sound-icon.png'); */
+  /* background-size: 28px; */
+  /* background-position: center; */
+  bottom: 80px;
+  left: 25px;
+}
+
+.throwBtnLeft {
+  height: 36px;
+  border-radius: 18px;
+  position: absolute;
+  background-color: #ffaa00a4;
+  /* background-image: url('./Grafics/sound-icon.png'); */
+  /* background-size: 28px; */
+  /* background-position: center; */
+  bottom: 30px;
+  left: 85px;
+}
+
+.jumpBtnRight {
+  height: 36px;
+  border-radius: 18px;
+  position: absolute;
+  background-color: #ffaa00a4;
+  /* background-image: url('./Grafics/sound-icon.png'); */
+  /* background-size: 28px; */
+  /* background-position: center; */
+  bottom: 80px;
+  right: 25px;
+}
+
+.throwBtnRight {
+  height: 36px;
+  border-radius: 18px;
+  position: absolute;
+  background-color: #ffaa00a4;
+  /* background-image: url('./Grafics/sound-icon.png'); */
+  /* background-size: 28px; */
+  /* background-position: center; */
+  bottom: 30px;
+  right: 85px;
+}
+
+@media (max-height: 480px) {
+  .canvasContainer {
     height: 100dvh;
     width: 100%;
-    background-color: black;
+    max-width: 85vw;
+  }
+
+  .startScreen {
+    height: 100%;
+    min-width: 100%;
+    
+  }
+
+  .endScreen {
+    height: 100%;
+    min-width: 100%;
+  }
+
+  h1 {
+    display: none;
+  }
+
+  .menu {
+    height: 100%;
+    max-width: 100%;
+    border-radius: 20px;
+    justify-content: center;
+    gap: 32px;
+  }
+
+  .gameDescription {
+    padding: 0 20px;
+  }
 }
-
-@media only screen and (max-height: 480px) {
-    .canvasContainer {
-        height: 100dvh;
-        width: 100%;
-    }
-
-    .startScreen {
-        height: 100%;
-        min-width: 100%;
-        background-position-x: -20px;
-    }
-
-    .endScreen {
-        height: 100%;
-        min-width: 100%;
-    }
-
-    h1 {
-        display: none;
-    }
-
-    .menu {
-        height: 100%;
-        min-width: 100%;
-        border-radius: 20px;
-        
-        
-        gap: 32px;
-    }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* Smartphone */
-/* @media(max-width: 720px) {
-    canvas {
-        width: 100%;
-    }
-} */
-
-
 
 .dNone {
-    display: none;
+  display: none;
 }
 
 .scale {
-    scale: 1;
+  scale: 1;
 }
 
 .opacity {
-    opacity: 1;
+  opacity: 1;
 }

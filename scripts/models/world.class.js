@@ -212,7 +212,7 @@ export class World {
 
   handleThrowBottle() {
     let timePassed = this.handleThrowBottleTime();
-    if (this.keyboard.B && this.ownedBottles > 0 && timePassed > 0.5) {
+    if (this.keyboard.B && this.ownedBottles > 0 && timePassed > 0.5 && !this.character.getsHurt()) {
       let bottle = new Bottle(this.character.x + 80, this.character.y + 140, this.isSoundMute, this.character.facingLeft);
       this.lastThrownBottleTime = new Date().getTime();
       this.ownedBottles--;

@@ -27,6 +27,7 @@ function registerEventsListeners() {
   window.addEventListener("touchstart", touchInputsTrue);
   window.addEventListener("touchend", touchInputsFalse);
   document.getElementById("startButton").addEventListener("click", startGame);
+  // document.getElementById("fullscreenBtn").addEventListener("click", fullScreen);
   document.getElementById("resetButton").addEventListener("click", () => {
     location.reload();
   });
@@ -54,6 +55,9 @@ function loadMenu() {
     document.getElementById("gameDescription").innerHTML = "";
     document.getElementById("controls").innerHTML = "";
     document.getElementById("gameDescription").innerHTML = getDescriptionTemplate();
+    if (isMobileDevice()) {
+      document.getElementById("controls").classList.add("dNone");
+    }
     document.getElementById("controls").innerHTML = getControlsTemplate();
   } else {
     document.getElementById("menuImprintBtn").innerText = "";
@@ -72,6 +76,9 @@ export function startGame() {
   document.getElementById("soundBtn").classList.remove("dNone");
   canvas = document.getElementById("canvas");
   world = new World(canvas, keyboard, gameIsStarted);
+  if (isMobileDevice()) {
+    showMobileBtns();
+  }
 }
 
 function toggleMenu() {
@@ -149,6 +156,7 @@ document.addEventListener("DOMContentLoaded", function () {
     checkOrientation();
     window.addEventListener("orientationchange", checkOrientation);
     window.addEventListener("resize", checkOrientation);
+    
   } else {
     // console.log("Not a mobile device");
   }
@@ -158,6 +166,16 @@ function isMobileDevice() {
   const isMobile = /Mobi|Android/i.test(navigator.userAgent);
   // console.log("isMobileDevice:", isMobile);
   return isMobile;
+}
+
+function showMobileBtns() {
+  let mobileBtnIds = ["leftBtn", "rightBtn", "jumpBtnRight", "jumpBtnLeft", "throwBtnRight", "throwBtnLeft"];
+  mobileBtnIds.forEach((btnId) => {
+    let btn = document.getElementById(btnId);
+    if (btn) {
+      btn.classList.remove("dNone");
+    }
+  });
 }
 
 function checkOrientation() {
@@ -176,29 +194,30 @@ function showLandscapeWarning() {
   const gameContent = document.getElementById("mainContent");
   advice.classList.remove("dNone");
   gameContent.classList.add("dNone");
-  // if (!warning) {
-  //   console.log("Showing landscape warning");
-  //   warning = document.createElement("div");
-  //   warning.id = "landscapeWarning";
-  //   warning.style.position = "fixed";
-  //   warning.style.top = "0";
-  //   warning.style.left = "0";
-  //   warning.style.width = "100%";
-  //   warning.style.height = "100%";
-  //   warning.style.backgroundColor = "rgba(0, 0, 0, 0.8)";
-  //   warning.style.color = "white";
-  //   warning.style.display = "flex";
-  //   warning.style.alignItems = "center";
-  //   warning.style.justifyContent = "center";
-  //   warning.style.zIndex = "1000";
-  //   warning.innerText = "Please rotate your device to landscape mode to play the game.";
-  //   document.body.appendChild(warning);
-  // }
 }
 
 function hideLandscapeWarning() {
   const advice = document.getElementById("mobileTurn");
   const gameContent = document.getElementById("mainContent");
+  // const fullscreenBtn = document.getElementById("fullscreenBtn");
+  // fullscreenBtn.classList.remove("dNone");
   advice.classList.add("dNone");
   gameContent.classList.remove("dNone");
 }
+
+// function fullScreen() {
+//   const gameContent = document.getElementById("mainContent");
+//   const advice = document.getElementById("mobileTurn");
+//   gameContent.classList.remove("dNone");
+//   advice.classList.add("dNone");
+
+//   if (gameContent.requestFullscreen) {
+//     gameContent.requestFullscreen();
+//   } else if (gameContent.mozRequestFullScreen) { // Firefox
+//     gameContent.mozRequestFullScreen();
+//   } else if (gameContent.webkitRequestFullscreen) { // Chrome, Safari and Opera
+//     gameContent.webkitRequestFullscreen();
+//   } else if (gameContent.msRequestFullscreen) { // IE/Edge
+//     gameContent.msRequestFullscreen();
+//   }
+// }
