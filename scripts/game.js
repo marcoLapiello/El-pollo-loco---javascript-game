@@ -162,13 +162,13 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-function isMobileDevice() {
+export function isMobileDevice() {
   const isMobile = /Mobi|Android/i.test(navigator.userAgent);
   // console.log("isMobileDevice:", isMobile);
   return isMobile;
 }
 
-export function toggleMobileBtns(action = "show") {
+export function toggleMobileBtns(action = "") {
   let mobileBtnIds = ["leftBtn", "rightBtn", "jumpBtnRight", "jumpBtnLeft", "throwBtnRight", "throwBtnLeft"];
   mobileBtnIds.forEach((btnId) => {
     let btn = document.getElementById(btnId);

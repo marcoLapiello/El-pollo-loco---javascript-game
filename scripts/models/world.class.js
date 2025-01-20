@@ -7,8 +7,8 @@ import { Endboss } from "./endboss.class.js";
 import { intervalManager } from "../managers/intervalManager.class.js";
 import { soundManager } from "../game.js";
 import { level1 } from "../levels/level1.js";
-import { toggleMobileBtns } from "../game.js";
-window.toggleMobileBtns = toggleMobileBtns;
+import { isMobileDevice } from "../game.js";
+window.isMobileDevice = isMobileDevice;
 
 export class World {
   character = new Character();
@@ -67,10 +67,12 @@ export class World {
     this.startAnimations();
     this.cleanUpDeadEnemies();
     this.setWorld();
-    // 
     this.generateBottleOnTheGrounds(20);
     this.generateCoinsAroundTheWorld(20);
     soundManager.playSound("gameSound-music", true);
+    if (this.isMobileDevice) {
+      this.toggleMobileBtns("show");
+    }
   }
 
   runGameEngine() {
@@ -101,7 +103,7 @@ export class World {
 
   stopGame(endState = "") {
     soundManager.pauseSound("gameSound-music");
-    toggleMobileBtns("hide");
+    this.toggleMobileBtns("hide");
     setTimeout(() => {
       intervalManager.clearAllIntervals();
       this.showEndScreen(endState);
@@ -123,6 +125,18 @@ export class World {
     document.getElementById("pauseBtn").classList.add("dNone");
     document.getElementById("soundBtn").classList.add("dNone");
     document.getElementById("menuBtn").classList.add("dNone");
+  }
+
+  toggleMobileBtns(action = "") {
+    let mobileBtnIds = ["leftBtn", "rightBtn", "jumpBtnRight", "jumpBtnLeft", "throwBtnRight", "throwBtnLeft"];
+    mobileBtnIds.forEach((btnId) => {
+      let btn = document.getElementById(btnId);
+      if (action == "hide") {
+        btn.classList.add("dNone");
+      } else if (action == "show") {
+        btn.classList.remove("dNone");
+      }
+    });
   }
 
   checkWhoWon() {
@@ -345,9 +359,6 @@ export class World {
     this.addObjectToMap(this.bottlesOnTheGround);
     this.addObjectToMap(this.coinsAroundTheWorld);
     this.addObjectToMap(this.level.enemies);
-    // this.level.enemies.forEach((enemy) => {
-    //   this.drawFrame(enemy);
-    // });
     this.addObjectToMap(this.bottles);
     this.addToMap(this.character);
     this.addToMap(this.bossBar);
@@ -355,6 +366,10 @@ export class World {
     this.addToMap(this.healthBar);
     this.addToMap(this.bottlesBar);
     this.addToMap(this.coinsBar);
+
+    // this.level.enemies.forEach((enemy) => {
+    //   this.drawFrame(enemy);
+    // });
 
     // requestAnimationFrame(() => {
     //   this.draw();
