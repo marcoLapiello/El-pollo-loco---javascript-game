@@ -7,6 +7,8 @@ import { Endboss } from "./endboss.class.js";
 import { intervalManager } from "../managers/intervalManager.class.js";
 import { soundManager } from "../game.js";
 import { level1 } from "../levels/level1.js";
+import { toggleMobileBtns } from "../game.js";
+window.toggleMobileBtns = toggleMobileBtns;
 
 export class World {
   character = new Character();
@@ -99,6 +101,7 @@ export class World {
 
   stopGame(endState = "") {
     soundManager.pauseSound("gameSound-music");
+    toggleMobileBtns("hide");
     setTimeout(() => {
       intervalManager.clearAllIntervals();
       this.showEndScreen(endState);

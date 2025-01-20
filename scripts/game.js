@@ -77,7 +77,7 @@ export function startGame() {
   canvas = document.getElementById("canvas");
   world = new World(canvas, keyboard, gameIsStarted);
   if (isMobileDevice()) {
-    showMobileBtns();
+    toggleMobileBtns("show");
   }
 }
 
@@ -168,11 +168,13 @@ function isMobileDevice() {
   return isMobile;
 }
 
-function showMobileBtns() {
+export function toggleMobileBtns(action = "show") {
   let mobileBtnIds = ["leftBtn", "rightBtn", "jumpBtnRight", "jumpBtnLeft", "throwBtnRight", "throwBtnLeft"];
   mobileBtnIds.forEach((btnId) => {
     let btn = document.getElementById(btnId);
-    if (btn) {
+    if (action == "hide") {
+      btn.classList.add("dNone");
+    } else if (action == "show") {
       btn.classList.remove("dNone");
     }
   });
@@ -199,25 +201,6 @@ function showLandscapeWarning() {
 function hideLandscapeWarning() {
   const advice = document.getElementById("mobileTurn");
   const gameContent = document.getElementById("mainContent");
-  // const fullscreenBtn = document.getElementById("fullscreenBtn");
-  // fullscreenBtn.classList.remove("dNone");
   advice.classList.add("dNone");
   gameContent.classList.remove("dNone");
 }
-
-// function fullScreen() {
-//   const gameContent = document.getElementById("mainContent");
-//   const advice = document.getElementById("mobileTurn");
-//   gameContent.classList.remove("dNone");
-//   advice.classList.add("dNone");
-
-//   if (gameContent.requestFullscreen) {
-//     gameContent.requestFullscreen();
-//   } else if (gameContent.mozRequestFullScreen) { // Firefox
-//     gameContent.mozRequestFullScreen();
-//   } else if (gameContent.webkitRequestFullscreen) { // Chrome, Safari and Opera
-//     gameContent.webkitRequestFullscreen();
-//   } else if (gameContent.msRequestFullscreen) { // IE/Edge
-//     gameContent.msRequestFullscreen();
-//   }
-// }
