@@ -321,39 +321,50 @@ span {
   width: 48px;
   border-radius: 50vh;
   position: absolute;
-  display: flex;
+  /* display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: center; */
+  background-position: center;
+  background-size: 28px;
+  background-repeat: no-repeat;
 }
 
 .left {
   bottom: 30px;
   left: 25px;
+  background-image: url("./Grafics/arrow_left_black.png");
 }
 
 .right {
   bottom: 30px;
   right: 25px;
+  background-image: url("./Grafics/arrow_right_black.png");
 }
 
 .jumpLeft {
   bottom: 80px;
   left: 25px;
+  background-image: url("./Grafics/arrow_up_black.png");
 }
 
 .throwLeft {
   bottom: 30px;
   left: 85px;
+  background-image: url("./Grafics/img/6_salsa_bottle/salsa_bottle.png");
+  background-size: 36px;
 }
 
 .jumpRight {
   bottom: 80px;
   right: 25px;
+  background-image: url("./Grafics/arrow_up_black.png");
 }
 
 .throwRight {
   bottom: 30px;
   right: 85px;
+  background-image: url("./Grafics/img/6_salsa_bottle/salsa_bottle.png");
+  background-size: 36px;
 }
 
 .arrowsBtnImages {
