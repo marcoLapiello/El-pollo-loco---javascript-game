@@ -40,6 +40,7 @@ function registerSounds() {
   soundManager.registerSound("dies", new Audio("./audio/man-dies.wav"), 0.5);
   soundManager.registerSound("chickenDies", new Audio("./audio/splatting_chicken.wav"));
   soundManager.registerSound("bossDies", new Audio("./audio/boss_dies.wav"), 0.5);
+  soundManager.registerSound("bossHurt", new Audio("./audio/boss_hurt.wav"));
   soundManager.registerSound("bossAttacks", new Audio("./audio/boss_attacks.wav"));
   soundManager.registerSound("gameSound-music", new Audio("./audio/game-music2.m4a"), 0.3);
   soundManager.registerSound("won", new Audio("./audio/win.mp3"), 0.5);

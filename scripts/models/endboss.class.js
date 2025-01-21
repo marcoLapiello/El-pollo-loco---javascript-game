@@ -45,6 +45,7 @@ export class Endboss extends MovableObject {
         } else if (this.getsHurt() && !this.isDead()) {
           this.moveLeft();
           this.playAnimation(IMAGES_HURT, 8, true);
+          soundManager.playSound("bossHurt");
         } else if (this.isAttacking && !this.isDead() && !this.getsHurt()) {
           this.x -= this.attackSpeedX;
           this.playAnimation(IMAGES_ATTACKING, 10, true);
