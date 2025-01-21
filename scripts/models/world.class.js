@@ -42,6 +42,7 @@ export class World {
     this.keyboard = keyboard;
     this.gameIsStarted = gameIsStarted;
     this.isGamePaused = false;
+    this.firstInputDetected = false;
     this.addEventListener();
     this.startGame();
   }
@@ -53,6 +54,8 @@ export class World {
     this.menuButton.addEventListener("click", () => this.togglePause());
     this.menuBackButton.addEventListener("click", () => this.togglePause());
     this.soundButton.addEventListener("click", () => this.soundMute());
+    document.addEventListener("keydown", this.handleFirstInput.bind(this));
+    document.addEventListener("touchstart", this.handleFirstInput.bind(this));
   }
 
   setWorld() {
@@ -97,8 +100,37 @@ export class World {
 
   startAnimations() {
     this.level.clouds.forEach((cloud) => cloud.registerAnimation());
-    this.level.enemies.forEach((enemy) => enemy.registerAnimation());
     this.character.registerAnimation();
+  }
+
+  handleFirstInput(event) {
+    if (!this.firstInputDetected && this.controlsPressed(event)) {
+      this.firstInputDetected = true;
+      this.startEnemiesAnimations();
+      document.removeEventListener("keydown", this.handleFirstInput.bind(this));
+      document.removeEventListener("touchstart", this.handleFirstInput.bind(this));
+    }
+  }
+
+  controlsPressed(event) {
+    if (
+      event.code == "ArrowLeft" ||
+      event.code == "ArrowRight" ||
+      event.code == "Space" ||
+      event.code == "KeyB" ||
+      event.target.id == "leftBtn" ||
+      event.target.id == "rightBtn" ||
+      event.target.id == "jumpBtnRight" ||
+      event.target.id == "jumpBtnLeft" ||
+      event.target.id == "throwBtnRight" ||
+      event.target.id == "throwBtnLeft"
+    ) {
+      return true;
+    }
+  }
+
+  startEnemiesAnimations() {
+    this.level.enemies.forEach((enemy) => enemy.registerAnimation());
   }
 
   stopGame(endState = "") {
@@ -118,7 +150,6 @@ export class World {
     } else if (endState === "won") {
       endImg.src = this.youWinImgPath;
       soundManager.playSound("won");
-      
     }
     document.getElementById("canvas").classList.add("dNone");
     document.getElementById("endScreen").classList.remove("dNone");
@@ -148,8 +179,6 @@ export class World {
       this.stopGame("won");
     }
   }
-
-  
 
   // PAUSE AND SOUND FUNCTIONS
 
@@ -216,7 +245,7 @@ export class World {
           this.character.getsHit();
           this.healthBar.setStatusBars("HEALTH", this.character.health);
         }
-      }  
+      }
     });
   }
 
@@ -386,7 +415,6 @@ export class World {
     this.ctx.save();
     if (drawableObject.facingLeft) {
       this.drawObjectFacingLeft(drawableObject);
-      
     } else {
       this.ctx.drawImage(drawableObject.img, drawableObject.x, drawableObject.y, drawableObject.width, drawableObject.height);
     }
