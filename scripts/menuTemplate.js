@@ -39,12 +39,12 @@ export function getControlsTemplate() {
               <div class="instructions">
                 <div class="instructions">
                   <div class="singleInstruction">
-                    <img class="arrow" src="./Grafics/arrow_left.png" alt="" />
+                    <img class="arrow" src="./Grafics/arrow_left_orange.png" alt="" />
                     <span>move left</span>
                   </div>
                   <div class="separator"></div>
                   <div class="singleInstruction reverse">
-                    <img class="arrow" src="./Grafics/arrow_right.png" alt="" />
+                    <img class="arrow" src="./Grafics/arrow_right_orange.png" alt="" />
                     <span>move right</span>
                   </div>
                 </div>

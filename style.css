@@ -228,9 +228,7 @@ h3 {
 
 .arrow {
   width: 40px;
-  height: 30px;
-  background-color: #ffaa00a4;
-  border-radius: 12px;
+  height: auto;
 }
 
 .btnName {
@@ -265,7 +263,7 @@ span {
 
 .pauseBtn {
   height: 36px;
-  border-radius: 18px;
+  border-radius: 50vh;
   position: absolute;
   background-color: #ffaa00a4;
   background-image: url("./Grafics/pause-icon.png");
@@ -280,7 +278,6 @@ span {
   height: 48px;
   width: 48px;
   background-size: 84px;
-  /* border-radius: 24px; */
   border: 2px solid red;
 }
 
@@ -318,76 +315,53 @@ span {
   padding: 18px;
 }
 
-.leftBtn {
-  height: 36px;
-  border-radius: 18px;
-  position: absolute;
+.mobileBtn {
   background-color: #ffaa00a4;
-  /* background-image: url('./Grafics/sound-icon.png'); */
-  /* background-size: 28px; */
-  /* background-position: center; */
+  height: 42px;
+  width: 48px;
+  border-radius: 50vh;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.left {
   bottom: 30px;
   left: 25px;
 }
 
-.rightBtn {
-  height: 36px;
-  border-radius: 18px;
-  position: absolute;
-  background-color: #ffaa00a4;
-  /* background-image: url('./Grafics/sound-icon.png'); */
-  /* background-size: 28px; */
-  /* background-position: center; */
+.right {
   bottom: 30px;
   right: 25px;
 }
 
-.jumpBtnLeft {
-  height: 36px;
-  border-radius: 18px;
-  position: absolute;
-  background-color: #ffaa00a4;
-  /* background-image: url('./Grafics/sound-icon.png'); */
-  /* background-size: 28px; */
-  /* background-position: center; */
+.jumpLeft {
   bottom: 80px;
   left: 25px;
 }
 
-.throwBtnLeft {
-  height: 36px;
-  border-radius: 18px;
-  position: absolute;
-  background-color: #ffaa00a4;
-  /* background-image: url('./Grafics/sound-icon.png'); */
-  /* background-size: 28px; */
-  /* background-position: center; */
+.throwLeft {
   bottom: 30px;
   left: 85px;
 }
 
-.jumpBtnRight {
-  height: 36px;
-  border-radius: 18px;
-  position: absolute;
-  background-color: #ffaa00a4;
-  /* background-image: url('./Grafics/sound-icon.png'); */
-  /* background-size: 28px; */
-  /* background-position: center; */
+.jumpRight {
   bottom: 80px;
   right: 25px;
 }
 
-.throwBtnRight {
-  height: 36px;
-  border-radius: 18px;
-  position: absolute;
-  background-color: #ffaa00a4;
-  /* background-image: url('./Grafics/sound-icon.png'); */
-  /* background-size: 28px; */
-  /* background-position: center; */
+.throwRight {
   bottom: 30px;
   right: 85px;
+}
+
+.arrowsBtnImages {
+  width: 28px;
+}
+
+.bottleBtnImages {
+  width: 42px;
 }
 
 @media (max-height: 480px) {
