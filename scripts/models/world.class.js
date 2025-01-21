@@ -35,6 +35,7 @@ export class World {
   pauseButton = document.getElementById("pauseBtn");
   menuButton = document.getElementById("menuBtn");
   menuBackButton = document.getElementById("menuBackBtn");
+  // startTime;
 
   constructor(canvas, keyboard, gameIsStarted) {
     this.ctx = canvas.getContext("2d");
@@ -60,6 +61,7 @@ export class World {
 
   setWorld() {
     this.character.world = this;
+    this.character.world.startTime = this.startTime;
   }
 
   // ALL ABOUT RUNNING AND CEASING THE GAME ENGINE
@@ -69,6 +71,7 @@ export class World {
     this.runGameEngine();
     this.startAnimations();
     this.cleanUpDeadEnemies();
+    // this.startTime = performance.now();
     this.setWorld();
     this.generateBottleOnTheGrounds(20);
     this.generateCoinsAroundTheWorld(20);
@@ -76,6 +79,7 @@ export class World {
     if (this.isMobileDevice) {
       this.toggleMobileBtns("show");
     }
+    
   }
 
   runGameEngine() {

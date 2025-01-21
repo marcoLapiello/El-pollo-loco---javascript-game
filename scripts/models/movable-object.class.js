@@ -71,6 +71,10 @@ export class MovableObject extends DrawableObjects {
     }, 1000 / 60);
   }
 
+  isSleeping() {
+    
+  }
+
   isInTheAir() {
     if (this instanceof Bottle) {
       return true;

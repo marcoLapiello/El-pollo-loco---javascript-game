@@ -13,9 +13,8 @@ export class Character extends MovableObject {
   heightCorrection = 110;
   isCharacter = true;
   world;
-  // isSoundMute;
   speedX = 3;
-  jumpDuration = 670; // in ms
+  isSleeping = false;
 
   constructor() {
     super().loadImage(IMAGES_IDLE[0]);
@@ -26,6 +25,9 @@ export class Character extends MovableObject {
     this.loadImages(IMAGES_DEAD);
     this.loadImages(IMAGES_HURT);
     this.applyGravity();
+    this.isSleeping = false;
+    this.lastMoveTime = performance.now();
+    this.idleTimeout = 5;
   }
 
   registerAnimation() {
@@ -33,23 +35,16 @@ export class Character extends MovableObject {
       update: () => {
         soundManager.pauseSound("walk");
         if (this.world.keyboard.RIGHT && this.x < this.world.level.LEVEL_END_X && !this.isDead()) {
-          this.moveRight();
-          this.facingLeft = false;
-          if (!this.isInTheAir()) {
-            soundManager.playSound("walk");
-          }
+          this.walk("right");
         }
         if (this.world.keyboard.LEFT && this.x > -100 && !this.isDead()) {
-          this.moveLeft();
-          this.facingLeft = true;
-          if (!this.isInTheAir()) {
-            soundManager.playSound("walk");
-          }
+          this.walk("left");
         }
         if (this.world.keyboard.SPACE && this.isOnTheGround() && !this.isDead()) {
           this.jump();
           soundManager.playSound("jump");
         }
+        this.updateIdleTimer();
         this.world.camera_x = -this.x + 100;
       },
     });
@@ -67,10 +62,45 @@ export class Character extends MovableObject {
           this.playAnimation(IMAGES_JUMPING, 6, true);
         } else if ((this.world.keyboard.RIGHT || this.world.keyboard.LEFT) && !this.isDead() && !this.isInTheAir()) {
           this.playAnimation(IMAGES_WALKING, 6, true);
-        } else if (!this.isDead() && this.isNotMoving()) {
-          this.playAnimation(IMAGES_IDLE, 10, true); 
+        } else if (!this.isDead() && this.isNotMoving() && this.isSleeping === false) {
+          this.playAnimation(IMAGES_IDLE, 10, true);
+        } else if (this.isSleeping === true) {
+          this.playAnimation(IMAGES_SLEEP, 10, true);
+          soundManager.playSound("snort");
+
         }
       },
     });
+  }
+
+  walk(direction = "") {
+    if (direction === "right") {
+      this.moveRight();
+      this.facingLeft = false;
+    } else if (direction === "left") {
+      this.moveLeft();
+      this.facingLeft = true;
+    }
+    if (!this.isInTheAir()) {
+      soundManager.playSound("walk");
+    }
+  }
+
+  updateIdleTimer() {
+    if (this.isNotMoving() && !this.isInTheAir() && !this.isDead() && !this.getsHurt()) {
+      const currentTime = performance.now();
+      const idleTime = (currentTime - this.lastMoveTime) / 1000;
+      if (idleTime >= this.idleTimeout) {
+        this.isSleeping = true;
+      }
+    } else {
+      this.resetIdleTimer();
+      soundManager.pauseSound("snort");
+    }
+  }
+
+  resetIdleTimer() {
+    this.lastMoveTime = performance.now();
+    this.isSleeping = false;
   }
 }
