@@ -142,7 +142,7 @@ export class World {
   checkWhoWon() {
     const endboss = this.level.enemies.find((enemy) => enemy instanceof Endboss);
     const character = this.character;
-    if (endboss.x <= 0 || character.health <= 0) {
+    if (endboss.x <= -100 || character.health <= 0) {
       this.stopGame("lost");
     } else if (endboss.health <= 0) {
       this.stopGame("won");
