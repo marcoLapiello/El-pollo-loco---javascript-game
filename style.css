@@ -270,7 +270,7 @@ span {
   background-size: 64px;
   background-position: center;
   top: 10px;
-  right: 110px;
+  right: 60px;
   transition: all 0s;
 }
 
@@ -290,7 +290,7 @@ span {
   background-size: 28px;
   background-position: center;
   top: 10px;
-  right: 60px;
+  right: 10px;
 }
 
 .noSound {

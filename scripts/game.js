@@ -76,6 +76,7 @@ export function startGame() {
   document.getElementById("canvas").classList.remove("dNone");
   document.getElementById("pauseBtn").classList.remove("dNone");
   document.getElementById("soundBtn").classList.remove("dNone");
+  document.getElementById("menuBtn").classList.add("dNone");
   canvas = document.getElementById("canvas");
   world = new World(canvas, keyboard, gameIsStarted);
   if (isMobileDevice()) {

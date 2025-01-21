@@ -35,7 +35,6 @@ export class World {
   pauseButton = document.getElementById("pauseBtn");
   menuButton = document.getElementById("menuBtn");
   menuBackButton = document.getElementById("menuBackBtn");
-  // startTime;
 
   constructor(canvas, keyboard, gameIsStarted) {
     this.ctx = canvas.getContext("2d");
@@ -78,8 +77,7 @@ export class World {
     soundManager.playSound("gameSound-music", true);
     if (this.isMobileDevice) {
       this.toggleMobileBtns("show");
-    }
-    
+    } 
   }
 
   runGameEngine() {
