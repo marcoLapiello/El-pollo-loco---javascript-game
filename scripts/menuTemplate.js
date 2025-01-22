@@ -1,3 +1,7 @@
+/**
+ * Returns the HTML template for the imprint section.
+ * @returns {string} The HTML template for the imprint section.
+ */
 export function getImprintTemplate() {
   return /*html*/ `
       <h2 class="imprintTitle">IMPRINT</h2>
@@ -19,10 +23,13 @@ export function getImprintTemplate() {
       </p>
   
       <p class= "imprintTitle small">Source: <a class= "imprintText" href="https://www.e-recht24.de">e-recht24.de</a></p>
-  
     `;
 }
 
+/**
+ * Returns the HTML template for the description section.
+ * @returns {string} The HTML template for the description section.
+ */
 export function getDescriptionTemplate() {
   return /*html*/ `
       <h2 id="descriptionTitle">WHAT´S GOING ON??</h2>
@@ -33,6 +40,10 @@ export function getDescriptionTemplate() {
     `;
 }
 
+/**
+ * Returns the HTML template for the controls section.
+ * @returns {string} The HTML template for the controls section.
+ */
 export function getControlsTemplate() {
   return /*html*/ `
       <h3>CONTROLS</h3>

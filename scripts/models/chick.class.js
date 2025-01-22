@@ -3,6 +3,10 @@ import { intervalManager } from "../managers/intervalManager.class.js";
 import { IMAGES_WALKING, IMAGE_DEAD } from "../imgsPaths/chickImgs.js";
 import { soundManager } from "../game.js";
 
+/**
+ * Represents a chick in the game.
+ * @extends MovableObject
+ */
 export class Chick extends MovableObject {
   type = "chick";
   y = 410;
@@ -13,6 +17,9 @@ export class Chick extends MovableObject {
   widthCorrection = 8;
   heightCorrection = 10;
 
+  /**
+   * Creates an instance of Chick.
+   */
   constructor() {
     super().loadImage(IMAGES_WALKING[0]);
     this.loadImages(IMAGES_WALKING);
@@ -21,6 +28,9 @@ export class Chick extends MovableObject {
     this.x = 720 + Math.random() * 4800;
   }
 
+  /**
+   * Registers the chick animation.
+   */
   registerAnimation() {
     intervalManager.registerAnimation(this, {
       update: () => {

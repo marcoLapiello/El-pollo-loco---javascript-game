@@ -3,6 +3,10 @@ import { intervalManager } from "../managers/intervalManager.class.js";
 import { IMAGES_WALKING, IMAGE_DEAD } from "../imgsPaths/chickenImgs.js";
 import { soundManager } from "../game.js";
 
+/**
+ * Represents a chicken in the game.
+ * @extends MovableObject
+ */
 export class Chicken extends MovableObject {
   type = "chicken";
   y = 370;
@@ -13,6 +17,9 @@ export class Chicken extends MovableObject {
   widthCorrection = 8;
   heightCorrection = 10;
 
+  /**
+   * Creates an instance of Chicken.
+   */
   constructor() {
     super().loadImage(IMAGES_WALKING[0]);
     this.loadImages(IMAGES_WALKING);
@@ -21,6 +28,9 @@ export class Chicken extends MovableObject {
     this.x = 720 + Math.random() * 4800;
   }
 
+  /**
+   * Registers the chicken animation.
+   */
   registerAnimation() {
     intervalManager.registerAnimation(this, {
       update: () => {

@@ -3,6 +3,10 @@ import { intervalManager } from "../managers/intervalManager.class.js";
 import { IMAGES_ALERT, IMAGES_WALKING, IMAGES_DEAD, IMAGES_HURT, IMAGES_ATTACKING } from "../imgsPaths/endbossImgs.js";
 import { soundManager } from "../game.js";
 
+/**
+ * Represents the end boss in the game.
+ * @extends MovableObject
+ */
 export class Endboss extends MovableObject {
   type = "endboss";
   height = 350;
@@ -18,6 +22,9 @@ export class Endboss extends MovableObject {
   startWalkingDistanceX = 720;
   startAttackingDistanceX = 220;
 
+  /**
+   * Creates an instance of Endboss.
+   */
   constructor() {
     super().loadImage(IMAGES_ALERT[0]);
     this.loadImages(IMAGES_ALERT);
@@ -30,11 +37,19 @@ export class Endboss extends MovableObject {
     this.speedX = 2;
   }
 
+  /**
+   * Switches the walking and attacking states of the end boss.
+   * @param {boolean} bool1 - The walking state.
+   * @param {boolean} bool2 - The attacking state.
+   */
   switchWalkingAttacking(bool1, bool2) {
     this.isWalking = bool1;
     this.isAttacking = bool2;
   }
 
+  /**
+   * Registers the end boss animation.
+   */
   registerAnimation() {
     intervalManager.registerAnimation(this, {
       update: () => {

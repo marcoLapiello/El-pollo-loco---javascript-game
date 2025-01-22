@@ -3,6 +3,10 @@ import { intervalManager } from "../managers/intervalManager.class.js";
 import { IMAGES_IDLE, IMAGES_SLEEP, IMAGES_WALKING, IMAGES_JUMPING, IMAGES_DEAD, IMAGES_HURT } from "../imgsPaths/characterImgs.js";
 import { soundManager } from "../game.js";
 
+/**
+ * Represents the main character in the game.
+ * @extends MovableObject
+ */
 export class Character extends MovableObject {
   y = 190;
   height = 270;
@@ -16,6 +20,9 @@ export class Character extends MovableObject {
   speedX = 3;
   isSleeping = false;
 
+  /**
+   * Creates an instance of Character.
+   */
   constructor() {
     super().loadImage(IMAGES_IDLE[0]);
     this.loadImages(IMAGES_IDLE);
@@ -30,6 +37,9 @@ export class Character extends MovableObject {
     this.idleTimeout = 5;
   }
 
+  /**
+   * Registers the character animations.
+   */
   registerAnimation() {
     intervalManager.registerAnimation(this, {
       update: () => {
@@ -73,6 +83,10 @@ export class Character extends MovableObject {
     });
   }
 
+  /**
+   * Makes the character walk in the specified direction.
+   * @param {string} direction - The direction to walk ("right" or "left").
+   */
   walk(direction = "") {
     if (direction === "right") {
       this.moveRight();
@@ -86,6 +100,9 @@ export class Character extends MovableObject {
     }
   }
 
+  /**
+   * Updates the idle timer to determine if the character should sleep.
+   */
   updateIdleTimer() {
     if (this.isNotMoving() && !this.isInTheAir() && !this.isDead() && !this.getsHurt()) {
       const currentTime = performance.now();
@@ -99,6 +116,9 @@ export class Character extends MovableObject {
     }
   }
 
+  /**
+   * Resets the idle timer.
+   */
   resetIdleTimer() {
     this.lastMoveTime = performance.now();
     this.isSleeping = false;
