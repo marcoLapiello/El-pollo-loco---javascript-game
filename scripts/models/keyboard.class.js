@@ -1,3 +1,6 @@
+/**
+ * Represents the keyboard input state.
+ */
 export class Keyboard {
   LEFT = false;
   RIGHT = false;

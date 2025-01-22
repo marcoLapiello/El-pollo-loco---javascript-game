@@ -1,3 +1,6 @@
+/**
+ * Represents drawable objects in the game.
+ */
 export class DrawableObjects {
   x = 120;
   y = 300;
@@ -11,13 +14,19 @@ export class DrawableObjects {
   imageCache = {};
   currentImageIndex = 0;
 
-  // Carica una singola immagine
+  /**
+   * Loads a single image.
+   * @param {string} path - The path to the image.
+   */
   loadImage(path) {
     this.img = new Image();
     this.img.src = path;
   }
 
-  // Carica un array di immagini nella cache
+  /**
+   * Loads an array of images into the cache.
+   * @param {Array<string>} imgArray - The array of image paths.
+   */
   loadImages(imgArray) {
     imgArray.forEach((path) => {
       let img = new Image();
@@ -26,18 +35,25 @@ export class DrawableObjects {
     });
   }
 
-  // Restituisce l'immagine corrente dalla cache
+  /**
+   * Returns the current image from the cache.
+   * @returns {HTMLImageElement} The current image.
+   */
   getCurrentImage() {
     return this.imageCache[Object.keys(this.imageCache)[this.currentImageIndex]];
   }
 
-  // Avanza al prossimo frame nell'array di immagini
+  /**
+   * Advances to the next frame in the image array.
+   */
   nextImage() {
     this.currentImageIndex = (this.currentImageIndex + 1) % Object.keys(this.imageCache).length;
     this.img = this.getCurrentImage();
   }
 
-  // Reset dell'indice immagine
+  /**
+   * Resets the image index.
+   */
   resetImageIndex() {
     this.currentImageIndex = 0;
     this.img = this.getCurrentImage();

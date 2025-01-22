@@ -1,45 +1,17 @@
 import { DrawableObjects } from './drawable-objects.class.js';
+import { healthBarImages, bottlesBarImages, coinsBarImages, bossBarImages } from '../imgsPaths/statusBarsImgs.js';
 
 export class StatusBars extends DrawableObjects {
   world;
   percentage;
 
-  healthBarImages = [
-    "Grafics/img/7_statusbars/1_statusbar/2_statusbar_health/blue/0.png",
-    "Grafics/img/7_statusbars/1_statusbar/2_statusbar_health/blue/20.png",
-    "Grafics/img/7_statusbars/1_statusbar/2_statusbar_health/blue/40.png",
-    "Grafics/img/7_statusbars/1_statusbar/2_statusbar_health/blue/60.png",
-    "Grafics/img/7_statusbars/1_statusbar/2_statusbar_health/blue/80.png",
-    "Grafics/img/7_statusbars/1_statusbar/2_statusbar_health/blue/100.png",
-  ];
-
-  bottlesBarImages = [
-    "Grafics/img/7_statusbars/1_statusbar/3_statusbar_bottle/green/0.png",
-    "Grafics/img/7_statusbars/1_statusbar/3_statusbar_bottle/green/20.png",
-    "Grafics/img/7_statusbars/1_statusbar/3_statusbar_bottle/green/40.png",
-    "Grafics/img/7_statusbars/1_statusbar/3_statusbar_bottle/green/60.png",
-    "Grafics/img/7_statusbars/1_statusbar/3_statusbar_bottle/green/80.png",
-    "Grafics/img/7_statusbars/1_statusbar/3_statusbar_bottle/green/100.png",
-  ];
-
-  coinsBarImages = [
-    "Grafics/img/7_statusbars/1_statusbar/1_statusbar_coin/orange/0.png",
-    "Grafics/img/7_statusbars/1_statusbar/1_statusbar_coin/orange/20.png",
-    "Grafics/img/7_statusbars/1_statusbar/1_statusbar_coin/orange/40.png",
-    "Grafics/img/7_statusbars/1_statusbar/1_statusbar_coin/orange/60.png",
-    "Grafics/img/7_statusbars/1_statusbar/1_statusbar_coin/orange/80.png",
-    "Grafics/img/7_statusbars/1_statusbar/1_statusbar_coin/orange/100.png",
-  ];
-
-  bossBarImages = [
-    "Grafics/img/7_statusbars/2_statusbar_endboss/orange/orange0.png",
-    "Grafics/img/7_statusbars/2_statusbar_endboss/orange/orange20.png",
-    "Grafics/img/7_statusbars/2_statusbar_endboss/orange/orange40.png",
-    "Grafics/img/7_statusbars/2_statusbar_endboss/orange/orange60.png",
-    "Grafics/img/7_statusbars/2_statusbar_endboss/orange/orange80.png",
-    "Grafics/img/7_statusbars/2_statusbar_endboss/orange/orange100.png",
-  ];
-
+  /**
+   * Creates an instance of the StatusBars class.
+   * @param {string} type - The type of status bar (e.g., "HEALTH", "BOTTLES", "COINS", "BOSS").
+   * @param {number} y - The y-coordinate of the status bar.
+   * @param {number} percentage - The initial percentage value of the status bar.
+   * @param {Object} world - The world object.
+   */
   constructor(type, y, percentage, world) {
     super();
     this.x = 20;
@@ -48,33 +20,42 @@ export class StatusBars extends DrawableObjects {
     this.height = 50;
     this.percentage = percentage;
     this.world = world;
-    this.loadImages(this.healthBarImages);
-    this.loadImages(this.bottlesBarImages);
-    this.loadImages(this.coinsBarImages);
-    this.loadImages(this.bossBarImages);
+    this.loadImages(healthBarImages);
+    this.loadImages(bottlesBarImages);
+    this.loadImages(coinsBarImages);
+    this.loadImages(bossBarImages);
     this.setStatusBars(type, this.percentage);
   }
 
+  /**
+   * Updates the position of the boss bar based on the boss's position.
+   * @param {Object} endboss - The endboss object.
+   */
   updateBossBar(endboss) {
     if (endboss) {
-      this.x = endboss.x + endboss.width / 2 - this.width / 2; // Centrato sul boss
-      this.y = endboss.y - 20; // Posizionato sopra il boss
+      this.x = endboss.x + endboss.width / 2 - this.width / 2;
+      this.y = endboss.y - 20;
     }
   }
 
+  /**
+   * Sets the status bar type and percentage.
+   * @param {string} type - The type of status bar (e.g., "HEALTH", "BOTTLES", "COINS", "BOSS").
+   * @param {number} percentage - The percentage value of the status bar.
+   */
   setStatusBars(type, percentage) {
     switch (type) {
       case "HEALTH":
-        this.imgArray = this.healthBarImages;
+        this.imgArray = healthBarImages;
         break;
       case "BOTTLES":
-        this.imgArray = this.bottlesBarImages;
+        this.imgArray = bottlesBarImages;
         break;
       case "COINS":
-        this.imgArray = this.coinsBarImages;
+        this.imgArray = coinsBarImages;
         break;
       case "BOSS":
-        this.imgArray = this.bossBarImages;
+        this.imgArray = bossBarImages;
         break;
       default:
         this.imgArray = [];
@@ -83,6 +64,11 @@ export class StatusBars extends DrawableObjects {
     this.setPercentage(this.percentage, this.imgArray);
   }
 
+  /**
+   * Sets the percentage value and updates the image accordingly.
+   * @param {number} percentage - The percentage value of the status bar.
+   * @param {Array} imgArray - The array of images for the status bar.
+   */
   setPercentage(percentage, imgArray) {
     this.percentage = percentage;
     this.imgArray = imgArray;
@@ -90,6 +76,10 @@ export class StatusBars extends DrawableObjects {
     this.img = this.imageCache[path];
   }
 
+  /**
+   * Finds the index of the image based on the percentage value.
+   * @returns {number} The index of the image.
+   */
   findImgIndex() {
     if (this.percentage >= 100) {
       return 5;
