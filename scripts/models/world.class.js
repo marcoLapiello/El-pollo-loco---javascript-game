@@ -7,6 +7,7 @@ import { soundManager } from "../game.js";
 import { level1 } from "../levels/level1.js";
 import { isMobileDevice } from "../game.js";
 import { CollectibleManager } from "../managers/collectibleManager.js";
+import { draw } from "../utils/drawFunctions.js";
 window.isMobileDevice = isMobileDevice;
 
 export class World {
@@ -100,7 +101,7 @@ export class World {
    * Updates the game state by drawing the game elements and checking various conditions.
    */
   updateGameState() {
-    this.draw();
+    draw(this.ctx, this);
     this.checkCollision();
     this.handleThrowBottle();
     this.collectibleManager.checkCollectBottle();
@@ -377,60 +378,4 @@ export class World {
       });
     }, 2000);
   }
-
-  /**
-   * Draws the game elements on the canvas.
-   */
-  draw() {
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    this.ctx.translate(this.camera_x, 0);
-    this.addObjectToMap(this.level.background);
-    this.addObjectToMap(this.level.clouds);
-    this.addObjectToMap(this.collectibleManager.bottlesOnTheGround);
-    this.addObjectToMap(this.collectibleManager.coinsAroundTheWorld);
-    this.addObjectToMap(this.level.enemies);
-    this.addObjectToMap(this.bottles);
-    this.addToMap(this.character);
-    this.addToMap(this.bossBar);
-    this.ctx.translate(-this.camera_x, 0);
-    this.addToMap(this.healthBar);
-    this.addToMap(this.bottlesBar);
-    this.addToMap(this.coinsBar);
-
-    // this.level.enemies.forEach((enemy) => {
-    //   this.drawFrame(enemy);
-    // });
-
-    // requestAnimationFrame(() => {
-    //   this.draw();
-    // });
-  }
-
-  addObjectToMap(object) {
-    object.forEach((o) => {
-      this.addToMap(o);
-    });
-  }
-
-  addToMap(drawableObject) {
-    this.ctx.save();
-    if (drawableObject.facingLeft) {
-      this.drawObjectFacingLeft(drawableObject);
-    } else {
-      this.ctx.drawImage(drawableObject.img, drawableObject.x, drawableObject.y, drawableObject.width, drawableObject.height);
-    }
-    this.ctx.restore();
-  }
-
-  drawObjectFacingLeft(drawableObject) {
-    this.ctx.translate(drawableObject.x + drawableObject.width, 0);
-    this.ctx.scale(-1, 1);
-    this.ctx.drawImage(drawableObject.img, 0, drawableObject.y, drawableObject.width, drawableObject.height);
-  }
-
-  // drawFrame(object) {
-  //   this.ctx.strokeStyle = 'red';
-  //   this.ctx.lineWidth = 2;
-  //   this.ctx.strokeRect(object.x, object.y, object.width, object.height);
-  // }
 }
