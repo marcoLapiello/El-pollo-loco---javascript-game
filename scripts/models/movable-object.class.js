@@ -1,6 +1,10 @@
 import { DrawableObjects } from "./drawable-objects.class.js";
 import { Bottle } from "./bottle.class.js";
 
+/**
+ * Represents a movable object in the game.
+ * @extends DrawableObjects
+ */
 export class MovableObject extends DrawableObjects {
   facingLeft = false;
   speedX = 0;
@@ -10,14 +14,15 @@ export class MovableObject extends DrawableObjects {
   lastHit = 0;
   isGamePaused = false;
 
+  /**
+   * Plays an animation from the given image array.
+   * @param {Array<string>} imgArray - The array of image paths.
+   * @param {number} [frameSkip=1] - The number of frames to skip between each image change.
+   * @param {boolean} [loop=true] - Whether the animation should loop.
+   * @returns {boolean} Whether the animation is complete.
+   */
   playAnimation(imgArray, frameSkip = 1, loop = true) {
-    if (!imgArray || imgArray.length === 0) {
-      console.error("Array di immagini non valido:", imgArray);
-      return false;
-    }
-
     let animationComplete = false;
-
     if (this.currentImageIndex % frameSkip === 0) {
       let index = Math.floor(this.currentImageIndex / frameSkip);
       if (loop) {
@@ -28,36 +33,43 @@ export class MovableObject extends DrawableObjects {
       }
       this.img = this.imageCache[imgArray[index]];
     }
-
     if (loop || this.currentImageIndex / frameSkip < imgArray.length) {
       this.currentImageIndex++;
     }
-
     return animationComplete;
   }
 
-  isAnimationComplete(imgArray, frameSkip = 1) {
-    const totalFrames = imgArray.length * frameSkip;
-    const currentFrame = this.currentImageIndex;
-    return currentFrame >= totalFrames;
-  }
-
+  /**
+   * Moves the object to the right.
+   */
   moveRight() {
     this.x += this.speedX;
   }
 
+  /**
+   * Moves the object to the left.
+   */
   moveLeft() {
     this.x -= this.speedX;
   }
 
+  /**
+   * Makes the object jump.
+   */
   jump() {
     this.speedY = 20;
   }
 
+  /**
+   * Pauses the gravity effect on the object.
+   */
   pauseGravity() {
     this.isGamePaused = true;
   }
 
+  /**
+   * Applies gravity to the object.
+   */
   applyGravity() {
     const gravityInterval = setInterval(() => {
       if (!this.isGamePaused && (this.isInTheAir() || this.speedY > 0)) {
@@ -75,6 +87,10 @@ export class MovableObject extends DrawableObjects {
     
   }
 
+  /**
+   * Checks if the object is in the air.
+   * @returns {boolean} Whether the object is in the air.
+   */
   isInTheAir() {
     if (this instanceof Bottle) {
       return true;
@@ -83,10 +99,19 @@ export class MovableObject extends DrawableObjects {
     }
   }
 
+  /**
+   * Checks if the object is on the ground.
+   * @returns {boolean} Whether the object is on the ground.
+   */
   isOnTheGround() {
     return this.y === 190;
   }
 
+  /**
+   * Checks if the object is colliding with another object.
+   * @param {DrawableObjects} obj - The other object.
+   * @returns {boolean} Whether the object is colliding with the other object.
+   */
   isColliding(obj) {
     return (
       this.x + this.offsetX + (this.width - this.widthCorrection) > obj.x + obj.offsetX &&
@@ -96,6 +121,9 @@ export class MovableObject extends DrawableObjects {
     );
   }
 
+  /**
+   * Handles the object getting hit.
+   */
   getsHit() {
     if (this.health < 0) {
       this.health = 0;
@@ -111,16 +139,28 @@ export class MovableObject extends DrawableObjects {
     }
   }
 
+  /**
+   * Checks if the object is hurt.
+   * @returns {boolean} Whether the object is hurt.
+   */
   getsHurt() {
     let timePassed = new Date().getTime() - this.lastHit; // Differenza in ms
     timePassed = timePassed / 1000; // Differenza in s
     return timePassed < 0.7;
   }
 
+  /**
+   * Checks if the object is dead.
+   * @returns {boolean} Whether the object is dead.
+   */
   isDead() {
     return this.health === 0;
   }
 
+  /**
+   * Checks if the object is not moving.
+   * @returns {boolean} Whether the object is not moving.
+   */
   isNotMoving() {
     if (
       !this.world.keyboard.LEFT &&
