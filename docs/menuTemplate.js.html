@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: menuTemplate.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: menuTemplate.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Returns the HTML template for the imprint section.
+ * @returns {string} The HTML template for the imprint section.
+ */
+export function getImprintTemplate() {
+  return /*html*/ `
+      &lt;h2 class="imprintTitle">IMPRINT&lt;/h2>
+  
+      &lt;p>
+        &lt;span class= "imprintText">Marco Lapiello&lt;/span>
+        &lt;span class= "imprintText">Hohenaustra&amp;szlig;e 4&lt;/span>
+        &lt;span class= "imprintText">77815 Bühl, Deutschland&lt;/span>
+      &lt;/p>
+  
+      &lt;h3 class= "imprintTitle small">Contact&lt;/h3>
+      &lt;p>
+        &lt;span class= "imprintText">Phone:&lt;/span>
+        &lt;span class= "imprintText">+49 (0) 174 65 02 529&lt;/span>
+      &lt;/p>
+      &lt;p>
+        &lt;span class= "imprintText">E-Mail:&lt;/span>
+        &lt;span class= "imprintText">hello@marco-lapiello-developer.com&lt;/span>
+      &lt;/p>
+  
+      &lt;p class= "imprintTitle small">Source: &lt;a class= "imprintText" href="https://www.e-recht24.de">e-recht24.de&lt;/a>&lt;/p>
+    `;
+}
+
+/**
+ * Returns the HTML template for the description section.
+ * @returns {string} The HTML template for the description section.
+ */
+export function getDescriptionTemplate() {
+  return /*html*/ `
+      &lt;h2 id="descriptionTitle">WHAT´S GOING ON??&lt;/h2>
+              &lt;span id="descriptionText" class="gameDescription">
+                A horde of angry chickens, led by their alpha rooster, is advancing toward your ranch with the aim of pillaging it. Block their path and
+                defeat their boss with blasts of spicy salsa!
+              &lt;/span>
+    `;
+}
+
+/**
+ * Returns the HTML template for the controls section.
+ * @returns {string} The HTML template for the controls section.
+ */
+export function getControlsTemplate() {
+  return /*html*/ `
+      &lt;h3>CONTROLS&lt;/h3>
+              &lt;div class="instructions">
+                &lt;div class="instructions">
+                  &lt;div class="singleInstruction">
+                    &lt;img class="arrow" src="./Grafics/arrow_left_orange.png" alt="" />
+                    &lt;span>move left&lt;/span>
+                  &lt;/div>
+                  &lt;div class="separator">&lt;/div>
+                  &lt;div class="singleInstruction reverse">
+                    &lt;img class="arrow" src="./Grafics/arrow_right_orange.png" alt="" />
+                    &lt;span>move right&lt;/span>
+                  &lt;/div>
+                &lt;/div>
+  
+                &lt;div class="instructions">
+                  &lt;div class="singleInstruction">
+                    &lt;span class="btnName">Space&lt;/span>
+                    &lt;span>jump&lt;/span>
+                  &lt;/div>
+                  &lt;div class="separator">&lt;/div>
+                  &lt;div class="singleInstruction reverse">
+                    &lt;span class="btnName">B&lt;/span>
+                    &lt;span>throw bottle&lt;/span>
+                  &lt;/div>
+                &lt;/div>
+              &lt;/div>
+    `;
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#checkOrientation">checkOrientation</a></li><li><a href="global.html#getControlsTemplate">getControlsTemplate</a></li><li><a href="global.html#getDescriptionTemplate">getDescriptionTemplate</a></li><li><a href="global.html#getImprintTemplate">getImprintTemplate</a></li><li><a href="global.html#hideLandscapeWarning">hideLandscapeWarning</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#isMobileDevice">isMobileDevice</a></li><li><a href="global.html#keyboardInputsFalse">keyboardInputsFalse</a></li><li><a href="global.html#keyboardInputsTrue">keyboardInputsTrue</a></li><li><a href="global.html#listenerForMobile">listenerForMobile</a></li><li><a href="global.html#loadMenu">loadMenu</a></li><li><a href="global.html#registerEventsListeners">registerEventsListeners</a></li><li><a href="global.html#registerSounds">registerSounds</a></li><li><a href="global.html#showLandscapeWarning">showLandscapeWarning</a></li><li><a href="global.html#startGame">startGame</a></li><li><a href="global.html#toggleImprint">toggleImprint</a></li><li><a href="global.html#toggleMenu">toggleMenu</a></li><li><a href="global.html#toggleMobileBtns">toggleMobileBtns</a></li><li><a href="global.html#touchInputsFalse">touchInputsFalse</a></li><li><a href="global.html#touchInputsTrue">touchInputsTrue</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Wed Jan 22 2025 13:26:57 GMT+0100 (Mitteleuropäische Normalzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
