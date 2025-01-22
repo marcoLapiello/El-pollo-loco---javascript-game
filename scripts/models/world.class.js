@@ -1,6 +1,4 @@
 import { Bottle } from "./bottle.class.js";
-import { BottlesOnTheGround } from "./bottlesOnTheGround.class.js";
-import { Coins } from "./coins.class.js";
 import { Character } from "./character.class.js";
 import { StatusBars } from "./statusBars.class.js";
 import { Endboss } from "./endboss.class.js";
@@ -8,6 +6,7 @@ import { intervalManager } from "../managers/intervalManager.class.js";
 import { soundManager } from "../game.js";
 import { level1 } from "../levels/level1.js";
 import { isMobileDevice } from "../game.js";
+import { CollectibleManager } from "../managers/collectibleManager.js";
 window.isMobileDevice = isMobileDevice;
 
 export class World {
@@ -16,12 +15,6 @@ export class World {
   camera_x = 0;
   bottles = [];
   lastThrownBottleTime = 0;
-  ownedBottles = 0;
-  ownedBottlesPercent = 0;
-  ownedCoins = 0;
-  ownedCoinsPercent = 0;
-  bottlesOnTheGround = [];
-  coinsAroundTheWorld = [];
   healthBar = new StatusBars("HEALTH", 0, this.character.health, this);
   bottlesBar = new StatusBars("BOTTLES", 40, this.ownedBottles, this);
   coinsBar = new StatusBars("COINS", 80, this.ownedCoins, this);
@@ -49,7 +42,7 @@ export class World {
     this.gameIsStarted = gameIsStarted;
     this.isGamePaused = false;
     this.firstInputDetected = false;
-    
+    this.collectibleManager = new CollectibleManager(this.character, this.bottlesBar, this.coinsBar, soundManager, this.isSoundMute);
     this.addEventListener();
     this.startGame();
   }
@@ -83,10 +76,10 @@ export class World {
     this.startAnimations();
     this.cleanUpDeadEnemies();
     this.setWorld();
-    this.generateBottleOnTheGrounds(20);
-    this.generateCoinsAroundTheWorld(20);
+    this.collectibleManager.generateBottleOnTheGrounds(20);
+    this.collectibleManager.generateCoinsAroundTheWorld(20);
     soundManager.playSound("gameSound-music", true);
-    if (this.isMobileDevice) {
+    if (isMobileDevice()) {
       this.toggleMobileBtns("show");
     }
   }
@@ -110,8 +103,8 @@ export class World {
     this.draw();
     this.checkCollision();
     this.handleThrowBottle();
-    this.checkCollectBottle();
-    this.checkCollectCoins();
+    this.collectibleManager.checkCollectBottle();
+    this.collectibleManager.checkCollectCoins();
     this.killEnemies();
     this.handleBoss();
     this.checkWhoWon();
@@ -309,12 +302,12 @@ export class World {
    */
   handleThrowBottle() {
     let timePassed = this.handleThrowBottleTime();
-    if (this.keyboard.B && this.ownedBottles > 0 && timePassed > 0.5 && !this.character.getsHurt()) {
+    if (this.keyboard.B && this.collectibleManager.ownedBottles > 0 && timePassed > 0.5 && !this.character.getsHurt()) {
       let bottle = new Bottle(this.character.x + 80, this.character.y + 140, this.isSoundMute, this.character.facingLeft);
       this.lastThrownBottleTime = new Date().getTime();
-      this.ownedBottles--;
-      this.ownedBottlesPercent = this.ownedBottles * 10;
-      this.bottlesBar.setStatusBars("BOTTLES", this.ownedBottlesPercent);
+      this.collectibleManager.ownedBottles--;
+      this.collectibleManager.ownedBottlesPercent = this.collectibleManager.ownedBottles * 10;
+      this.bottlesBar.setStatusBars("BOTTLES", this.collectibleManager.ownedBottlesPercent);
       this.bottles.push(bottle);
     }
   }
@@ -385,62 +378,6 @@ export class World {
     }, 2000);
   }
 
-  generateBottleOnTheGrounds(numberOfBottles) {
-    for (let i = 0; i < numberOfBottles; i++) {
-      let x = 200 + Math.random() * 2000;
-      let y = 390;
-      let bottleOnTheGround = new BottlesOnTheGround(x, y);
-      this.bottlesOnTheGround.push(bottleOnTheGround);
-    }
-  }
-
-  generateCoinsAroundTheWorld(numberOfCoins) {
-    const minDistance = 50;
-    let possibleYValues = [150, 300];
-    let x = 200;
-    for (let i = 0; i < numberOfCoins; i++) {
-      let y = possibleYValues[Math.floor(Math.random() * possibleYValues.length)];
-      if (i % 3 === 0 && i !== 0) {
-        x += minDistance * 3;
-      } else {
-        x += minDistance;
-      }
-      if (x > 2200) {
-        x = 200 + (x - 2200);
-      }
-      let coin = new Coins(x, y);
-      this.coinsAroundTheWorld.push(coin);
-    }
-  }
-
-  checkCollectBottle() {
-    this.bottlesOnTheGround = this.bottlesOnTheGround.filter((bottle) => {
-      if (this.character.isColliding(bottle) && this.ownedBottles < 10) {
-        this.ownedBottles++;
-        this.ownedBottlesPercent = this.ownedBottles * 10;
-        this.bottlesBar.setStatusBars("BOTTLES", this.ownedBottlesPercent);
-        return false;
-      }
-      return true;
-    });
-  }
-
-  checkCollectCoins() {
-    this.coinsAroundTheWorld = this.coinsAroundTheWorld.filter((coin) => {
-      if (this.character.isColliding(coin) && this.ownedCoins < 100) {
-        this.ownedCoins++;
-        this.ownedCoinsPercent = this.ownedCoins * 5;
-        if (!this.isSoundMute) {
-          soundManager.playSound("collectCoin");
-        }
-
-        this.coinsBar.setStatusBars("COINS", this.ownedCoinsPercent);
-        return false;
-      }
-      return true;
-    });
-  }
-
   /**
    * Draws the game elements on the canvas.
    */
@@ -449,8 +386,8 @@ export class World {
     this.ctx.translate(this.camera_x, 0);
     this.addObjectToMap(this.level.background);
     this.addObjectToMap(this.level.clouds);
-    this.addObjectToMap(this.bottlesOnTheGround);
-    this.addObjectToMap(this.coinsAroundTheWorld);
+    this.addObjectToMap(this.collectibleManager.bottlesOnTheGround);
+    this.addObjectToMap(this.collectibleManager.coinsAroundTheWorld);
     this.addObjectToMap(this.level.enemies);
     this.addObjectToMap(this.bottles);
     this.addToMap(this.character);
