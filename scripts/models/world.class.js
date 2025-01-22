@@ -1,6 +1,4 @@
 import { Bottle } from "./bottle.class.js";
-import { BottlesOnTheGround } from "./bottlesOnTheGround.class.js";
-import { Coins } from "./coins.class.js";
 import { Character } from "./character.class.js";
 import { StatusBars } from "./statusBars.class.js";
 import { Endboss } from "./endboss.class.js";
@@ -8,6 +6,8 @@ import { intervalManager } from "../managers/intervalManager.class.js";
 import { soundManager } from "../game.js";
 import { level1 } from "../levels/level1.js";
 import { isMobileDevice } from "../game.js";
+import { CollisionManager } from "../managers/collisionManager.js";
+import { CollectibleManager } from "../managers/collectibleManager.js";
 window.isMobileDevice = isMobileDevice;
 
 export class World {
@@ -16,12 +16,6 @@ export class World {
   camera_x = 0;
   bottles = [];
   lastThrownBottleTime = 0;
-  ownedBottles = 0;
-  ownedBottlesPercent = 0;
-  ownedCoins = 0;
-  ownedCoinsPercent = 0;
-  bottlesOnTheGround = [];
-  coinsAroundTheWorld = [];
   healthBar = new StatusBars("HEALTH", 0, this.character.health, this);
   bottlesBar = new StatusBars("BOTTLES", 40, this.ownedBottles, this);
   coinsBar = new StatusBars("COINS", 80, this.ownedCoins, this);
@@ -36,6 +30,12 @@ export class World {
   menuButton = document.getElementById("menuBtn");
   menuBackButton = document.getElementById("menuBackBtn");
 
+  /**
+   * Creates an instance of the World class.
+   * @param {HTMLCanvasElement} canvas - The canvas element to draw on.
+   * @param {Object} keyboard - The keyboard input handler.
+   * @param {boolean} gameIsStarted - Indicates if the game has started.
+   */
   constructor(canvas, keyboard, gameIsStarted) {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
@@ -43,12 +43,15 @@ export class World {
     this.gameIsStarted = gameIsStarted;
     this.isGamePaused = false;
     this.firstInputDetected = false;
+    this.collisionManager = new CollisionManager(this.character, this.level, this.healthBar);
+    this.collectibleManager = new CollectibleManager(this.character, this.bottlesBar, this.coinsBar, soundManager, this.isSoundMute);
     this.addEventListener();
     this.startGame();
   }
 
-  // SETTINGS LISTENERS AND PASSING PROPERTIES
-
+  /**
+   * Adds event listeners for various game controls.
+   */
   addEventListener() {
     this.pauseButton.addEventListener("click", () => this.togglePause());
     this.menuButton.addEventListener("click", () => this.togglePause());
@@ -58,28 +61,34 @@ export class World {
     document.addEventListener("touchstart", this.handleFirstInput.bind(this));
   }
 
+  /**
+   * Sets the world reference for the character.
+   */
   setWorld() {
     this.character.world = this;
     this.character.world.startTime = this.startTime;
   }
 
-  // ALL ABOUT RUNNING AND CEASING THE GAME ENGINE
-
+  /**
+   * Starts the game by initializing various components and starting the game engine.
+   */
   startGame() {
     this.gameIsStarted = true;
     this.runGameEngine();
     this.startAnimations();
     this.cleanUpDeadEnemies();
-    // this.startTime = performance.now();
     this.setWorld();
-    this.generateBottleOnTheGrounds(20);
-    this.generateCoinsAroundTheWorld(20);
+    this.collectibleManager.generateBottleOnTheGrounds(20);
+    this.collectibleManager.generateCoinsAroundTheWorld(20);
     soundManager.playSound("gameSound-music", true);
     if (this.isMobileDevice) {
       this.toggleMobileBtns("show");
-    } 
+    }
   }
 
+  /**
+   * Runs the game engine by registering the animation update function.
+   */
   runGameEngine() {
     if (!this.gameIsStarted) return;
     intervalManager.registerAnimation(this, {
@@ -89,22 +98,32 @@ export class World {
     });
   }
 
+  /**
+   * Updates the game state by drawing the game elements and checking various conditions.
+   */
   updateGameState() {
     this.draw();
-    this.checkCollision();
+    this.collisionManager.checkCollision();
     this.handleThrowBottle();
-    this.checkCollectBottle();
-    this.checkCollectCoins();
+    this.collectibleManager.checkCollectBottle();
+    this.collectibleManager.checkCollectCoins();
     this.killEnemies();
     this.handleBoss();
     this.checkWhoWon();
   }
 
+  /**
+   * Starts animations for clouds and the character.
+   */
   startAnimations() {
     this.level.clouds.forEach((cloud) => cloud.registerAnimation());
     this.character.registerAnimation();
   }
 
+  /**
+   * Handles the first input from the user to start enemy animations.
+   * @param {Event} event - The input event.
+   */
   handleFirstInput(event) {
     if (!this.firstInputDetected && this.controlsPressed(event)) {
       this.firstInputDetected = true;
@@ -114,8 +133,13 @@ export class World {
     }
   }
 
+  /**
+   * Checks if the controls are pressed.
+   * @param {Event} event - The input event.
+   * @returns {boolean} True if controls are pressed, false otherwise.
+   */
   controlsPressed(event) {
-    if (
+    return (
       event.code == "ArrowLeft" ||
       event.code == "ArrowRight" ||
       event.code == "Space" ||
@@ -126,15 +150,20 @@ export class World {
       event.target.id == "jumpBtnLeft" ||
       event.target.id == "throwBtnRight" ||
       event.target.id == "throwBtnLeft"
-    ) {
-      return true;
-    }
+    );
   }
 
+  /**
+   * Starts animations for enemies.
+   */
   startEnemiesAnimations() {
     this.level.enemies.forEach((enemy) => enemy.registerAnimation());
   }
 
+  /**
+   * Stops the game and shows the end screen.
+   * @param {string} [endState=""] - The end state of the game ("lost" or "won").
+   */
   stopGame(endState = "") {
     soundManager.pauseSound("gameSound-music");
     this.toggleMobileBtns("hide");
@@ -144,6 +173,10 @@ export class World {
     }, 2000);
   }
 
+  /**
+   * Shows the end screen with the appropriate message.
+   * @param {string} endState - The end state of the game ("lost" or "won").
+   */
   showEndScreen(endState) {
     const endImg = document.getElementById("endScreenImg");
     if (endState === "lost") {
@@ -160,18 +193,22 @@ export class World {
     document.getElementById("menuBtn").classList.add("dNone");
   }
 
+  /**
+   * Toggles the visibility of mobile buttons based on the action provided.
+   * @param {string} [action=""] - The action to perform ("show" or "hide").
+   */
   toggleMobileBtns(action = "") {
-    let mobileBtnIds = ["leftBtn", "rightBtn", "jumpBtnRight", "jumpBtnLeft", "throwBtnRight", "throwBtnLeft"];
+    const mobileBtnIds = ["leftBtn", "rightBtn", "jumpBtnRight", "jumpBtnLeft", "throwBtnRight", "throwBtnLeft"];
     mobileBtnIds.forEach((btnId) => {
-      let btn = document.getElementById(btnId);
-      if (action == "hide") {
-        btn.classList.add("dNone");
-      } else if (action == "show") {
-        btn.classList.remove("dNone");
-      }
+      const btn = document.getElementById(btnId);
+      btn.classList.toggle("dNone", action === "hide");
+      if (action === "show") btn.classList.remove("dNone");
     });
   }
 
+  /**
+   * Checks who won the game based on the health of the character and the endboss.
+   */
   checkWhoWon() {
     const endboss = this.level.enemies.find((enemy) => enemy instanceof Endboss);
     const character = this.character;
@@ -182,11 +219,11 @@ export class World {
     }
   }
 
-  // PAUSE AND SOUND FUNCTIONS
-
+  /**
+   * Toggles the pause state of the game.
+   */
   togglePause() {
     this.isGamePaused = !this.isGamePaused;
-    // pause state must only be passed to instances using gravity
     this.character.isGamePaused = this.isGamePaused;
     this.bottles.forEach((bottle) => {
       bottle.isGamePaused = this.isGamePaused;
@@ -198,6 +235,9 @@ export class World {
     }
   }
 
+  /**
+   * Pauses the game by stopping animations and sounds.
+   */
   pauseGame() {
     let activeBtn = true;
     intervalManager.pauseGame();
@@ -206,6 +246,9 @@ export class World {
     this.toggleActivePauseButton(activeBtn);
   }
 
+  /**
+   * Resumes the game by restarting animations and sounds.
+   */
   resumeGame() {
     let activeBtn = false;
     intervalManager.resumeGame();
@@ -214,69 +257,58 @@ export class World {
     this.toggleActivePauseButton(activeBtn);
   }
 
+  /**
+   * Toggles the active state of the pause button.
+   * @param {boolean} activeBtn - Indicates if the pause button should be active.
+   */
   toggleActivePauseButton(activeBtn) {
-    if (activeBtn) {
-      document.getElementById("pauseBtn").classList.add("pauseActive");
-    } else {
-      document.getElementById("pauseBtn").classList.remove("pauseActive");
-    }
+    document.getElementById("pauseBtn").classList.toggle("pauseActive", activeBtn);
   }
 
+  /**
+   * Toggles the mute state of the game sounds.
+   */
   soundMute() {
-    if (!this.isSoundMute) {
-      this.isSoundMute = true;
+    this.isSoundMute = !this.isSoundMute;
+    if (this.isSoundMute) {
       soundManager.muteAll();
       this.soundButton.classList.add("noSound");
-      this.soundButton.blur();
-    } else if (this.isSoundMute) {
-      this.isSoundMute = false;
+    } else {
       soundManager.muteAllOff();
       this.soundButton.classList.remove("noSound");
-      this.soundButton.blur();
     }
+    this.soundButton.blur();
   }
 
-  // COLLISIONS CHARACTER/ENEMIES
-
-  checkCollision() {
-    this.level.enemies.forEach((enemy) => {
-      if (this.character.isColliding(enemy) && !this.character.isInTheAir() && enemy.health > 0) {
-        if (enemy.type === "chick" && this.character.health > 0) {
-          enemy.getsHit();
-        } else {
-          this.character.getsHit();
-          this.healthBar.setStatusBars("HEALTH", this.character.health);
-        }
-      }
-    });
-  }
-
-  isCharacterJumpingOnEnemy(enemy) {
-    return (
-      this.character.isInTheAir() && this.character.speedY < 0 && this.character.isColliding(enemy) && !(enemy instanceof Endboss) && enemy.health > 0
-    );
-  }
-
-  // BOTTLES
-
+  /**
+   * Handles the logic for throwing a bottle.
+   */
   handleThrowBottle() {
     let timePassed = this.handleThrowBottleTime();
-    if (this.keyboard.B && this.ownedBottles > 0 && timePassed > 0.5 && !this.character.getsHurt()) {
+    if (this.keyboard.B && this.collectibleManager.ownedBottles > 0 && timePassed > 0.5 && !this.character.getsHurt()) {
       let bottle = new Bottle(this.character.x + 80, this.character.y + 140, this.isSoundMute, this.character.facingLeft);
       this.lastThrownBottleTime = new Date().getTime();
-      this.ownedBottles--;
-      this.ownedBottlesPercent = this.ownedBottles * 10;
-      this.bottlesBar.setStatusBars("BOTTLES", this.ownedBottlesPercent);
+      this.collectibleManager.ownedBottles--;
+      this.collectibleManager.ownedBottlesPercent = this.collectibleManager.ownedBottles * 10;
+      this.bottlesBar.setStatusBars("BOTTLES", this.collectibleManager.ownedBottlesPercent);
       this.bottles.push(bottle);
     }
   }
 
+  /**
+   * Calculates the time passed since the last bottle was thrown.
+   * @returns {number} The time passed in seconds.
+   */
   handleThrowBottleTime() {
     let timePassed = new Date().getTime() - this.lastThrownBottleTime;
-    timePassed = timePassed / 1000;
-    return timePassed;
+    return timePassed / 1000;
   }
 
+  /**
+   * Handles the collision between a bottle and an enemy.
+   * @param {Object} enemy - The enemy that was hit.
+   * @param {Object} collidingBottle - The bottle that collided with the enemy.
+   */
   handleBottleCollision(enemy, collidingBottle) {
     collidingBottle.isBreaking = true;
     enemy.getsHit();
@@ -286,8 +318,9 @@ export class World {
     }
   }
 
-  // BOSS BEHAVIOUR AND COMBAT MECHANICS
-
+  /**
+   * Handles the behavior and combat mechanics of the boss.
+   */
   handleBoss() {
     const endboss = this.level.enemies.find((enemy) => enemy instanceof Endboss);
     this.bossBar.updateBossBar(endboss);
@@ -299,10 +332,13 @@ export class World {
     }
   }
 
+  /**
+   * Handles the logic for killing enemies.
+   */
   killEnemies() {
     this.level.enemies = this.level.enemies.filter((enemy) => {
       let collidingBottle = this.bottles.find((bottle) => bottle.isColliding(enemy));
-      if (this.isCharacterJumpingOnEnemy(enemy)) {
+      if (this.collisionManager.isCharacterJumpingOnEnemy(enemy)) {
         enemy.getsHit();
       } else if (collidingBottle && enemy.health > 0) {
         this.handleBottleCollision(enemy, collidingBottle);
@@ -311,6 +347,9 @@ export class World {
     });
   }
 
+  /**
+   * Cleans up dead enemies from the game.
+   */
   cleanUpDeadEnemies() {
     setInterval(() => {
       this.level.enemies = this.level.enemies.filter((enemyToRemove) => {
@@ -322,73 +361,16 @@ export class World {
     }, 2000);
   }
 
-  // ALL ABOUT COLLECTIBLES
-
-  generateBottleOnTheGrounds(numberOfBottles) {
-    for (let i = 0; i < numberOfBottles; i++) {
-      let x = 200 + Math.random() * 2000;
-      let y = 390;
-      let bottleOnTheGround = new BottlesOnTheGround(x, y);
-      this.bottlesOnTheGround.push(bottleOnTheGround);
-    }
-  }
-
-  generateCoinsAroundTheWorld(numberOfCoins) {
-    const minDistance = 50;
-    let possibleYValues = [150, 300];
-    let x = 200;
-    for (let i = 0; i < numberOfCoins; i++) {
-      let y = possibleYValues[Math.floor(Math.random() * possibleYValues.length)];
-      if (i % 3 === 0 && i !== 0) {
-        x += minDistance * 3;
-      } else {
-        x += minDistance;
-      }
-      if (x > 2200) {
-        x = 200 + (x - 2200);
-      }
-      let coin = new Coins(x, y);
-      this.coinsAroundTheWorld.push(coin);
-    }
-  }
-
-  checkCollectBottle() {
-    this.bottlesOnTheGround = this.bottlesOnTheGround.filter((bottle) => {
-      if (this.character.isColliding(bottle) && this.ownedBottles < 10) {
-        this.ownedBottles++;
-        this.ownedBottlesPercent = this.ownedBottles * 10;
-        this.bottlesBar.setStatusBars("BOTTLES", this.ownedBottlesPercent);
-        return false;
-      }
-      return true;
-    });
-  }
-
-  checkCollectCoins() {
-    this.coinsAroundTheWorld = this.coinsAroundTheWorld.filter((coin) => {
-      if (this.character.isColliding(coin) && this.ownedCoins < 100) {
-        this.ownedCoins++;
-        this.ownedCoinsPercent = this.ownedCoins * 5;
-        if (!this.isSoundMute) {
-          soundManager.playSound("collectCoin");
-        }
-
-        this.coinsBar.setStatusBars("COINS", this.ownedCoinsPercent);
-        return false;
-      }
-      return true;
-    });
-  }
-
-  // ALL ABOUT DRAWING
-
+  /**
+   * Draws the game elements on the canvas.
+   */
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.ctx.translate(this.camera_x, 0);
     this.addObjectToMap(this.level.background);
     this.addObjectToMap(this.level.clouds);
-    this.addObjectToMap(this.bottlesOnTheGround);
-    this.addObjectToMap(this.coinsAroundTheWorld);
+    this.addObjectToMap(this.collectibleManager.bottlesOnTheGround);
+    this.addObjectToMap(this.collectibleManager.coinsAroundTheWorld);
     this.addObjectToMap(this.level.enemies);
     this.addObjectToMap(this.bottles);
     this.addToMap(this.character);
@@ -397,22 +379,22 @@ export class World {
     this.addToMap(this.healthBar);
     this.addToMap(this.bottlesBar);
     this.addToMap(this.coinsBar);
-
-    // this.level.enemies.forEach((enemy) => {
-    //   this.drawFrame(enemy);
-    // });
-
-    // requestAnimationFrame(() => {
-    //   this.draw();
-    // });
   }
 
+  /**
+   * Adds an array of objects to the map.
+   * @param {Array} object - The array of objects to add.
+   */
   addObjectToMap(object) {
     object.forEach((o) => {
       this.addToMap(o);
     });
   }
 
+  /**
+   * Adds a drawable object to the map.
+   * @param {Object} drawableObject - The object to draw.
+   */
   addToMap(drawableObject) {
     this.ctx.save();
     if (drawableObject.facingLeft) {
@@ -423,15 +405,13 @@ export class World {
     this.ctx.restore();
   }
 
+  /**
+   * Draws an object facing left on the canvas.
+   * @param {Object} drawableObject - The object to draw.
+   */
   drawObjectFacingLeft(drawableObject) {
     this.ctx.translate(drawableObject.x + drawableObject.width, 0);
     this.ctx.scale(-1, 1);
     this.ctx.drawImage(drawableObject.img, 0, drawableObject.y, drawableObject.width, drawableObject.height);
   }
-
-  // drawFrame(object) {
-  //   this.ctx.strokeStyle = 'red';
-  //   this.ctx.lineWidth = 2;
-  //   this.ctx.strokeRect(object.x, object.y, object.width, object.height);
-  // }
 }
