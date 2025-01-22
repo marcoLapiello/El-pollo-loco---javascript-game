@@ -12,12 +12,18 @@ let imprintOpen = false;
 
 document.addEventListener("DOMContentLoaded", init);
 
+/**
+ * Initializes the game by registering event listeners, sounds, and loading the menu.
+ */
 function init() {
   registerEventsListeners();
   registerSounds();
   loadMenu();
 }
 
+/**
+ * Registers all necessary event listeners for the game.
+ */
 function registerEventsListeners() {
   document.getElementById("menuBtn").addEventListener("click", toggleMenu);
   document.getElementById("menuBackBtn").addEventListener("click", toggleMenu);
@@ -27,12 +33,12 @@ function registerEventsListeners() {
   window.addEventListener("touchstart", touchInputsTrue);
   window.addEventListener("touchend", touchInputsFalse);
   document.getElementById("startButton").addEventListener("click", startGame);
-  // document.getElementById("fullscreenBtn").addEventListener("click", fullScreen);
-  document.getElementById("resetButton").addEventListener("click", () => {
-    location.reload();
-  });
+  document.getElementById("resetButton").addEventListener("click", () => location.reload());
 }
 
+/**
+ * Registers all game sounds with the sound manager.
+ */
 function registerSounds() {
   soundManager.registerSound("walk", new Audio("./audio/running.wav"));
   soundManager.registerSound("jump", new Audio("./audio/breath_jump.wav"));
@@ -50,26 +56,29 @@ function registerSounds() {
 }
 export { soundManager };
 
+/**
+ * Loads the game menu, switching between description and imprint views.
+ */
 function loadMenu() {
+  const imprintBtn = document.getElementById("menuImprintBtn");
+  const gameDescription = document.getElementById("gameDescription");
+  const controls = document.getElementById("controls");
+
   if (!imprintOpen) {
-    document.getElementById("menuImprintBtn").innerText = "";
-    document.getElementById("menuImprintBtn").innerText = "Imprint";
-    document.getElementById("gameDescription").innerHTML = "";
-    document.getElementById("controls").innerHTML = "";
-    document.getElementById("gameDescription").innerHTML = getDescriptionTemplate();
-    if (isMobileDevice()) {
-      document.getElementById("controls").classList.add("dNone");
-    }
-    document.getElementById("controls").innerHTML = getControlsTemplate();
+    imprintBtn.innerText = "Imprint";
+    gameDescription.innerHTML = getDescriptionTemplate();
+    controls.innerHTML = isMobileDevice() ? "" : getControlsTemplate();
+    controls.classList.toggle("dNone", isMobileDevice());
   } else {
-    document.getElementById("menuImprintBtn").innerText = "";
-    document.getElementById("menuImprintBtn").innerText = "Description";
-    document.getElementById("controls").innerHTML = "";
-    document.getElementById("gameDescription").innerHTML = "";
-    document.getElementById("gameDescription").innerHTML = getImprintTemplate();
+    imprintBtn.innerText = "Description";
+    gameDescription.innerHTML = getImprintTemplate();
+    controls.innerHTML = "";
   }
 }
 
+/**
+ * Starts the game by initializing the world and updating the UI.
+ */
 export function startGame() {
   gameIsStarted = true;
   document.getElementById("startScreen").classList.add("dNone");
@@ -84,24 +93,30 @@ export function startGame() {
   }
 }
 
+/**
+ * Toggles the visibility of the game menu.
+ */
 function toggleMenu() {
   let menuRef = document.getElementById("menu");
   if (imprintOpen) {
     imprintOpen = false;
     loadMenu();
   }
-  if (menuRef.classList.contains("dNone")) {
-    menuRef.classList.remove("dNone");
-  } else {
-    menuRef.classList.add("dNone");
-  }
+  menuRef.classList.toggle("dNone");
 }
 
+/**
+ * Toggles the imprint view in the menu.
+ */
 function toggleImprint() {
   imprintOpen = !imprintOpen;
   loadMenu();
 }
 
+/**
+ * Handles keyboard input events to set the corresponding keys to true.
+ * @param {KeyboardEvent} event - The keyboard event.
+ */
 function keyboardInputsTrue(event) {
   if (event.code == "ArrowLeft") {
     keyboard.LEFT = true;
@@ -114,6 +129,10 @@ function keyboardInputsTrue(event) {
   }
 }
 
+/**
+ * Handles keyboard input events to set the corresponding keys to false.
+ * @param {KeyboardEvent} event - The keyboard event.
+ */
 function keyboardInputsFalse(event) {
   if (event.code == "ArrowLeft") {
     keyboard.LEFT = false;
@@ -126,6 +145,10 @@ function keyboardInputsFalse(event) {
   }
 }
 
+/**
+ * Handles touch input events to set the corresponding keys to true.
+ * @param {TouchEvent} event - The touch event.
+ */
 function touchInputsTrue(event) {
   if (event.target.id == "leftBtn") {
     keyboard.LEFT = true;
@@ -138,6 +161,10 @@ function touchInputsTrue(event) {
   }
 }
 
+/**
+ * Handles touch input events to set the corresponding keys to false.
+ * @param {TouchEvent} event - The touch event.
+ */
 function touchInputsFalse(event) {
   if (event.target.id == "leftBtn") {
     keyboard.LEFT = false;
@@ -150,60 +177,63 @@ function touchInputsFalse(event) {
   }
 }
 
-// MOBILE DEVICE DETECTION
+document.addEventListener("DOMContentLoaded", listenerForMobile);
 
-document.addEventListener("DOMContentLoaded", function () {
-  // console.log("DOM fully loaded and parsed");
+/**
+ * Adds event listeners for orientation change and resize if the device is mobile.
+ */
+function listenerForMobile() {
   if (isMobileDevice()) {
-    // console.log("Mobile device detected");
     checkOrientation();
     window.addEventListener("orientationchange", checkOrientation);
     window.addEventListener("resize", checkOrientation);
-    
-  } else {
-    // console.log("Not a mobile device");
   }
-});
-
-export function isMobileDevice() {
-  const isMobile = /Mobi|Android/i.test(navigator.userAgent);
-  // console.log("isMobileDevice:", isMobile);
-  return isMobile;
 }
 
+/**
+ * Checks if the current device is a mobile device.
+ * @returns {boolean} True if the device is mobile, false otherwise.
+ */
+export function isMobileDevice() {
+  return /Mobi|Android/i.test(navigator.userAgent);
+}
+
+/**
+ * Toggles the visibility of mobile buttons based on the action provided.
+ * @param {string} [action=""] - The action to perform ("show" or "hide").
+ */
 export function toggleMobileBtns(action = "") {
-  let mobileBtnIds = ["leftBtn", "rightBtn", "jumpBtnRight", "jumpBtnLeft", "throwBtnRight", "throwBtnLeft"];
+  const mobileBtnIds = ["leftBtn", "rightBtn", "jumpBtnRight", "jumpBtnLeft", "throwBtnRight", "throwBtnLeft"];
   mobileBtnIds.forEach((btnId) => {
-    let btn = document.getElementById(btnId);
-    if (action == "hide") {
-      btn.classList.add("dNone");
-    } else if (action == "show") {
-      btn.classList.remove("dNone");
-    }
+    const btn = document.getElementById(btnId);
+    btn.classList.toggle("dNone", action === "hide");
+    if (action === "show") btn.classList.remove("dNone");
   });
 }
 
+/**
+ * Checks the orientation of the device and shows or hides the landscape warning accordingly.
+ */
 function checkOrientation() {
-  // console.log("Checking orientation");
   if (window.innerHeight > window.innerWidth) {
-    // console.log("Portrait mode detected");
     showLandscapeWarning();
   } else {
-    // console.log("Landscape mode detected");
     hideLandscapeWarning();
   }
 }
 
+/**
+ * Shows the landscape warning for mobile devices.
+ */
 function showLandscapeWarning() {
-  const advice = document.getElementById("mobileTurn");
-  const gameContent = document.getElementById("mainContent");
-  advice.classList.remove("dNone");
-  gameContent.classList.add("dNone");
+  document.getElementById("mobileTurn").classList.remove("dNone");
+  document.getElementById("mainContent").classList.add("dNone");
 }
 
+/**
+ * Hides the landscape warning for mobile devices.
+ */
 function hideLandscapeWarning() {
-  const advice = document.getElementById("mobileTurn");
-  const gameContent = document.getElementById("mainContent");
-  advice.classList.add("dNone");
-  gameContent.classList.remove("dNone");
+  document.getElementById("mobileTurn").classList.add("dNone");
+  document.getElementById("mainContent").classList.remove("dNone");
 }
