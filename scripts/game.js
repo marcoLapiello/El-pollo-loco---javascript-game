@@ -33,7 +33,7 @@ function registerEventsListeners() {
   window.addEventListener("touchstart", touchInputsTrue);
   window.addEventListener("touchend", touchInputsFalse);
   document.getElementById("startButton").addEventListener("click", startGame);
-  document.getElementById("resetButton").addEventListener("click", () => location.reload());
+  // document.getElementById("resetButton").addEventListener("click", () => {console.log("reset Game")});
 }
 
 /**

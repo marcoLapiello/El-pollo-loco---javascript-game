@@ -2,6 +2,8 @@ import { Bottle } from "./bottle.class.js";
 import { Character } from "./character.class.js";
 import { StatusBars } from "./statusBars.class.js";
 import { Endboss } from "./endboss.class.js";
+import { Chicken } from "./chicken.class.js";
+import { Chick } from "./chick.class.js";
 import { intervalManager } from "../managers/intervalManager.class.js";
 import { soundManager } from "../game.js";
 import { level1 } from "../levels/level1.js";
@@ -29,6 +31,7 @@ export class World {
   pauseButton = document.getElementById("pauseBtn");
   menuButton = document.getElementById("menuBtn");
   menuBackButton = document.getElementById("menuBackBtn");
+  resetButton = document.getElementById("resetButton");
 
   /**
    * Creates an instance of the World class.
@@ -58,6 +61,53 @@ export class World {
     this.soundButton.addEventListener("click", () => this.soundMute());
     document.addEventListener("keydown", this.handleFirstInput.bind(this));
     document.addEventListener("touchstart", this.handleFirstInput.bind(this));
+    this.resetButton.addEventListener("click", () => this.restartGame());
+  }
+
+  restartGame() {
+    soundManager.stopAll();
+    document.getElementById("canvas").classList.remove("dNone");
+    document.getElementById("endScreen").classList.add("dNone");
+    document.getElementById("pauseBtn").classList.remove("dNone");
+    document.getElementById("soundBtn").classList.remove("dNone");
+    this.resetCharacter();
+    this.resetCollectibles();
+    this.resetEnemies();
+    this.firstInputDetected = false;
+    this.startGame();
+  }
+
+  resetEnemies() {
+    this.nrOfChicken = 12;
+    this.nrOfChick = 10;
+    this.nrOfBoss = 1;
+    this.level.enemies = [];
+    for (let i = 0; i < this.nrOfChicken; i++) {
+      this.level.enemies.push(new Chicken());
+    }
+    for (let i = 0; i < this.nrOfChick; i++) {
+      this.level.enemies.push(new Chick());
+    }
+    for (let i = 0; i < this.nrOfBoss; i++) {
+      this.level.enemies.push(new Endboss());
+    }
+  }
+
+  resetCollectibles() {
+    this.collectibleManager.ownedBottles = 0;
+    this.collectibleManager.ownedCoins = 0;
+    this.collectibleManager.ownedBottlesPercent = 0;
+    this.collectibleManager.ownedCoinsPercent = 0;
+    this.collectibleManager.bottlesOnTheGround = [];
+    this.collectibleManager.coinsAroundTheWorld = [];
+    this.bottlesBar.setStatusBars("BOTTLES", this.collectibleManager.ownedBottlesPercent);
+    this.coinsBar.setStatusBars("COINS", this.collectibleManager.ownedCoinsPercent);
+  }
+
+  resetCharacter() {
+    this.character = 0;
+    this.character = new Character();
+    this.healthBar.setStatusBars("HEALTH", this.character.health);
   }
 
   /**
@@ -65,7 +115,7 @@ export class World {
    */
   setWorld() {
     this.character.world = this;
-    this.character.world.startTime = this.startTime;
+    // this.character.world.startTime = this.startTime;
   }
 
   /**
@@ -168,8 +218,9 @@ export class World {
     this.toggleMobileBtns("hide");
     setTimeout(() => {
       intervalManager.clearAllIntervals();
+      this.gameIsStarted = false;
       this.showEndScreen(endState);
-    }, 2000);
+    }, 1000);
   }
 
   /**

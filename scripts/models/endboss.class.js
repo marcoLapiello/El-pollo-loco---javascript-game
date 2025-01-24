@@ -32,8 +32,8 @@ export class Endboss extends MovableObject {
     this.loadImages(IMAGES_DEAD);
     this.loadImages(IMAGES_HURT);
     this.loadImages(IMAGES_ATTACKING);
-    this.x = 3000;
-    this.health = 100;
+    this.x = 2000;
+    this.health = 10;
     this.speedX = 2;
   }
 

@@ -1,3 +1,6 @@
+/**
+ * Manages the sounds in the game.
+ */
 export class SoundManager {
   constructor() {
     this.sounds = new Map();
@@ -32,6 +35,10 @@ export class SoundManager {
         sound.loop = loop;
         sound.play();
         this.soundStates.set(key, { isPlaying: true });
+
+        sound.addEventListener('ended', () => {
+          this.soundStates.set(key, { isPlaying: false });
+        }, { once: true });
       }
     } else {
       console.warn(`Sound with key "${key}" not found.`);
@@ -69,9 +76,12 @@ export class SoundManager {
    * Stops all sounds and resets their playback position.
    */
   stopAll() {
-    this.sounds.forEach((sound) => {
-      sound.pause();
-      sound.currentTime = 0;
+    this.sounds.forEach((sound, key) => {
+      if (!sound.paused) {
+        sound.pause();
+        sound.currentTime = 0;
+        this.soundStates.set(key, { isPlaying: false });
+      }
     });
   }
 
