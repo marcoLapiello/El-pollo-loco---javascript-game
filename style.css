@@ -270,7 +270,7 @@ span {
   background-size: 64px;
   background-position: center;
   top: 10px;
-  right: 60px;
+  right: 110px;
   transition: all 0s;
 }
 
@@ -292,6 +292,7 @@ span {
   background-repeat: no-repeat;
   top: 10px;
   right: 10px;
+  z-index: 1;
 }
 
 .soundBtn {
@@ -303,7 +304,7 @@ span {
   background-size: 28px;
   background-position: center;
   top: 10px;
-  right: 110px;
+  right: 60px;
 }
 
 .noSound {

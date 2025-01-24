@@ -35,6 +35,7 @@ export class World {
 
   /**
    * Creates an instance of the World class.
+   * @class
    * @param {HTMLCanvasElement} canvas - The canvas element to draw on.
    * @param {Object} keyboard - The keyboard input handler.
    * @param {boolean} gameIsStarted - Indicates if the game has started.
@@ -62,52 +63,6 @@ export class World {
     document.addEventListener("keydown", this.handleFirstInput.bind(this));
     document.addEventListener("touchstart", this.handleFirstInput.bind(this));
     this.resetButton.addEventListener("click", () => this.restartGame());
-  }
-
-  restartGame() {
-    soundManager.stopAll();
-    document.getElementById("canvas").classList.remove("dNone");
-    document.getElementById("endScreen").classList.add("dNone");
-    document.getElementById("pauseBtn").classList.remove("dNone");
-    document.getElementById("soundBtn").classList.remove("dNone");
-    this.resetCharacter();
-    this.resetCollectibles();
-    this.resetEnemies();
-    this.firstInputDetected = false;
-    this.startGame();
-  }
-
-  resetEnemies() {
-    this.nrOfChicken = 12;
-    this.nrOfChick = 10;
-    this.nrOfBoss = 1;
-    this.level.enemies = [];
-    for (let i = 0; i < this.nrOfChicken; i++) {
-      this.level.enemies.push(new Chicken());
-    }
-    for (let i = 0; i < this.nrOfChick; i++) {
-      this.level.enemies.push(new Chick());
-    }
-    for (let i = 0; i < this.nrOfBoss; i++) {
-      this.level.enemies.push(new Endboss());
-    }
-  }
-
-  resetCollectibles() {
-    this.collectibleManager.ownedBottles = 0;
-    this.collectibleManager.ownedCoins = 0;
-    this.collectibleManager.ownedBottlesPercent = 0;
-    this.collectibleManager.ownedCoinsPercent = 0;
-    this.collectibleManager.bottlesOnTheGround = [];
-    this.collectibleManager.coinsAroundTheWorld = [];
-    this.bottlesBar.setStatusBars("BOTTLES", this.collectibleManager.ownedBottlesPercent);
-    this.coinsBar.setStatusBars("COINS", this.collectibleManager.ownedCoinsPercent);
-  }
-
-  resetCharacter() {
-    this.character = 0;
-    this.character = new Character();
-    this.healthBar.setStatusBars("HEALTH", this.character.health);
   }
 
   /**
@@ -244,6 +199,59 @@ export class World {
   }
 
   /**
+   * Restarts the game by resetting various components and starting the game again.
+   */
+  restartGame() {
+    soundManager.stopAll();
+    document.getElementById("canvas").classList.remove("dNone");
+    document.getElementById("endScreen").classList.add("dNone");
+    document.getElementById("pauseBtn").classList.remove("dNone");
+    document.getElementById("soundBtn").classList.remove("dNone");
+    this.resetCharacter();
+    this.resetCollectibles();
+    this.resetEnemies();
+    this.firstInputDetected = false;
+    this.startGame();
+  }
+
+  /**
+   * Resets the enemies in the game.
+   */
+  resetEnemies() {
+    this.nrOfChicken = 12;
+    this.nrOfChicks = 10;
+    this.nrOfBoss = 1;
+    this.level.enemies = [];
+    for (let i = 0; i < this.nrOfChicken; i++) {
+      this.level.enemies.push(new Chicken());
+    }
+    for (let i = 0; i < this.nrOfChicks; i++) {
+      this.level.enemies.push(new Chick());
+    }
+    for (let i = 0; i < this.nrOfBoss; i++) {
+      this.level.enemies.push(new Endboss());
+    }
+  }
+
+  /**
+   * Resets the collectibles in the game.
+   */
+  resetCollectibles() {
+    this.collectibleManager = new CollectibleManager(this.character, this.bottlesBar, this.coinsBar, soundManager, this.isSoundMute);
+    this.bottlesBar.setStatusBars("BOTTLES", this.collectibleManager.ownedBottlesPercent);
+    this.coinsBar.setStatusBars("COINS", this.collectibleManager.ownedCoinsPercent);
+  }
+
+  /**
+   * Resets the character in the game.
+   */
+  resetCharacter() {
+    this.character = 0;
+    this.character = new Character();
+    this.healthBar.setStatusBars("HEALTH", this.character.health);
+  }
+
+  /**
    * Toggles the visibility of mobile buttons based on the action provided.
    * @param {string} [action=""] - The action to perform ("show" or "hide").
    */
@@ -330,6 +338,9 @@ export class World {
     this.soundButton.blur();
   }
 
+  /**
+   * Checks for collisions between the character and enemies.
+   */
   checkCollision() {
     this.level.enemies.forEach((enemy) => {
       if (this.character.isColliding(enemy) && !this.character.isInTheAir() && enemy.health > 0) {
@@ -343,6 +354,11 @@ export class World {
     });
   }
 
+  /**
+   * Checks if the character is jumping on an enemy.
+   * @param {Object} enemy - The enemy to check.
+   * @returns {boolean} True if the character is jumping on the enemy, false otherwise.
+   */
   isCharacterJumpingOnEnemy(enemy) {
     return (
       this.character.isInTheAir() && this.character.speedY < 0 && this.character.isColliding(enemy) && !(enemy instanceof Endboss) && enemy.health > 0
