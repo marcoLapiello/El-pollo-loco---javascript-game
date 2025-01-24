@@ -24,7 +24,7 @@ export class World {
   bossBar = new StatusBars("BOSS", 120, 100, this);
   chickenSoundInterval = null;
   intervalId = null;
-  gameOverImgPath = "./Grafics/img/9_intro_outro_screens/game_over/game over.png";
+  gameOverImgPath = "./Grafics/img/9_intro_outro_screens/game_over/game-over.png";
   youWinImgPath = "./Grafics/img/9_intro_outro_screens/win/win_2.png";
   isSoundMute = false;
   soundButton = document.getElementById("soundBtn");
