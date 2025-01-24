@@ -33,7 +33,7 @@ function registerEventsListeners() {
   window.addEventListener("touchstart", touchInputsTrue);
   window.addEventListener("touchend", touchInputsFalse);
   document.getElementById("startButton").addEventListener("click", startGame);
-  // document.getElementById("resetButton").addEventListener("click", () => {console.log("reset Game")});
+  document.getElementById("homeBtn").addEventListener("click", () => location.reload());
 }
 
 /**
@@ -85,6 +85,7 @@ export function startGame() {
   document.getElementById("canvas").classList.remove("dNone");
   document.getElementById("pauseBtn").classList.remove("dNone");
   document.getElementById("soundBtn").classList.remove("dNone");
+  document.getElementById("homeBtn").classList.remove("dNone");
   document.getElementById("menuBtn").classList.add("dNone");
   canvas = document.getElementById("canvas");
   world = new World(canvas, keyboard, gameIsStarted);
